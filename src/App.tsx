@@ -43,10 +43,12 @@ import MyLoginPage from "./pages/login/login_screen";
 import myTheme from "./consts/theme";
 import MyCustomFormPage from "./pages/custom_form/custom_form";
 import MyCustomEdadFormPage from "./pages/custom_form/ejemplo_edad";
+import { MyAppBar } from "./pages/bar/bar";
 
 
 export const App = () => (
   <Admin
+    
     loginPage={MyLoginPage}
     theme={myTheme}
     authProvider={authProvider}
