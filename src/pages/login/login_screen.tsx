@@ -42,7 +42,7 @@ const MyLoginPage = () => {
         }}
       >       
       </Box>
-      
+      TituloAtencionPrehospitalaria
         <Box component="img"
         margin={2}
         src={logo}
