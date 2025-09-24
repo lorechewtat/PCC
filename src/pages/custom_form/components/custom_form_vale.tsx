@@ -35,25 +35,25 @@ const DatosPacienteSection = ({ value, onChange }: Props) => {
 
       <Paper elevation={1} sx={{ width: '100%', p: 2, mt: 1, mb: 2, border: '1px solid #203972', borderRadius: 5 }}>
         <Stack spacing={2} sx={{ width: '100%' }}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{display: 'flex', alignItems: 'end'}}>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="body1" sx={{ mb: 1, width: '100%', color: '#203972' }}>Nombre del paciente:</Typography>
               <TextField
-                label="Nombre del paciente"
+                label="NOMBRE DEL PACIENTE"
                 value={value.nombre}
                 onChange={handlePacienteChange('nombre')}
                 variant="standard"
                 fullWidth
+                InputLabelProps={{ style: { textTransform: 'uppercase' } }}
               />
             </Box>
 
             <Box sx={{ flex: 1 }}>
-              <Typography variant="body1" sx={{ mb: 1, color: '#203972' }}>Sexo:</Typography>
+              <Typography variant="body1" sx={{ mb: 1, color: "gray" }}>SEXO</Typography>
               <ToggleButtonGroup
                 value={value.sexo}
                 exclusive
                 onChange={(_, val: '' | 'M' | 'F' | null) => {
-                  if (val === null) return; // evita poner null al re-clic
+                  if (val === null) return;
                   onChange({ sexo: val });
                 }}
               >
@@ -87,29 +87,31 @@ const DatosPacienteSection = ({ value, onChange }: Props) => {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Box>
+      
           </Stack>
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="body1" sx={{ mb: 1, color: '#203972' }}>Edad:</Typography>
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <TextField
                   variant="standard"
-                  label="Años"
+                  label="EDAD (AÑOS)"
                   type="number"
                   value={value.edadAnios}
                   onChange={handlePacienteChange('edadAnios')}
                   fullWidth
                   inputProps={{ min: 0 }}
+                  InputLabelProps={{ style: { textTransform: 'uppercase' } }}
                 />
                 <TextField
                   variant="standard"
-                  label="Meses"
+                  label="EDAD (MESES)"
                   type="number"
                   value={value.edadMeses}
                   onChange={handlePacienteChange('edadMeses')}
                   fullWidth
                   inputProps={{ min: 0, max: 11 }}
+                  InputLabelProps={{ style: { textTransform: 'uppercase' } }}
                 />
               </Box>
             </Box>
@@ -117,37 +119,37 @@ const DatosPacienteSection = ({ value, onChange }: Props) => {
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="body1" sx={{ mb: 1, color: '#203972' }}>Domicilio:</Typography>
               <TextField
                 variant="standard"
-                label="Domicilio"
+                label="DOMICILIO"
                 value={value.domicilio}
                 onChange={handlePacienteChange('domicilio')}
                 fullWidth
+                InputLabelProps={{ style: { textTransform: 'uppercase' } }}
               />
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="body1" sx={{ mb: 1, color: '#203972' }}>Colonia o comunidad:</Typography>
               <TextField
                 variant="standard"
-                label="Colonia o comunidad"
+                label="COLONIA O COMUNIDAD"
                 value={value.colonia}
                 onChange={handlePacienteChange('colonia')}
                 fullWidth
+                InputLabelProps={{ style: { textTransform: 'uppercase' } }}
               />
             </Box>
           </Stack>
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="body1" sx={{ mb: 1, color: '#203972' }}>Alcaldía o municipio:</Typography>
               <TextField
                 variant="standard"
                 select
-                label="Alcaldía o municipio"
+                label="ALCALDÍA O MUNICIPIO"
                 value={value.alcaldia}
                 onChange={handlePacienteChange('alcaldia')}
                 fullWidth
+                InputLabelProps={{ style: { textTransform: 'uppercase' } }}
               >
                 <MenuItem value="Álvaro Obregón">Álvaro Obregón</MenuItem>
                 <MenuItem value="Azcapotzalco">Azcapotzalco</MenuItem>
@@ -168,37 +170,37 @@ const DatosPacienteSection = ({ value, onChange }: Props) => {
               </TextField>
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="body1" sx={{ mb: 1, color: '#203972' }}>Derechohabiente a:</Typography>
               <TextField
                 variant="standard"
-                label="Derechohabiente a"
+                label="DERECHOHABIENTE A"
                 value={value.derechohabiente}
                 onChange={handlePacienteChange('derechohabiente')}
                 fullWidth
+                InputLabelProps={{ style: { textTransform: 'uppercase' } }}
               />
             </Box>
           </Stack>
 
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="body1" sx={{ mb: 1, color: '#203972' }}>Teléfono:</Typography>
               <TextField
                 variant="standard"
-                label="Teléfono"
+                label="TELÉFONO"
                 value={value.telefono}
                 onChange={handlePacienteChange('telefono')}
                 fullWidth
                 inputProps={{ inputMode: 'tel', maxLength: 20 }}
+                InputLabelProps={{ style: { textTransform: 'uppercase' } }}
               />
             </Box>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="body1" sx={{ mb: 1, color: '#203972' }}>Ocupación:</Typography>
               <TextField
                 variant="standard"
-                label="Ocupación"
+                label="OCUPACIÓN"
                 value={value.ocupacion}
                 onChange={handlePacienteChange('ocupacion')}
                 fullWidth
+                InputLabelProps={{ style: { textTransform: 'uppercase' } }}
               />
             </Box>
           </Stack>
