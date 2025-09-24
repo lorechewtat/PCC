@@ -1,69 +1,186 @@
-import { Box, Button, TextField, Typography, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, Button, TextField, Typography, ToggleButton, ToggleButtonGroup, colors, Divider } from '@mui/material';
 import {useState } from 'react';
+import PlaceIcon from '@mui/icons-material/PlaceOutlined';
+import DirectionsBusFilledOutlinedIcon from '@mui/icons-material/DirectionsBusFilledOutlined';
 
 const DatosTraslado = () => {
     const [lugar, setLugar] = useState<string | null>(null);
+    const [otroLugar, setOtroLugar] = useState<string>("");
 
     return (
     <Box>
-        {/* Sección de selección de lugar */}
-        <Typography variant="subtitle1" gutterBottom>
-          Lugar de ocurrencia:
-        </Typography>
+        <Divider sx={{ my: 5}}/>
+
+        <Box display="flex" alignItems="center" mb={2}>
+            {/* Sección de selección de lugar */}
+            <Typography variant="h6" color="primary">
+            LUGAR DE OCURRENCIA
+            </Typography>
+            <PlaceIcon sx={{ mr: 1, color: 'primary.main' }} />
+        </Box>
+        
+
+        <Box width={"850px"}>
         <ToggleButtonGroup
           value={lugar}
           exclusive
           onChange={(_, value) => setLugar(value)}
-          sx={{ display: 'grid', gridTemplateColumns: "repeat(3, 1fr)" ,gap: 1, mb: 2 }}
+          sx={{ display: 'grid', gridTemplateColumns: "repeat(3, 1fr)" ,gap: 1, mb: 2, 
+            "& .MuiToggleButton-root": {
+                borderRadius: 2,      // fuerza esquinas redondeadas
+                border: "1px solid #ccc !important", // evita que se fusionen
+            }
+          }}
         >
-          <ToggleButton sx={{border: "1px solid #a1a1a1ff", borderRadius: 2}} value="Transporte Publico">Transporte Publico</ToggleButton>
-          <ToggleButton sx={{border: "1px solid #a1a1a1ff", borderRadius: 2}} value="Escuela">Escuela</ToggleButton>
-          <ToggleButton sx={{border: "1px solid #a1a1a1ff", borderRadius: 2}} value="Trabajo">Trabajo</ToggleButton>
-          <ToggleButton sx={{border: "1px solid #a1a1a1ff", borderRadius: 2}} value="Hogar">Hogar</ToggleButton>
-          <ToggleButton sx={{border: "1px solid #a1a1a1ff", borderRadius: 2}} value="Recreación y deporte">Recreación y deporte</ToggleButton>
-          <ToggleButton sx={{border: "1px solid #a1a1a1ff", borderRadius: 2}} value="Vía publica">Vía publica</ToggleButton>
+          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", padding: "30px 0",
+            "&.Mui-selected": {
+                backgroundColor: "primary.main",
+                color: "white",
+                borderColor: "primary.main",
+            },
+            "&:hover": {
+                backgroundColor: "#8E8E8E",
+                color: "white",
+                borderColor: "#8E8E8E",
+                cursor: "pointer"
+          }
+          }} value="Transporte Publico">Transporte Publico</ToggleButton>
+          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", 
+            "&.Mui-selected": {
+                backgroundColor: "primary.main",
+                color: "white",
+                borderColor: "primary.main",
+            },
+            "&:hover": {
+                backgroundColor: "#8E8E8E",
+                color: "white",
+                borderColor: "#8E8E8E",
+                cursor: "pointer"
+          }
+          }} value="Escuela">Escuela</ToggleButton>
+          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", 
+            "&.Mui-selected": {
+                backgroundColor: "primary.main",
+                color: "white",
+                borderColor: "primary.main",
+            },
+            "&:hover": {
+                backgroundColor: "#8E8E8E",
+                color: "white",
+                borderColor: "#8E8E8E",
+                cursor: "pointer"
+          }
+          }} value="Trabajo">Trabajo</ToggleButton>
+          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", padding: "30px 0",
+            "&.Mui-selected": {
+                backgroundColor: "primary.main",
+                color: "white",
+                borderColor: "primary.main",
+            },
+            "&:hover": {
+                backgroundColor: "#8E8E8E",
+                color: "white",
+                borderColor: "#8E8E8E",
+                cursor: "pointer"
+          }
+          }} value="Hogar">Hogar</ToggleButton>
+          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", 
+            "&.Mui-selected": {
+                backgroundColor: "primary.main",
+                color: "white",
+                borderColor: "primary.main",
+            },
+            "&:hover": {
+                backgroundColor: "#8E8E8E",
+                color: "white",
+                borderColor: "#8E8E8E",
+                cursor: "pointer"
+            }
+          }} value="Recreación y deporte">Recreación y deporte</ToggleButton>
+          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", 
+            "&.Mui-selected": {
+                backgroundColor: "primary.main",
+                color: "white",
+                borderColor: "primary.main",
+            },
+            "&:hover": {
+                backgroundColor: "#8E8E8E",
+                color: "white",
+                borderColor: "#8E8E8E",
+                cursor: "pointer"
+            }
+          }} value="Vía publica">Vía publica</ToggleButton>
         </ToggleButtonGroup>
+        <Typography
+            variant="h5"
+            gutterBottom
+            sx={{ 
+                paddingBottom:1,
+                fontWeight:"regular",
+                fontSize : 14,
+                color: 'primary.main' }}
+              >ESCRIBE OTRO LUGAR:
+              </Typography>
+        <TextField
+          label="OTRO"
+          variant="standard"
+          fullWidth
+          value={otroLugar}
+          onChange={(e) => {
+            setOtroLugar(e.target.value);
+            if (e.target.value !== "") {
+              setLugar(null); // deselecciona los botones si hay texto
+            }
+          }}
+        />
+        </Box>
 
+        <Divider sx={{ my: 5}}/>
 
-        {/* Sección de datos de traslado */}
-        <Typography variant="subtitle1" gutterBottom sx={{ mt: 3 }}>
-          Datos de traslado:
-        </Typography>
-
-
+        <Box display="flex" alignItems="center" mb={2}>
+            {/* Sección de datos de traslado */}
+            <Typography variant="h6" color="primary">
+                DATOS DE TRASLADO
+            </Typography>
+            <DirectionsBusFilledOutlinedIcon sx={{ mr: 1, color: 'primary.main' }}/>
+        </Box>
+        
       <Box
-        display="grid"
-        gridTemplateColumns="repeat(2, 1fr)" // 2 columnas
+        display="flex"
+        flexDirection="column"
+        width={"850px"}
         gap={2}
         mb={2}
-        sx={{border: "1px solid #a1a1a1ff", borderRadius: 2, p: 2}}
+        sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
       >
         <TextField
-          label="Numero de la Ambulancia"
-          variant="outlined"
+          label="NÚMERO DE AMBULANCIA"
+          variant="standard"
           fullWidth
         />
         <TextField
-          label="Operador"
-          variant="outlined"
+          label="OPERADOR"
+          variant="standard"
           fullWidth
         />
         <TextField
           label="T.U.M"
-          variant="outlined"
+          variant="standard"
           fullWidth
         />
         <TextField
-          label="Socorrista"
-          variant="outlined"
+          label="SOCORRISTA"
+          variant="standard"
           fullWidth
         />
         <TextField
-          label="Matricula de Helicoptero"
-          variant="outlined"
+          label="MATRICULA DE HELICOPTERO"
+          variant="standard"
           fullWidth
         />
       </Box>
+
+      <Divider sx={{ my: 5}}/>
     </Box>
 
   );
