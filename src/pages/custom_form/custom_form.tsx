@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useGetIdentity, useLogout } from 'react-admin';
 
 import HeaderAtencionPrehospitalaria from './components/hea_form';
+import DatosTraslado from './components/datosTraslado';
 
 const MyCustomFormPage = () => {
 //USO DE GETIDENTITY() DARIO
@@ -48,9 +49,8 @@ const MyCustomFormPage = () => {
     <Box p={3}>
       <Title title="Formulario Personalizado " />
         <HeaderAtencionPrehospitalaria />
+        <DatosTraslado />
     </Box>
-
-
 
   );
 
