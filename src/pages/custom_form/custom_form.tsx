@@ -4,7 +4,8 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useGetIdentity, useLogout } from 'react-admin';
 
-// import HeaderAtencionPrehospitalaria from './components/hea_form';
+
+import HeaderAtencionPrehospitalaria from './components/hea_form';
 import DatosPacienteSection, { DatosPaciente } from './custom_form_vale.tsx';
 
 const MyCustomFormPage = () => {
@@ -64,8 +65,10 @@ const MyCustomFormPage = () => {
   return (
     <Box p={3}>
       <Title title="Formulario Personalizado " />
-        {/* <HeaderAtencionPrehospitalaria /> */}
+
+        <HeaderAtencionPrehospitalaria />
         <DatosPacienteSection value={datosPaciente} onChange={handlePacientePatch} />
+
     </Box>
 
 
