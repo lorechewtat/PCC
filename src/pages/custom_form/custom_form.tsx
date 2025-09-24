@@ -6,7 +6,7 @@ import { useGetIdentity, useLogout } from 'react-admin';
 
 
 import HeaderAtencionPrehospitalaria from './components/hea_form';
-import DatosPacienteSection, { DatosPaciente } from './custom_form_vale.tsx';
+import DatosPacienteSection, { DatosPaciente } from './components/custom_form_vale.tsx';
 
 const MyCustomFormPage = () => {
 //USO DE GETIDENTITY() DARIO
