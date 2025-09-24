@@ -6,6 +6,7 @@ import { useGetIdentity, useLogout } from 'react-admin';
 
 
 import HeaderAtencionPrehospitalaria from './components/hea_form';
+import DatosTraslado from './components/datosTraslado';
 import DatosPacienteSection, { DatosPaciente } from './components/custom_form_vale.tsx';
 
 const MyCustomFormPage = () => {
@@ -67,11 +68,9 @@ const MyCustomFormPage = () => {
       <Title title="Formulario Personalizado " />
 
         <HeaderAtencionPrehospitalaria />
+        <DatosTraslado />
         <DatosPacienteSection value={datosPaciente} onChange={handlePacientePatch} />
-
     </Box>
-
-
 
   );
 
