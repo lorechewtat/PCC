@@ -1,4 +1,5 @@
 import { AuthProvider } from "react-admin";
+import ppusuario from './images/nj_copy.jpg';
 
 export const authProvider: AuthProvider = {
     async login({ username, password }) {
@@ -39,8 +40,8 @@ export const authProvider: AuthProvider = {
 
         return Promise.resolve({
             id: username,
-            fullName: "Juan Valdez Echeberría", //TODO: SACAR DE UN BACKEND LOS DATOS
-            avatar: "https://i.pravatar.cc/300" 
+            fullName: "Soobin", //TODO: SACAR DE UN BACKEND LOS DATOS
+            avatar: ppusuario,
         });
     }
 };
