@@ -36,7 +36,7 @@ const HeaderAtencionPrehospitalaria = () => {
      
       <Typography
       
-        variant="h5"
+        variant="h6"
         gutterBottom
         sx={{ 
           width:"30vw",
