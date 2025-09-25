@@ -4,11 +4,11 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useGetIdentity, useLogout } from 'react-admin';
 
-
-import HeaderAtencionPrehospitalaria from './components/hea_form';
+import HeaderAtencionPrehospitalaria from './components/hea_form';  
+import MotivoAtencionPrehospitalaria from './components/motivo_form';
 import DatosTraslado from './components/datosTraslado';
 import DatosPacienteSection, { DatosPaciente } from './components/custom_form_vale.tsx';
-
+  
 const MyCustomFormPage = () => {
 //USO DE GETIDENTITY() DARIO
  const { data, isPending, error } = useGetIdentity();
@@ -66,8 +66,8 @@ const MyCustomFormPage = () => {
   return (
     <Box p={3}>
       <Title title="Formulario Personalizado " />
-
         <HeaderAtencionPrehospitalaria />
+        <MotivoAtencionPrehospitalaria />
         <DatosTraslado />
         <DatosPacienteSection value={datosPaciente} onChange={handlePacientePatch} />
     </Box>
