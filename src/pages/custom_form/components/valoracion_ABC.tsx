@@ -4,8 +4,9 @@ import LocationIcon from '@mui/icons-material/LocationOnOutlined';
 import ChildIcon from '@mui/icons-material/ChildCareOutlined';
 import SickIcon from '@mui/icons-material/SickOutlined';
 import TraumaIcon from '@mui/icons-material/LocalHospitalOutlined';
+import PersonIcon from '@mui/icons-material/EmojiPeopleOutlined';
 
-const MotivoAtencionPrehospitalaria = () => {
+const ValoracionInicial = () => {
   const isMobile = window.innerWidth <= 768;
   const [selected, setSelected] = React.useState(""); // Estado para el botón seleccionado
   const azulOscuro = "#203972";
@@ -216,6 +217,4 @@ const MotivoAtencionPrehospitalaria = () => {
   );
 };
 
-export default MotivoAtencionPrehospitalaria;
-
-
+export default ValoracionInicial;

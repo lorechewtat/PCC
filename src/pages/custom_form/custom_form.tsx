@@ -8,7 +8,8 @@ import HeaderAtencionPrehospitalaria from './components/hea_form';
 import MotivoAtencionPrehospitalaria from './components/motivo_form';
 import DatosTraslado from './components/datosTraslado';
 import DatosPacienteSection, { DatosPaciente } from './components/custom_form_vale.tsx';
-  
+import ValoracionInicial, {ValoracionInicialPaciente} from './components/valoracion_ABC.tsx';
+
 const MyCustomFormPage = () => {
 //USO DE GETIDENTITY() DARIO
  const { data, isPending, error } = useGetIdentity();
@@ -70,6 +71,7 @@ const MyCustomFormPage = () => {
         <MotivoAtencionPrehospitalaria />
         <DatosTraslado />
         <DatosPacienteSection value={datosPaciente} onChange={handlePacientePatch} />
+        <ValoracionInicial />
     </Box>
 
   );
