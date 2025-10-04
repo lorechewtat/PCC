@@ -12,6 +12,7 @@ import DatosPacienteSection, {
 } from "./components/custom_form_vale.tsx";
 import FormsMadre from "./components/datos_madre.tsx";
 import CausaTraumatica from "./components/causa_traumatica.tsx";
+import Tratamiento2 from "./components/x_tratamientoP2.tsx";
 
 const MyCustomFormPage = () => {
   //USO DE GETIDENTITY() DARIO
@@ -78,6 +79,7 @@ const MyCustomFormPage = () => {
       />
       <FormsMadre />
       <CausaTraumatica/>
+      <Tratamiento2/>
     </Box>
   );
 };
