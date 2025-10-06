@@ -1,220 +1,531 @@
-import React from 'react';
-import { Box, Grid, TextField, Typography, Button } from '@mui/material';
-import LocationIcon from '@mui/icons-material/LocationOnOutlined';
-import ChildIcon from '@mui/icons-material/ChildCareOutlined';
-import SickIcon from '@mui/icons-material/SickOutlined';
-import TraumaIcon from '@mui/icons-material/LocalHospitalOutlined';
+import { useState } from 'react';
+import { Box,  TextField, Typography, ToggleButton, ToggleButtonGroup, Divider } from '@mui/material';
 import PersonIcon from '@mui/icons-material/EmojiPeopleOutlined';
 
-const ValoracionInicial = () => {
-  const isMobile = window.innerWidth <= 768;
-  const [selected, setSelected] = React.useState(""); // Estado para el botón seleccionado
-  const azulOscuro = "#203972";
-  const grisClaro = "#8E8E8E";
-  return (
-    <Box
-    
-      display="flex"
-      flexDirection="column"
-      alignItems="start"
-      justifyContent="space-between"
-    >
-    
-    <Box
-        display="flex"
-        width="100%"
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between" 
-        margin = "20px 0px 5px 5px"
-    >
-     
-      <Typography
-        variant="h6"
-        sx={{ 
-          width:"100%",
-          fontSize : 24,
-          color: 'primary.main' }}
-      > Motivo de la atención
-      </Typography>
-    </Box>
-     
-     <Box 
-      width="100%"
-     display="flex"
-      flexDirection="column"
-      alignItems="flex-start" 
-      justifyContent="space-between"
-      margin = "0px 0px 0px 5px">
+interface EvaluacionInicialState {
+    consciencia : string;
+    deglucion: string;
+    viaAerea: string;
+    ventilacion: string;
+    auscultacion: string;
+    hemitorax: string;
+    sitio: string;
+    presenciaPulsos: string;
+    calidad: string;
+    piel: string;
+    caracteristicas: string;
+    observaciones: string;  
+}
 
-        <Typography
+const initialState: EvaluacionInicialState = {
+    consciencia : '',
+    deglucion: '',
+    viaAerea: '',
+    ventilacion: '',
+    auscultacion: '',
+    hemitorax: '',
+    sitio: '',
+    presenciaPulsos: '',
+    calidad: '',
+    piel: '',
+    caracteristicas: '',
+    observaciones: '',
+};
 
-            variant="h5"
-            gutterBottom
-            sx={{ 
-          
-          paddingBottom:3,
-         fontWeight:"regular",
-          fontSize : 14,
-          color: 'primary.main' }}
-      >Presiona el motivo para desplegar los demás campos
-      </Typography>
-     </Box>
+const EvaluacionInicial = () => {
+    const [evaluacion , setEvaluacion] = useState<EvaluacionInicialState>(initialState);
 
-{/* SECCIÓN DE BOTONES */}
-<Box display ="flex" 
-  flexDirection = "row"
-  width = {isMobile ? "100%" : "68%"}
-  gap= {1}
-  justifyContent={isMobile ? "space-between" : "center"}
-  alignItems="flex-start">
+    const setEvaluacionField = (key : keyof EvaluacionInicialState, value: string) => {
+        if (value === null) return; // Evita actualizar si algun botón esta null
 
-        <Button 
-        onClick = {() => setSelected("enfermedad")}
-        variant = "contained" 
-        sx={{ width: "29%", border: 2, borderColor:selected === "enfermedad" ? azulOscuro : grisClaro, 
-              borderRadius: 1.5, p: 2, 
-              backgroundColor: selected === "enfermedad" ? azulOscuro : grisClaro}}>
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <Typography
+        setEvaluacion((prev) => ({...prev, [key]: value,}));
+    };
+    const isMobile = window.innerWidth <= 768;
 
-            variant="h5"
-            gutterBottom
-            align="center"
-            sx={{ 
-          
-          fontSize : 12,
-          fontWeight: "bold",
-          color: 'primary.contrastText' }}
-      >ENFERMEDAD
-      </Typography>
+    const toggleStyle = {
+        px: 2,
+        backgroundColor: '#8E8E8E',
+        color: '#f3f3f3',
+        '&.Mui-selected': {
+        backgroundColor: 'primary.main',
+        color: 'white',
+        },
+        '&:hover': {
+        backgroundColor: '#8E8E8E',
+        color: 'white',
+        },
+    };
 
-        <SickIcon sx={{ color: 'primary.contrastText'}} />
+    return(
 
-        </Box>
-        </Button>
+    <Box>
 
-       <Button 
-        onClick = {() => setSelected("gineco")}
-        variant = "contained" 
-        sx={{ width: "35%", border: 2, borderColor: selected === "gineco" ? azulOscuro : grisClaro, 
-              borderRadius: 1.5, p: 2, 
-              backgroundColor: selected === "gineco" ? azulOscuro : grisClaro}}>
-        
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <Typography
-
-            variant="h5"
-            gutterBottom
-            align="center"
-            sx={{ 
-          
-          fontSize : 12,
-          fontWeight: "bold",
-          color: 'primary.contrastText' }}
-      >GINECOOBSTETRICIO
-      </Typography>
-      <ChildIcon sx={{ color: 'primary.contrastText' }} />
-      </Box>
-        
-      </Button>
-
-        <Button 
-        onClick = {() => setSelected("trauma")}
-        variant = "contained" 
-        sx={{ width: "29%", border: 2, borderColor: selected === "trauma" ? azulOscuro : grisClaro, 
-              borderRadius: 1.5, p: 2, 
-              backgroundColor: selected === "trauma" ? azulOscuro : grisClaro}}>
-
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <Typography
-
-            variant="h5"
-            gutterBottom
-            align="center"
-            sx={{ 
-      
-          fontSize : 12,
-          fontWeight: "bold",
-          color: 'primary.contrastText' }}
-        >TRAUMATISMO
-        </Typography>
-        <TraumaIcon sx={{ color: 'primary.contrastText' }} />
+        <Divider sx={{ my: 5 }} />
+        {/* Sección para rellenar los datos de la madre */}
+        <Box display="flex" alignItems="center" mb={2}>
+            <Typography variant="h6" color="primary">
+            EVALUACIÓN INICIAL
+            </Typography>
+            <PersonIcon sx={{ ml: 1, color: 'primary.main' }} />
         </Box>
         
+        {/* Contenedor principal de la sección */}
+        <Box
+            sx={{
+            border: 2,
+            borderColor: "primary.main",
+            borderRadius: 2,
+            p: 2,
+            mb: 3,
+            width: isMobile ? "100%" : "850px",
+            }}
+        >
 
-        </Button>
-    </Box>
- 
- <Box>
+             <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+                mb: 2,
+                alignItems: "center",
+            }}
+            > 
+                <Typography variant="body1" sx={{ color: "primary.main", mt: 1 , fontWeight: "bold", fontSize: 16 }}>
+                    NIVEL DE CONSCIENCIA
+                </Typography> 
 
+                <ToggleButtonGroup
+                    value={evaluacion.consciencia}
+                    exclusive
+                    onChange={(e, val) => {
+                    if (val !== null)
+                        setEvaluacion({ ...evaluacion, consciencia: val });
+                    }}
+                >
+                    <ToggleButton 
+                        sx={toggleStyle} value="ALERTA">ALERTA</ToggleButton>
+                    <ToggleButton 
+                        sx={toggleStyle} value="VERBAL">VERBAL</ToggleButton>
+                    <ToggleButton 
+                        sx={toggleStyle} value="DOLOR">DOLOR</ToggleButton>
+                    <ToggleButton 
+                        sx={toggleStyle} value="INCONSCIENTE">INCONSCIENTE</ToggleButton>
+                </ToggleButtonGroup>
+            </Box>
+            {/* Caja 1 de la sección */}
+            <Box
+            sx={{
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+                width: "100%",
+                justifyContent: "center",
+                gap: 2,
+                mb: 2,
+            }}
+            >
 
-  {/* SECCIÓN DE UBICACIÓN DEL SERVICIO */}
-      <Box display="flex" alignItems="center" mb={1} paddingTop={4} marginLeft = {1}>
-       
-        <Typography variant="h6" color="primary">
-          UBICACIÓN DEL SERVICIO
-        </Typography>
-         <LocationIcon sx={{ mr: 1, color: 'primary.main', marginLeft: 1}} />
-      </Box >
+                    <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        mb: 2,
+                        alignItems: "center",
+                    }}
+                    > 
+                    <Typography variant="body1" sx={{ color: "primary.main", mt: 1 , fontWeight: "bold", fontSize: 16 }}>
+                        DEGLUCIÓN
+                    </Typography> 
 
-      {/* CAMPOS*/}
-      <Box width = {isMobile ? "100%" : "68%"}
-            sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}>
+                    <ToggleButtonGroup
+                        value={evaluacion.deglucion}
+                        exclusive
+                        onChange={(e, val) => {
+                        if (val !== null)
+                            setEvaluacion({ ...evaluacion, deglucion: val });
+                        }}
+                    >
+                        <ToggleButton 
+                            sx={toggleStyle} value="AUSENTE">AUSENTE</ToggleButton>
+                        <ToggleButton 
+                            sx={toggleStyle} value="PRESENTE">PRESENTE</ToggleButton>
+                    </ToggleButtonGroup>
+                    </Box>
 
+                    <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        mb: 2,
+                        alignItems: "center",
+                    }}
+                    > 
+                    <Typography variant="body1" sx={{ color: "primary.main", mt: 1 , fontWeight: "bold", fontSize: 16 }}>
+                        VIA AÉREA
+                    </Typography> 
 
-    <TextField
-      type="text"
-      variant="standard"
-      placeholder= "CALLE"
-      fullWidth
-      sx={{ mb: 1 }}
-    />
+                    <ToggleButtonGroup
+                        value={evaluacion.viaAerea}
+                        exclusive
+                        onChange={(e, val) => {
+                        if (val !== null)
+                            setEvaluacion({ ...evaluacion, viaAerea: val });
+                        }}
+                    >
+                        <ToggleButton 
+                            sx={toggleStyle} value="PERMEABLE">PERMEABLE</ToggleButton>
+                        <ToggleButton 
+                            sx={toggleStyle} value="COMPROMETIDA">COMPROMETIDA</ToggleButton>
+                    </ToggleButtonGroup>
+                    </Box>
+                </Box>  
+                        <Divider sx={{ my: 3 }} />
+                <Box>   
+                  <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        mb: 2,
+                        alignItems: "center",
+                    }}
+                    > 
+                    <Typography variant="body1" sx={{ color: "primary.main", fontWeight: "bold", fontSize: 16 }}>
+                        VENTILACIÓN
+                    </Typography> 
 
-    <Box display = "flex" flexDirection="row" alignItems="flex-start">
-      <Typography variant="subtitle1" color="primary.main" sx={{ mb: 1, mt: 1 }}>
-      ENTRE
-      </Typography>
-      
-      <TextField
-        type="text"
-        variant="standard"
-        fullWidth
-        sx={{ mb: 1, ml: 1, mr: 1 }}
-      />
-      <Typography variant="subtitle1" color="primary" sx={{ mb: 1, mt: 1 }}>
-      Y
-      </Typography>
+                    <ToggleButtonGroup
+                        value={evaluacion.ventilacion}
+                        exclusive
+                        onChange={(e, val) => {
+                        if (val !== null)
+                            setEvaluacion({ ...evaluacion, ventilacion: val });
+                        }}
+                    >
+                        <ToggleButton 
+                            sx={toggleStyle} value="AUTOMATISMO REGULAR">AUTOMATISMO REGULAR</ToggleButton>
+                        <ToggleButton 
+                            sx={toggleStyle} value="AUTOMATISMO IRREGULAR">AUTOMATISMO IRREGULAR</ToggleButton>
+                        <ToggleButton 
+                            sx={toggleStyle} value="AUTOMATISMO RÁPIDO">AUTOMATISMO RÁPIDO</ToggleButton>
+                        <ToggleButton 
+                            sx={toggleStyle} value="AUTOMATISMO SUPERFICIAL">AUTOMATISMO SUPERFICIAL</ToggleButton>
+                        <ToggleButton 
+                            sx={toggleStyle} value="APNEA">APNEA</ToggleButton>
+                    </ToggleButtonGroup>
+                    </Box> 
+                </Box> 
+                 <Divider sx={{ my: 3 }} />
+                <Box>   
+                  <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        mb: 2,
+                        alignItems: "center",
+                    }}
+                    > 
+                    <Typography variant="body1" sx={{ color: "primary.main",  fontWeight: "bold", fontSize: 16 }}>
+                        AUSCULTACIÓN
+                    </Typography> 
 
-      <TextField
-        type="text"
-        variant="standard"
-        fullWidth
-        sx={{ mb: 1, ml: 1 }}
-      />
+                    <ToggleButtonGroup
+                        value={evaluacion.auscultacion}
+                        exclusive
+                        onChange={(e, val) => {
+                        if (val !== null)
+                            setEvaluacion({ ...evaluacion, auscultacion: val });
+                        }}
+                    >
+                        <ToggleButton 
+                            sx={toggleStyle} value="NORMALES">RUIDOS RESPIRATORIOS NORMALES</ToggleButton>
+                        <ToggleButton 
+                            sx={toggleStyle} value="DISMINUIDOS">RUIDOS RESPIRATORIOS DISMINUIDOS</ToggleButton>
+                        <ToggleButton 
+                            sx={toggleStyle} value="AUSENTES">RUIDOS RESPIRATORIOS AUSENTES</ToggleButton>
+                    </ToggleButtonGroup>
+                    </Box> 
+                    
+                    <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 1,
+                        mb: 2,
+                        alignItems: "center",
+                    }}
+                    > 
+
+                        <Box 
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            gap: 1,
+                            mb: 1,
+                            ml: 8,
+                            alignItems: "center",
+                        }}
+                        >
+                            <Typography variant="body1" sx={{ color: "gray" }}>
+                                HEMITÓRAX
+                            </Typography> 
+
+                            <ToggleButtonGroup
+                                value={evaluacion.hemitorax}
+                                exclusive
+                                onChange={(e, val) => {
+                                if (val !== null)
+                                    setEvaluacion({ ...evaluacion, hemitorax: val });
+                                }}
+                            >
+                                <ToggleButton 
+                                    sx={toggleStyle} value="DERECHO">DERECHO</ToggleButton>
+                                <ToggleButton 
+                                    sx={toggleStyle} value="IZQUIERDO">IZQUIERDO</ToggleButton>
+                            </ToggleButtonGroup>
+                        </Box>
+
+                        <Box 
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            gap: 1,
+                            mb: 1,
+                            ml: 8,
+                            alignItems: "center",
+                        }}
+                        >
+                            <Typography variant="body1" sx={{ color: "gray"}}>
+                                SITIO
+                            </Typography> 
+
+                            <ToggleButtonGroup
+                                value={evaluacion.sitio}
+                                exclusive
+                                onChange={(e, val) => {
+                                if (val !== null)
+                                    setEvaluacion({ ...evaluacion, sitio: val });
+                                }}
+                            >
+                                <ToggleButton 
+                                    sx={toggleStyle} value="APICAL">APICAL</ToggleButton>
+                                <ToggleButton 
+                                    sx={toggleStyle} value="BASE">BASE</ToggleButton>
+                            </ToggleButtonGroup>
+                        </Box>
+                    </Box> 
+
+                </Box> 
+                <Divider sx={{ my: 3 }} />
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        mb: 1,
+                        alignItems: "center",
+                    }}
+                    > 
+                    <Typography variant="body1" sx={{ color: "primary.main", fontWeight: "bold", fontSize: 16 }}>
+                        PULSOS
+                    </Typography> 
+
+                     <Box
+                        sx={{
+                        display: "flex",
+                        flexDirection: isMobile ? "column" : "row",
+                        justifyContent: "center",
+                        alignItems: "flex-start",
+                        gap: 2,
+                        width: "100%",
+                        }}
+                    >
+                        {/*Seccion presencia de pulsos*/}
+                        <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 1,
+                            mb: 1,
+                            alignItems: "center",
+                        }}
+                        > 
+                            <Typography variant="body1" sx={{ color: "gray"}}>
+                                PRESENCIA
+                            </Typography> 
+
+                            <ToggleButtonGroup
+                                value={evaluacion.presenciaPulsos}
+                                exclusive
+                                onChange={(e, val) => {
+                                if (val !== null)
+                                    setEvaluacion({ ...evaluacion, presenciaPulsos: val });
+                                }}
+                            >
+                                <ToggleButton 
+                                    sx={toggleStyle} value="CAROTIDEO">CAROTIDEO</ToggleButton>
+                                <ToggleButton 
+                                    sx={toggleStyle} value="RADIAL">RADIAL</ToggleButton>
+                                <ToggleButton 
+                                    sx={toggleStyle} value="PARO CARDIORESPIRATORIO">PARO CARDIORESPIRATORIO</ToggleButton>
+                            </ToggleButtonGroup>
+
+                        </Box> 
+                        {/*Seccion calidad de pulsos*/}
+
+                        <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 1,
+                            mb: 1,
+                            alignItems: "center",
+                        }}
+                        > 
+                            <Typography variant="body1" sx={{ color: "gray" }}>
+                                CALIDAD
+                            </Typography> 
+
+                            <ToggleButtonGroup
+                                value={evaluacion.calidad}
+                                onChange={(e, val) => {
+                                if (val !== null)
+                                    setEvaluacion({ ...evaluacion, calidad: val });
+                                }}
+                            >
+                            <ToggleButton 
+                                sx={toggleStyle} value="RÁPIDO">RÁPIDO</ToggleButton>
+                            <ToggleButton 
+                                sx={toggleStyle} value="LENTO">LENTO</ToggleButton>
+                            <ToggleButton 
+                                sx={toggleStyle} value="RÍTMICO">RÍTMICO</ToggleButton>
+                            <ToggleButton 
+                                sx={toggleStyle} value="ARRÍTMICO">ARRÍTMICO</ToggleButton>
+                        </ToggleButtonGroup>
+                    </Box> 
+                </Box>
+            </Box>
+            <Divider sx={{ my: 3 }} />     
+            <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        alignItems: "center",
+                    }}
+                    > 
+                    <Typography variant="body1" sx={{ color: "primary.main",  fontWeight: "bold", fontSize: 16}}>
+                        ESTADO DE LA PIEL
+                    </Typography> 
+
+                     <Box
+                        sx={{
+                        display: "flex",
+                        flexDirection: isMobile ? "column" : "row",
+                        justifyContent: "center",
+                        alignItems: "flex-start",
+                        gap: 6,
+                        width: "100%",
+                        }}
+                    >
+                        {/*Seccion presencia de pulsos*/}
+                        <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 1,
+                            mb: 2,
+                            alignItems: "center",
+                        }}
+                        > 
+                            <Typography variant="body1" sx={{ color: "gray"}}>
+                                COLORACIÓN
+                            </Typography> 
+
+                            <ToggleButtonGroup
+                                value={evaluacion.piel}
+                                exclusive
+                                onChange={(e, val) => {
+                                if (val !== null)
+                                    setEvaluacion({ ...evaluacion, piel: val });
+                                }}
+                            >
+                                <ToggleButton 
+                                    sx={toggleStyle} value="NORMAL">NORMAL</ToggleButton>
+                                <ToggleButton 
+                                    sx={toggleStyle} value="PÁLIDA">PÁLIDA</ToggleButton>
+                                <ToggleButton 
+                                    sx={toggleStyle} value="CIANÓTICA">CIANÓTICA</ToggleButton>
+                            </ToggleButtonGroup>
+
+                        </Box> 
+                        {/*Seccion calidad de pulsos*/}
+
+                        <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 1,
+                            mb: 2,
+                            alignItems: "center",
+                        }}
+                        > 
+                            <Typography variant="body1" sx={{ color: "gray"}}>
+                                CARACTERÍSTICAS
+                            </Typography> 
+
+                            <ToggleButtonGroup
+                                value={evaluacion.piel}
+                                onChange={(e, val) => {
+                                if (val !== null)
+                                    setEvaluacion({ ...evaluacion, piel: val });
+                                }}
+                            >
+                            <ToggleButton 
+                                sx={toggleStyle} value="CALIENTE">CALIENTE</ToggleButton>
+                            <ToggleButton 
+                                sx={toggleStyle} value="FRÍA">FRÍA</ToggleButton>
+                            <ToggleButton 
+                                sx={toggleStyle} value="DIAFORESIS">DIAFORESIS</ToggleButton>
+                            <ToggleButton 
+                                sx={toggleStyle} value="NORMOTÉRMICO">NORMOTÉRMICO</ToggleButton>
+                            </ToggleButtonGroup>
+                    </Box> 
+                </Box>
+            </Box>
+                    
+
+                {/* Caja 3 de la sección */}
+                <Divider sx={{ my: 3 }} />
+                <Typography
+                    variant="h5"
+                    paddingTop={2}
+                    gutterBottom
+                    sx={{ 
+                        fontWeight:"bold",
+                        fontSize : 16,
+                        color: 'primary.main' }}
+                    >OBSERVACIONES ADICIONALES
+                </Typography>
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    rows={2}
+                    maxRows={6}
+                    placeholder="Escribe aquí tus observaciones..."
+                    value={evaluacion.observaciones}
+                    onChange={(e, val) => {
+                        if (val !== null)
+                            setEvaluacion({ ...evaluacion, observaciones: val });
+                    }}
+                />
+        </Box>
     </Box>
     
-    
-    <TextField
-      type="text"
-      variant="standard"
-      placeholder= "COLONIA O COMUNIDAD"
-      fullWidth
-      sx={{ mb: 2 }}
-    />
-    <TextField
-      type="text"
-      variant="standard"
-      placeholder= "ALCALDIA O MUNICIPIO"
-      fullWidth
-    />
-
-</Box> 
-    </Box>
-    </Box>
-
-
   );
 };
 
-export default ValoracionInicial;
+export default EvaluacionInicial; 

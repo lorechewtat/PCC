@@ -11,7 +11,8 @@ import DatosPacienteSection, {
   DatosPaciente,
 } from "./components/custom_form_vale.tsx";
 import FormsMadre from "./components/datos_madre.tsx";
-import ValoracionInicial from './components/valoracion_ABC.tsx';
+import EvaluacionInicial from "./components/valoracion_ABC.tsx";
+import TratamientoUno from "./components/tratamiento_uno.tsx";
 
 const MyCustomFormPage = () => {
   //USO DE GETIDENTITY() DARIO
@@ -77,7 +78,8 @@ const MyCustomFormPage = () => {
         onChange={handlePacientePatch}
       />
       <FormsMadre />
-      <ValoracionInicial />
+      <EvaluacionInicial />
+      <TratamientoUno />
     </Box>
   );
 };
