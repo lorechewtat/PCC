@@ -10,7 +10,9 @@ import DatosTraslado from "./components/datosTraslado";
 import DatosPacienteSection, {
   DatosPaciente,
 } from "./components/custom_form_vale.tsx";
-import FormsMadre from "./components/datos_madre.tsx";
+import FormsMadre, { FormsMadreData } from "./components/datos_madre.tsx";
+import CausaClinica from "./components/causa_clinica.tsx";
+import DatosLegales from "./components/datos_legales.tsx";
 
 const MyCustomFormPage = () => {
   //USO DE GETIDENTITY() DARIO
@@ -47,6 +49,11 @@ const MyCustomFormPage = () => {
     ocupacion: "",
   });
 
+  const [datosMadre, setDatosMadre] = useState<Partial<FormsMadreData>>({});
+
+  const handleMadreChange = (data: Partial<FormsMadreData>) =>
+    setDatosMadre(data);
+
   const handlePacientePatch = (patch: Partial<DatosPaciente>) =>
     setDatosPaciente((prev) => ({ ...prev, ...patch }));
 
@@ -75,7 +82,9 @@ const MyCustomFormPage = () => {
         value={datosPaciente}
         onChange={handlePacientePatch}
       />
-      <FormsMadre />
+      <FormsMadre value={datosMadre} onChange={handleMadreChange} />
+      <CausaClinica />
+      <DatosLegales />
     </Box>
   );
 };

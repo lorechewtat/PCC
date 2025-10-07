@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Box,
   TextField,
+  Button,
   Typography,
   Divider,
   useMediaQuery,
@@ -14,10 +15,12 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import { useNotify } from "react-admin";
 import PregnantWomanIcon from "@mui/icons-material/PregnantWoman";
 import BabyChangingStationIcon from "@mui/icons-material/BabyChangingStation";
 
-// Definiciones de tipos
+// Definiciones para estado para Apgar
+// Definir interfaces para TypeScript
 interface ApgarMinuto {
   color: string;
   fc: string;
@@ -34,34 +37,16 @@ interface ApgarState {
   minuto20: ApgarMinuto;
 }
 
-// Información que recopila el formulario
-export interface FormsMadreData {
-  semanas_gestacion: string;
-  inicio_contracciones: string;
-  frecuencia_contracciones: string;
-  duracion_contracciones: string;
-  hora_nacimiento: string;
-  placenta_expulsada: string;
-  lugar_nacimiento: string;
-  estado_producto: string;
-  sexo_producto: string;
-  edad_gestacional: string;
-  apgar: ApgarState;
-}
-
 type MinutoKey = keyof ApgarState;
 type SignoKey = keyof ApgarMinuto;
 
-interface FormsMadreProps {
-  value?: Partial<FormsMadreData>;
-  onChange?: (data: Partial<FormsMadreData>) => void;
-}
-
-const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
+// Formulario para los datos de la madre
+const FormsMadre = () => {
+  const notify = useNotify();
   const isSmall = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
-  // Estado inicial con valores por defecto
-  const [formData, setFormData] = useState<FormsMadreData>({
+  // Definición de variables
+  const [formData, setFormData] = useState({
     semanas_gestacion: "",
     inicio_contracciones: "",
     frecuencia_contracciones: "",
@@ -72,79 +57,104 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
     estado_producto: "",
     sexo_producto: "",
     edad_gestacional: "",
-    apgar: {
-      minuto1: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-      minuto5: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-      minuto10: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-      minuto15: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-      minuto20: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-    },
-    ...value,
   });
 
-  // Actualizar Apgar
+  // Definición de variables para estado para Apgar
+  const [apgar, setApgar] = useState<ApgarState>({
+    minuto1: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
+    minuto5: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
+    minuto10: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
+    minuto15: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
+    minuto20: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
+  });
+
+  // Función para actualizar Apgar
   const handleApgarChange = (
     minuto: MinutoKey,
     signo: SignoKey,
     valor: string,
   ) => {
-    const newApgar = {
-      ...formData.apgar,
-      [minuto]: { ...formData.apgar[minuto], [signo]: valor },
-    };
-
-    const newData = {
-      ...formData,
-      apgar: newApgar,
-    };
-
-    setFormData(newData);
-    onChange?.(newData);
+    setApgar((prev) => ({
+      ...prev,
+      [minuto]: { ...prev[minuto], [signo]: valor },
+    }));
   };
 
-  // Calcular puntaje por minuto
+  // Función para calcular total por minuto
   const calcularPuntaje = (minuto: MinutoKey) => {
-    return Object.values(formData.apgar[minuto])
+    return Object.values(apgar[minuto])
       .map((v) => (v === "" ? 0 : Number(v)))
       .reduce((a, b) => a + b, 0);
   };
 
-  // Manejar cambios en el formulario
+  // Funciones para actualizar cuanod hay cambios en el formulario manteniendo todos los demás valores
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const newData = {
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    };
-
-    setFormData(newData);
-    onChange?.(newData);
+    }));
   };
 
-  // Manejar cambios en ToggleButtons
-  const handleToggleChange = (field: string, value: string) => {
-    const newData = {
-      ...formData,
-      [field]: value,
-    };
-
-    setFormData(newData);
-    onChange?.(newData);
-  };
-
+  // Restricciones
   // Permitir solo números positivos o vacío
   const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     if (value === "" || (!isNaN(Number(value)) && Number(value) >= 0)) {
-      const newData = {
-        ...formData,
+      setFormData((prev) => ({
+        ...prev,
         [name]: value,
-      };
-
-      setFormData(newData);
-      onChange?.(newData);
+      }));
     }
+  };
+
+  // Verificar relleno de campos obligatorios y valores aceptados
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.semanas_gestacion) {
+      notify("Semanas de gestación es un campo requerido", { type: "warning" });
+      return;
+    }
+
+    // Validación adicional para valores numéricos
+    if (formData.semanas_gestacion && Number(formData.semanas_gestacion) < 0) {
+      notify("Las semanas de gestación no pueden ser negativas", {
+        type: "error",
+      });
+      return;
+    }
+
+    if (
+      formData.frecuencia_contracciones &&
+      Number(formData.frecuencia_contracciones) < 0
+    ) {
+      notify("La frecuencia de contracciones no puede ser negativa", {
+        type: "error",
+      });
+      return;
+    }
+
+    if (
+      formData.duracion_contracciones &&
+      Number(formData.duracion_contracciones) < 0
+    ) {
+      notify("La duración de contracciones no puede ser negativa", {
+        type: "error",
+      });
+      return;
+    }
+
+    if (formData.edad_gestacional && Number(formData.edad_gestacional) < 0) {
+      notify("La edad gestacional no puede ser negativa", {
+        type: "error",
+      });
+      return;
+    }
+
+    console.log("Datos de la madre guardados:", formData);
+    notify("Datos de la madre guardados exitosamente", { type: "success" });
   };
 
   // Arrays tipados para el mapeo
@@ -327,6 +337,39 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
           />
         </Box>
 
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: isSmall ? "column" : "row",
+            gap: 2,
+            mb: 2,
+          }}
+        >
+          <TextField
+            name="hora_nacimiento"
+            label="Hora de nacimiento"
+            type="datetime-local"
+            value={formData.hora_nacimiento}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            variant="standard"
+          />
+
+          <TextField
+            name="placenta_expulsada"
+            label="Hora expulsión placenta"
+            type="datetime-local"
+            value={formData.placenta_expulsada}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            variant="standard"
+          />
+        </Box>
+
         <Box sx={{ mb: 2 }}>
           <TextField
             name="lugar_nacimiento"
@@ -357,7 +400,7 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
               exclusive
               onChange={(e, value) => {
                 if (value !== null) {
-                  handleToggleChange("estado_producto", value);
+                  setFormData((prev) => ({ ...prev, estado_producto: value }));
                 }
               }}
             >
@@ -409,7 +452,7 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
               exclusive
               onChange={(e, value) => {
                 if (value !== null) {
-                  handleToggleChange("sexo_producto", value);
+                  setFormData((prev) => ({ ...prev, sexo_producto: value }));
                 }
               }}
             >
@@ -502,7 +545,7 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
                       <TextField
                         select
                         size="small"
-                        value={formData.apgar[minuto][signo.key]}
+                        value={apgar[minuto][signo.key]}
                         onChange={(e) =>
                           handleApgarChange(minuto, signo.key, e.target.value)
                         }
