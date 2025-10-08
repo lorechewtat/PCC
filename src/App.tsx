@@ -42,7 +42,6 @@ import {
 import MyLoginPage from "./pages/login/login_screen";
 import myTheme from "./consts/theme";
 import MyCustomFormPage from "./pages/custom_form/custom_form";
-import MyCustomEdadFormPage from "./pages/custom_form/ejemplo_edad";
 import { MyAppBar } from "./pages/bar/bar";
 
 
@@ -60,10 +59,10 @@ export const App = () => (
   >
     <Resource
       name="posts"
-      list={MyCustomEdadFormPage}
-      show={MyCustomEdadFormPage}
-      edit={MyCustomEdadFormPage}
-      create={MyCustomEdadFormPage}
+      list={MyCustomFormPage}
+      show={MyCustomFormPage}
+      edit={MyCustomFormPage}
+      create={MyCustomFormPage}
       icon={PostIcon}
     />
     <Resource name="users" list={UserList} show={UserShow} icon={UserIcon} />
@@ -99,7 +98,7 @@ export const App = () => (
     {/* ✅ Ruta personalizada */}
     <CustomRoutes>
       <Route path="/custom-form" element={<MyCustomFormPage />} />
-      <Route path="/ejemplo-edad" element={<MyCustomEdadFormPage />} />
     </CustomRoutes>
   </Admin>
 );
+   //   <Route path="/ejemplo-edad" element={<MyCustomEdadFormPage />} />

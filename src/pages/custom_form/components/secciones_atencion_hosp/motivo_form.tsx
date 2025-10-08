@@ -1,8 +1,5 @@
 import React from 'react';
 import { Box, Grid, TextField, Typography, Button } from '@mui/material';
-import logo from './logo_alcaldia.png'; // Ajusta la ruta de tu logo
-import logoHosp from './hosp.png'; // Ajusta la ruta de tu logo
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocationIcon from '@mui/icons-material/LocationOnOutlined';
 import ChildIcon from '@mui/icons-material/ChildCareOutlined';
 import SickIcon from '@mui/icons-material/SickOutlined';
