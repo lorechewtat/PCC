@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useGetIdentity, useLogout } from 'react-admin';
 
 import HeaderAtencionPrehospitalaria from './components/hea_form';
+import HeatmapBody from './components/cuerpo_dibujo';
 
 const MyCustomFormPage = () => {
 //USO DE GETIDENTITY() DARIO
@@ -48,6 +49,7 @@ const MyCustomFormPage = () => {
     <Box p={3}>
       <Title title="Formulario Personalizado " />
         <HeaderAtencionPrehospitalaria />
+        <HeatmapBody/>
     </Box>
 
 
