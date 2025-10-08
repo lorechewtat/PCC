@@ -9,8 +9,9 @@ import MotivoAtencionPrehospitalaria from "./components/motivo_form";
 import DatosTraslado from "./components/datosTraslado";
 import DatosPacienteSection, {
   DatosPaciente,
-} from "./components/custom_form_vale.tsx";
+} from "./components/datos_paciente.tsx";
 import FormsMadre from "./components/datos_madre.tsx";
+import EvaluacionSecTraslado from "./components/evalucionsec_traslado.tsx";
 
 const MyCustomFormPage = () => {
   //USO DE GETIDENTITY() DARIO
@@ -76,6 +77,7 @@ const MyCustomFormPage = () => {
         onChange={handlePacientePatch}
       />
       <FormsMadre />
+      <EvaluacionSecTraslado />
     </Box>
   );
 };
