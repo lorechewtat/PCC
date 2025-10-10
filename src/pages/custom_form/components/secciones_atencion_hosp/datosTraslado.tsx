@@ -1,11 +1,22 @@
-import { Box, Button, TextField, Typography, ToggleButton, ToggleButtonGroup, colors, Divider } from '@mui/material';
+import { Box, TextField, Typography, ToggleButton, ToggleButtonGroup, Divider } from '@mui/material';
 import {useState } from 'react';
 import PlaceIcon from '@mui/icons-material/PlaceOutlined';
 import DirectionsBusFilledOutlinedIcon from '@mui/icons-material/DirectionsBusFilledOutlined';
 
 const DatosTraslado = () => {
-    const [lugar, setLugar] = useState<string | null>(null);
-    const [otroLugar, setOtroLugar] = useState<string>("");
+    const [form, setForm] = useState({
+        lugar: null as string | null,
+        otroLugar: "",   
+        numAmbulancia: "",       
+        operador: "",
+        tum: "",
+        socorrista: "",
+        helicoptero: ""
+    });
+
+    // setter genérico
+    const setField = <K extends keyof typeof form>(key: K) =>
+    (value: typeof form[K]) => setForm(prev => ({ ...prev, [key]: value }));
 
     return (
     <Box>
@@ -22,9 +33,13 @@ const DatosTraslado = () => {
 
         <Box width={"850px"}>
         <ToggleButtonGroup
-          value={lugar}
+          value={form.lugar}
           exclusive
-          onChange={(_, value) => setLugar(value)}
+          onChange={(_, v) => setForm(prev => ({
+            ...prev,
+            lugar: v,
+            otroLugar: v ? "" : prev.otroLugar, //si selecciona un lugar, se borra el campo "OTRO"
+          }))}
           sx={{ display: 'grid', gridTemplateColumns: "repeat(3, 1fr)" ,gap: 1, mb: 2, 
             "& .MuiToggleButton-root": {
                 borderRadius: 2,      // fuerza esquinas redondeadas
@@ -125,12 +140,14 @@ const DatosTraslado = () => {
           label="OTRO"
           variant="standard"
           fullWidth
-          value={otroLugar}
+          value={form.otroLugar}
           onChange={(e) => {
-            setOtroLugar(e.target.value);
-            if (e.target.value !== "") {
-              setLugar(null); // deselecciona los botones si hay texto
-            }
+            const value = e.target.value;
+            setForm(prev => ({
+              ...prev,
+              otroLugar: value,
+              lugar: value ? null : prev.lugar, //si el usuario escribe algo, se borra el lugar
+            }));
           }}
         />
         </Box>
@@ -156,27 +173,37 @@ const DatosTraslado = () => {
         <TextField
           label="NÚMERO DE AMBULANCIA"
           variant="standard"
+          value={form.numAmbulancia}
           fullWidth
+          onChange={e => setField('numAmbulancia')(e.target.value)}
         />
         <TextField
           label="OPERADOR"
           variant="standard"
+          value={form.operador}
           fullWidth
+          onChange={e => setField('operador')(e.target.value)}
         />
         <TextField
           label="T.U.M"
           variant="standard"
+          value={form.tum}
           fullWidth
+          onChange={e => setField('tum')(e.target.value)}
         />
         <TextField
           label="SOCORRISTA"
           variant="standard"
+          value={form.socorrista}
           fullWidth
+          onChange={e => setField('socorrista')(e.target.value)}
         />
         <TextField
           label="MATRICULA DE HELICOPTERO"
           variant="standard"
+          value={form.helicoptero}
           fullWidth
+          onChange={e => setField('helicoptero')(e.target.value)}
         />
       </Box>
 

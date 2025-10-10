@@ -1,0 +1,13 @@
+export { default as FormsCausaClinica } from "./causa_clinica";
+export { default as TratamientoP2 } from "./x_tratamientoP2";
+export { default as EvaluacionInicial } from "./valoracion_ABC";
+export { default as TratamientoUno } from "./tratamiento_uno";
+export { default as MotivoAtencionPrehospitalaria } from "./motivo_form";
+export { default as HeaderAtencionPrehospitalaria } from "./hea_form";
+export { default as EvaluacionSecTraslado } from "./evalucionsec_traslado";
+export { default as DatosTraslado } from "./datosTraslado";
+export { default as DatosPacienteSection } from "./datos_paciente";
+export { default as FormsMadre } from "./datos_madre";
+export { default as FormsDatosLegales } from "./datos_legales";
+export { default as HeatmapBody } from "./cuerpo_dibujo";
+export { default as OpcionesAccidente } from "./causa_traumatica";

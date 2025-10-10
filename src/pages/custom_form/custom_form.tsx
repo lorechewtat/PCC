@@ -3,15 +3,9 @@ import { useNotify, useRedirect, Title } from "react-admin";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useGetIdentity, useLogout } from "react-admin";
+import * as SeccionesAtencionHosp from "./components/secciones_atencion_hosp";
+import { DatosPaciente } from "./components/secciones_atencion_hosp/datos_paciente";
 
-import HeaderAtencionPrehospitalaria from "./components/hea_form";
-import MotivoAtencionPrehospitalaria from "./components/motivo_form";
-import DatosTraslado from "./components/datosTraslado";
-import DatosPacienteSection, {
-  DatosPaciente,
-} from "./components/datos_paciente.tsx";
-import FormsMadre from "./components/datos_madre.tsx";
-import EvaluacionSecTraslado from "./components/evalucionsec_traslado.tsx";
 
 const MyCustomFormPage = () => {
   //USO DE GETIDENTITY() DARIO
@@ -35,6 +29,8 @@ const MyCustomFormPage = () => {
   const notify = useNotify();
   const redirect = useRedirect();
   // Estado local del contenedor para la sección
+
+  //TODO: VALE MODIFICAR ESTO, PARA QUE SE QUEDE EN EL ARCHIVO AL QUE CORRESPONDE Y ESTE QUEDE LIMPIO
   const [datosPaciente, setDatosPaciente] = useState<DatosPaciente>({
     nombre: "",
     sexo: "",
@@ -47,7 +43,7 @@ const MyCustomFormPage = () => {
     telefono: "",
     ocupacion: "",
   });
-
+//TODO: VALE MODIFICAR ESTO, PARA QUE SE QUEDE EN EL ARCHIVO AL QUE CORRESPONDE Y ESTE QUEDE LIMPIO
   const handlePacientePatch = (patch: Partial<DatosPaciente>) =>
     setDatosPaciente((prev) => ({ ...prev, ...patch }));
 
@@ -69,17 +65,35 @@ const MyCustomFormPage = () => {
   return (
     <Box p={3}>
       <Title title="Formulario Personalizado " />
-      <HeaderAtencionPrehospitalaria />
-      <MotivoAtencionPrehospitalaria />
-      <DatosTraslado />
-      <DatosPacienteSection
+      <SeccionesAtencionHosp.HeaderAtencionPrehospitalaria />
+      <SeccionesAtencionHosp.MotivoAtencionPrehospitalaria />
+      <SeccionesAtencionHosp.DatosTraslado />
+      <SeccionesAtencionHosp.DatosPacienteSection
         value={datosPaciente}
-        onChange={handlePacientePatch}
-      />
-      <FormsMadre />
-      <EvaluacionSecTraslado />
+        onChange={handlePacientePatch} />
+      <SeccionesAtencionHosp.FormsMadre />
+      <SeccionesAtencionHosp.OpcionesAccidente />
+      <SeccionesAtencionHosp.FormsCausaClinica />
+      <SeccionesAtencionHosp.EvaluacionInicial />
+      <SeccionesAtencionHosp.HeatmapBody />
+      <SeccionesAtencionHosp.EvaluacionSecTraslado />
+      <SeccionesAtencionHosp.TratamientoUno />
+      <SeccionesAtencionHosp.TratamientoP2 />
+     
+      <SeccionesAtencionHosp.FormsDatosLegales />
+             
     </Box>
   );
 };
 
 export default MyCustomFormPage;
+
+
+
+// <MotivoAtencionPrehospitalaria />
+      //<DatosTraslado />
+      //<DatosPacienteSection
+       // value={datosPaciente}
+      //  onChange={handlePacientePatch}
+      ///>
+      //<FormsMadre />
