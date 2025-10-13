@@ -10,6 +10,7 @@ import { DatosPaciente } from "./components/secciones_atencion_hosp/datos_pacien
 const MyCustomFormPage = () => {
   //USO DE GETIDENTITY() DARIO
   const { data, isPending, error } = useGetIdentity();
+  const isMobile = window.innerWidth <= 768;
 
   const logout = useLogout();
 
@@ -63,7 +64,7 @@ const MyCustomFormPage = () => {
   };
 
   return (
-    <Box p={3}>
+    <Box p={3} maxWidth={isMobile ? '100vw' : '100%'}>
       <Title title="Formulario Personalizado " />
       <SeccionesAtencionHosp.HeaderAtencionPrehospitalaria />
       <SeccionesAtencionHosp.MotivoAtencionPrehospitalaria />

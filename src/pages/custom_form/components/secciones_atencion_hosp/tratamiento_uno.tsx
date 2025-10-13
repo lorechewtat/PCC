@@ -100,6 +100,8 @@ const TratamientoUno = () => {
                         sx={{
                             display: "flex",
                             flexDirection: "row",
+                            flexWrap: 'wrap',                       
+                            justifyContent: 'center',   // opcional, para centrar el contenido
                             gap: 1.5,
                             mb: 2,
                             alignItems: "center",

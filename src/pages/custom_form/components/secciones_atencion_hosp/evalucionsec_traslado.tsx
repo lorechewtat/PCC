@@ -1,4 +1,4 @@
-import { Divider, Box, Table, TableHead, TableRow, TableCell, TableBody, Typography, useMediaQuery, Theme } from '@mui/material';
+import { Divider, Box, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Paper, Typography, useMediaQuery, Theme } from '@mui/material';
 import { TextInput, SimpleForm, NumberInput, RadioButtonGroupInput } from 'react-admin';
 import { Icon } from '@iconify/react';
 import DirectionsBusFilledOutlinedIcon from '@mui/icons-material/DirectionsBusFilledOutlined';
@@ -92,7 +92,24 @@ const EvaluacionSecTraslado = () => {
                 </Box>
 
                 <Box>
-                    <Table size="small" >
+                    <TableContainer component={Paper}
+                            sx={{
+                                width: '100%',
+                                overflowX: 'auto',           //habilita scroll horizontal en pantallas chicas
+                                borderRadius: 2,
+                                boxShadow: 'none',
+                            }}>
+                        <Table size="small" stickyHeader sx={{ mb: 2,
+                        minWidth: 640,            // fuerza “ancho mínimo” para que aparezca scroll si no cabe
+                        tableLayout: 'fixed',     // columnas más predecibles (evita “bailes”)
+                        '& th, & td': {
+                            whiteSpace: 'nowrap',   //evita que brinque a otra línea
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            px: { xs: 1, sm: 1.5 }, //padding más compacto en móvil
+                            fontSize: { xs: 12, sm: 13 },
+                        },
+                    }}>
                         <TableHead>
                             <TableRow sx={{ color: 'grey' }}>
                                 <TableCell>HORA</TableCell>
@@ -112,6 +129,8 @@ const EvaluacionSecTraslado = () => {
                             <VitalSignsRow rowIndex={3} />
                         </TableBody>
                     </Table>
+
+                    </TableContainer>
                 </Box>
 
                 <Divider sx={{ my: 4, color: '#203972' }} />
@@ -124,7 +143,25 @@ const EvaluacionSecTraslado = () => {
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
                     <Box mt={2} sx={{ display: 'flex', flexDirection: isSmall ? 'column' : 'row', gap: 2 }}>
-                        <Table size="small" >
+                        <TableContainer component={Paper}
+                            sx={{
+                                width: '100%',
+                                overflowX: 'auto',           //habilita scroll horizontal en pantallas chicas
+                                borderRadius: 2,
+                                boxShadow: 'none',
+                            }}
+                        >
+                            <Table size="small" stickyHeader sx={{ mb: 2,
+                                minWidth: 640,            // fuerza “ancho mínimo” para que aparezca scroll si no cabe
+                                tableLayout: 'fixed',     // columnas más predecibles (evita “bailes”)
+                                '& th, & td': {
+                                    whiteSpace: 'nowrap',   //evita que brinque a otra línea
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    px: { xs: 1, sm: 1.5 }, //padding más compacto en móvil
+                                    fontSize: { xs: 12, sm: 13 },
+                                },
+                            }}>
                             <TableHead>
                                 <TableRow sx={{ color: 'grey' }}>
                                     <TableCell>APERTURA OCULAR</TableCell>
@@ -263,6 +300,9 @@ const EvaluacionSecTraslado = () => {
                                 </TableRow>
                             </TableBody>
                         </Table>
+                        </TableContainer>
+                        
+                        
                     </Box>
                     <NumberInput source="glasgow_total" label="GLASGOW TOTAL" variant="standard" fullWidth sx={{ maxWidth: '150px', alignSelf: 'center' }} />
                 </Box>

@@ -62,7 +62,7 @@ const MotivoAtencionPrehospitalaria = () => {
 
 {/* SECCIÓN DE BOTONES */}
 <Box display ="flex" 
-  flexDirection = "row"
+  flexDirection = 'row'
   width = {isMobile ? "100%" : "68%"}
   gap= {1}
   justifyContent={isMobile ? "space-between" : "center"}
@@ -96,7 +96,7 @@ const MotivoAtencionPrehospitalaria = () => {
        <Button 
         onClick = {() => setSelected("gineco")}
         variant = "contained" 
-        sx={{ width: "35%", border: 2, borderColor: selected === "gineco" ? azulOscuro : grisClaro, 
+        sx={{ width: {xs: "29%"}, border: 2, borderColor: selected === "gineco" ? azulOscuro : grisClaro, 
               borderRadius: 1.5, p: 2, 
               backgroundColor: selected === "gineco" ? azulOscuro : grisClaro}}>
         
@@ -108,7 +108,7 @@ const MotivoAtencionPrehospitalaria = () => {
             align="center"
             sx={{ 
           
-          fontSize : 12,
+          fontSize : isMobile ? 9 : 12,
           fontWeight: "bold",
           color: 'primary.contrastText' }}
       >GINECOOBSTETRICIO

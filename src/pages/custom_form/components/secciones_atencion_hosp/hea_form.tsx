@@ -32,6 +32,9 @@ const HeaderAtencionPrehospitalaria = () => {
   flexDirection="row"
   alignItems="center"
   justifyContent="space-between" 
+  sx={{
+    maxWidth: { xs: 320, sm: 1100}
+  }}
 >
      
       <Typography
@@ -40,7 +43,7 @@ const HeaderAtencionPrehospitalaria = () => {
         gutterBottom
         sx={{ 
           width:"30vw",
-          fontSize : 36,
+          fontSize : { xs: 33, sm: 36},
           color: 'primary.main' }}
       >Atención Prehospitalaria
       </Typography>
@@ -149,8 +152,14 @@ const HeaderAtencionPrehospitalaria = () => {
       </Box >
 
       {/* CAMPOS DE HORA FUERA DEL CONTAINER */}
-      <Box sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}>
-  <Grid container spacing={2} mb={4} wrap="nowrap">
+      <Box sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2, width:{xs: "20rem", sm: "40rem"} }}>
+  <Grid container spacing={2} mb={4} wrap="nowrap" sx={{
+    gridTemplateColumns: {
+      xs: 'repeat(1, 1fr)',
+      sm: 'repeat(2, 1fr)',
+    },
+    display: 'grid',
+  }}>
   {/* Columna 1 */}
   <Grid  sx={{ flex: 1, minWidth: 150 }}>
     <TextField

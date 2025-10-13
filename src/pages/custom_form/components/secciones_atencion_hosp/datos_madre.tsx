@@ -13,6 +13,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableContainer,
+  Paper
 } from "@mui/material";
 import PregnantWomanIcon from "@mui/icons-material/PregnantWoman";
 import BabyChangingStationIcon from "@mui/icons-material/BabyChangingStation";
@@ -474,7 +476,25 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
         </Box>
 
         <Box>
-          <Table size="small">
+
+          <TableContainer component={Paper}
+            sx={{
+              width: '100%',
+              overflowX: 'auto',           //habilita scroll horizontal en pantallas chicas
+              borderRadius: 2,
+              boxShadow: 'none',
+            }}>
+              <Table size="small" stickyHeader sx={{ mb: 2,
+            minWidth: 500,            // fuerza “ancho mínimo” para que aparezca scroll si no cabe
+            tableLayout: 'fixed',     // columnas más predecibles (evita “bailes”)
+            '& th, & td': {
+                whiteSpace: 'nowrap',   //evita que brinque a otra línea
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                px: { xs: 1, sm: 1.5 }, //padding más compacto en móvil
+                fontSize: { xs: 12, sm: 13 },
+            },
+        }}>
             <TableHead>
               <TableRow>
                 <TableCell>Signo</TableCell>
@@ -534,6 +554,8 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
               </TableRow>
             </TableBody>
           </Table>
+          </TableContainer>
+          
         </Box>
       </Box>
     </Box>
