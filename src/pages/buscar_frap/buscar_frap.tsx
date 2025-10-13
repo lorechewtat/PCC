@@ -1,11 +1,10 @@
+
+
+
 import { Box, TextField, Typography, Card, CardContent, List, ListItem, ListItemText } from "@mui/material";
 import { useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
-
-
-//BASE DE DATOS DUMMY
-//todo: aqui se deben de bajar los datos de la base de datos
 const initialReports = [
   {
     "_id": "68eaf1d4ea8c2bf38e599d17",
@@ -312,6 +311,7 @@ const initialReports = [
   }
 ];
 
+
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const BuscarReportes = () => {
@@ -349,7 +349,7 @@ const BuscarReportes = () => {
 
 
   return (
-    <Box p={3} maxWidth="1000px" mx="auto">
+    <Box p={3} maxWidth="100vw" mx="auto">
       <Typography variant="h5" gutterBottom>
         Buscar Reportes Médicos
       </Typography>
@@ -380,7 +380,7 @@ const BuscarReportes = () => {
           </Box>
         </CardContent>
       </Card>
-//TODO: FALTA QUE AL APRETARLE A CADA REPORTE TE LLEVE A ESE REPORTE
+
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
@@ -403,61 +403,69 @@ const BuscarReportes = () => {
         </CardContent>
       </Card>
 
-            //Gráficas 
+      {/* Distribución de Edades */}
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
             Distribución de Edades
           </Typography>
-          <BarChart width={600} height={300} data={ageDistribution}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="edad" fill="#8884d8" />
-          </BarChart>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={ageDistribution}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="edad" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
 
+      {/* Causas de Atención */}
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
             Causas de Atención
           </Typography>
-          <PieChart width={400} height={300}>
-            <Pie
-              data={causeData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#82ca9d"
-              label
-            >
-              {causeData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={causeData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                fill="#82ca9d"
+                label
+              >
+                {causeData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
 
+      {/* Reportes por Fecha */}
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
             Reportes por Fecha
           </Typography>
-          <BarChart width={600} height={300} data={dateData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="fecha" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#ffc658" />
-          </BarChart>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={dateData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="fecha" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="count" fill="#ffc658" />
+            </BarChart>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
     </Box>
