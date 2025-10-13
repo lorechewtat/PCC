@@ -82,7 +82,7 @@ const EvaluacionSecTraslado = () => {
                 borderRadius: 2,
                 p: 2,
                 mb: 3,
-                width: isSmall ? "34%" : "850px",
+                width: isSmall ? "100%" : "850px",
             }}>
                 <Box display="flex" mb={2}>
                     <Typography variant="h6" color="primary">
@@ -382,7 +382,7 @@ const EvaluacionSecTraslado = () => {
                     borderRadius: 2,
                     p: 2,
                     mb: 3,
-                    width: isSmall ? "56%" : "850px",
+                    width: isSmall ? "100%" : "850px",
                 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="h6" color="primary">

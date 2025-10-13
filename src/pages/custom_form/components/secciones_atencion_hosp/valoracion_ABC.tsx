@@ -77,7 +77,7 @@ const EvaluacionInicial = () => {
             borderRadius: 2,
             p: 2,
             mb: 3,
-            width: isMobile ? "35%" : "850px",
+            width: isMobile ? "100%" : "850px",
             }}
         >
 

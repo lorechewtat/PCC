@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import logoHosp from './body.jpg'; // Ajusta la ruta si es necesario
-import { Box, TextField, Typography, ToggleButton, ToggleButtonGroup, Divider, Stack } from '@mui/material';
 
 const labelsInfo = [
   "DEFORMIDADES",
@@ -20,7 +19,7 @@ const labelsInfo = [
   "DOLOR"
 ];
 
-const HeatmapBody = ({ width = 600, height = 800 }) => {
+const HeatmapBody = () => {
   interface Mark {
     x: number;
     y: number;
@@ -28,6 +27,8 @@ const HeatmapBody = ({ width = 600, height = 800 }) => {
     color: string;
     label: string;
   }
+
+  const isMobile = window.innerWidth <= 768;
 
   const [marks, setMarks] = useState<Mark[]>([]);
   const [history, setHistory] = useState<Mark[]>([]);
@@ -89,7 +90,7 @@ const HeatmapBody = ({ width = 600, height = 800 }) => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '100%', overflow: 'auto', display: 'flex', flexDirection: 'row' }}>
+    <div style={{ padding: '20px', maxWidth: '90vw', overflow: 'auto', display: 'flex', flexDirection: isMobile ? 'column':'row' }}>
       {/* Botones de selección y descripción al costado izquierdo */}
       <div style={{
         minWidth: '260px',
@@ -132,8 +133,9 @@ const HeatmapBody = ({ width = 600, height = 800 }) => {
           onMouseLeave={handleMouseUp}
           style={{
             position: 'relative',
-            width: `${width}px`,
-            height: `${height}px`,
+            width: isMobile ? `90vw` : `50vw`,
+       
+            aspectRatio: '16 / 9', 
             backgroundImage: `url(${logoHosp})`,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',

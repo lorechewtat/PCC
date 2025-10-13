@@ -215,7 +215,7 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
           borderRadius: 2,
           p: 2,
           mb: 3,
-          width: isSmall ? "34%" : "850px",
+          width: isSmall ? "100%" : "850px",
         }}
       >
         <Box

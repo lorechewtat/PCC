@@ -109,7 +109,7 @@ const FormsDatosLegales = ({ value = {}, onChange }: DatosLegalesProps) => {
         borderRadius: 2,
         p: 2,
         mb: 3,
-        width: isSmall ? "34%" : "850px",
+        width: isSmall ? "100%" : "850px",
       }}
     >
       {/* Sección para las autoridades que tomaron conocimiento */}

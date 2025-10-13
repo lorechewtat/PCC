@@ -62,7 +62,7 @@ const MotivoAtencionPrehospitalaria = () => {
 
 {/* SECCIÓN DE BOTONES */}
 <Box display ="flex" 
-  flexDirection = {isMobile ? "column" : "row"}
+  flexDirection = 'row'
   width = {isMobile ? "100%" : "68%"}
   gap= {1}
   justifyContent={isMobile ? "space-between" : "center"}
@@ -108,7 +108,7 @@ const MotivoAtencionPrehospitalaria = () => {
             align="center"
             sx={{ 
           
-          fontSize : 12,
+          fontSize : isMobile ? 9 : 12,
           fontWeight: "bold",
           color: 'primary.contrastText' }}
       >GINECOOBSTETRICIO
@@ -158,7 +158,7 @@ const MotivoAtencionPrehospitalaria = () => {
       </Box >
 
       {/* CAMPOS*/}
-      <Box width = {isMobile ? "75%" : "68%"}
+      <Box width = {isMobile ? "100%" : "68%"}
             sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}>
 
 
