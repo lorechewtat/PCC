@@ -90,10 +90,3 @@ export default MyCustomFormPage;
 
 
 
-// <MotivoAtencionPrehospitalaria />
-      //<DatosTraslado />
-      //<DatosPacienteSection
-       // value={datosPaciente}
-      //  onChange={handlePacientePatch}
-      ///>
-      //<FormsMadre />
