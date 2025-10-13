@@ -60,7 +60,7 @@ const filas = [
         flexDirection="column"
         gap={2}
         mb={2}
-        sx={{width: '100%', maxWidth: { xs: 360, sm: 500, md: 850 }, border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
+        sx={{width: '100%', maxWidth: { xs: 320, sm: 500, md: 850 }, border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
       >
         <Box sx={{mb: 4}}>
         <TableContainer component={Paper}

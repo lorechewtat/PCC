@@ -42,6 +42,7 @@ import {
 import MyLoginPage from "./pages/login/login_screen";
 import myTheme from "./consts/theme";
 import MyCustomFormPage from "./pages/custom_form/custom_form";
+import EmergenciasPage from "./pages/emergencias_urbanas/emergencias";
 import { MyAppBar } from "./pages/bar/bar";
 
 
@@ -98,6 +99,7 @@ export const App = () => (
     {/* ✅ Ruta personalizada */}
     <CustomRoutes>
       <Route path="/custom-form" element={<MyCustomFormPage />} />
+      <Route path="/emergencias" element={<EmergenciasPage />} />
     </CustomRoutes>
   </Admin>
 );

@@ -62,7 +62,7 @@ const MotivoAtencionPrehospitalaria = () => {
 
 {/* SECCIÓN DE BOTONES */}
 <Box display ="flex" 
-  flexDirection = "row"
+  flexDirection = {isMobile ? "column" : "row"}
   width = {isMobile ? "100%" : "68%"}
   gap= {1}
   justifyContent={isMobile ? "space-between" : "center"}
@@ -96,7 +96,7 @@ const MotivoAtencionPrehospitalaria = () => {
        <Button 
         onClick = {() => setSelected("gineco")}
         variant = "contained" 
-        sx={{ width: "35%", border: 2, borderColor: selected === "gineco" ? azulOscuro : grisClaro, 
+        sx={{ width: {xs: "29%"}, border: 2, borderColor: selected === "gineco" ? azulOscuro : grisClaro, 
               borderRadius: 1.5, p: 2, 
               backgroundColor: selected === "gineco" ? azulOscuro : grisClaro}}>
         
@@ -158,7 +158,7 @@ const MotivoAtencionPrehospitalaria = () => {
       </Box >
 
       {/* CAMPOS*/}
-      <Box width = {isMobile ? "100%" : "68%"}
+      <Box width = {isMobile ? "75%" : "68%"}
             sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}>
 
 

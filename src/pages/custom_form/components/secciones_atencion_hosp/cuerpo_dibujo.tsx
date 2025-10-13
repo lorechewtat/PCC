@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import logoHosp from './body.jpg'; // Ajusta la ruta si es necesario
+import { Box, TextField, Typography, ToggleButton, ToggleButtonGroup, Divider, Stack } from '@mui/material';
 
 const labelsInfo = [
   "DEFORMIDADES",

@@ -77,7 +77,7 @@ const EvaluacionInicial = () => {
             borderRadius: 2,
             p: 2,
             mb: 3,
-            width: isMobile ? "100%" : "850px",
+            width: isMobile ? "35%" : "850px",
             }}
         >
 
@@ -100,6 +100,17 @@ const EvaluacionInicial = () => {
                     onChange={(e, val) => {
                     if (val !== null)
                         setEvaluacion({ ...evaluacion, consciencia: val });
+                    }}
+                    sx={{mb: 1 , 
+                        display: 'flex',
+                        flexWrap: 'wrap',   
+                        gap: 1,                     
+                        justifyContent: 'center',   // opcional, para centrar el contenido
+                        "& .MuiToggleButton-root": {
+                        
+                        flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
+                        minWidth: 120,            // evita botones demasiado pequeños
+                        }
                     }}
                 >
                     <ToggleButton 
@@ -202,6 +213,17 @@ const EvaluacionInicial = () => {
                         if (val !== null)
                             setEvaluacion({ ...evaluacion, ventilacion: val });
                         }}
+                        sx={{mb: 1 , 
+                            display: 'flex',
+                            flexWrap: 'wrap',   
+                            gap: 1,                     
+                            justifyContent: 'center',   // opcional, para centrar el contenido
+                            "& .MuiToggleButton-root": {
+                            
+                            flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
+                            minWidth: 120,            // evita botones demasiado pequeños
+                            }
+                        }}
                     >
                         <ToggleButton 
                             sx={toggleStyle} value="AUTOMATISMO REGULAR">AUTOMATISMO REGULAR</ToggleButton>
@@ -238,6 +260,17 @@ const EvaluacionInicial = () => {
                         if (val !== null)
                             setEvaluacion({ ...evaluacion, auscultacion: val });
                         }}
+                        sx={{mb: 1 , 
+                            display: 'flex',
+                            flexWrap: 'wrap',   
+                            gap: 1,                     
+                            justifyContent: 'center',   // opcional, para centrar el contenido
+                            "& .MuiToggleButton-root": {
+                            
+                            flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
+                            minWidth: 120,            // evita botones demasiado pequeños
+                            }
+                        }}
                     >
                         <ToggleButton 
                             sx={toggleStyle} value="NORMALES">RUIDOS RESPIRATORIOS NORMALES</ToggleButton>
@@ -262,9 +295,10 @@ const EvaluacionInicial = () => {
                         sx={{
                             display: "flex",
                             flexDirection: "row",
+                            flexWrap: 'wrap', 
                             gap: 1,
                             mb: 1,
-                            ml: 8,
+                            ml: isMobile ? 1 : 8,
                             alignItems: "center",
                         }}
                         >
@@ -279,6 +313,17 @@ const EvaluacionInicial = () => {
                                 if (val !== null)
                                     setEvaluacion({ ...evaluacion, hemitorax: val });
                                 }}
+                                sx={{mb: 1 , 
+                            display: 'flex',
+                            flexWrap: 'wrap',   
+                            gap: 1,                     
+                            justifyContent: 'center',   // opcional, para centrar el contenido
+                            "& .MuiToggleButton-root": {
+                            
+                            flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
+                            minWidth: 120,            // evita botones demasiado pequeños
+                            }
+                        }}
                             >
                                 <ToggleButton 
                                     sx={toggleStyle} value="DERECHO">DERECHO</ToggleButton>
@@ -290,10 +335,11 @@ const EvaluacionInicial = () => {
                         <Box 
                         sx={{
                             display: "flex",
+                            flexWrap: 'wrap', 
                             flexDirection: "row",
                             gap: 1,
                             mb: 1,
-                            ml: 8,
+                            ml: isMobile ? 1 : 8,
                             alignItems: "center",
                         }}
                         >
@@ -307,6 +353,17 @@ const EvaluacionInicial = () => {
                                 onChange={(e, val) => {
                                 if (val !== null)
                                     setEvaluacion({ ...evaluacion, sitio: val });
+                                }}
+                                sx={{mb: 1 , 
+                                    display: 'flex',
+                                    flexWrap: 'wrap',   
+                                    gap: 1,                     
+                                    justifyContent: 'center',   // opcional, para centrar el contenido
+                                    "& .MuiToggleButton-root": {
+                                    
+                                    flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
+                                    minWidth: 120,            // evita botones demasiado pequeños
+                                    }
                                 }}
                             >
                                 <ToggleButton 
@@ -363,6 +420,17 @@ const EvaluacionInicial = () => {
                                 if (val !== null)
                                     setEvaluacion({ ...evaluacion, presenciaPulsos: val });
                                 }}
+                                sx={{mb: 1 , 
+                                    display: 'flex',
+                                    flexWrap: 'wrap',   
+                                    gap: 1,                     
+                                    justifyContent: 'center',   // opcional, para centrar el contenido
+                                    "& .MuiToggleButton-root": {
+                                    
+                                    flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
+                                    minWidth: 120,            // evita botones demasiado pequeños
+                                    }
+                                }}
                             >
                                 <ToggleButton 
                                     sx={toggleStyle} value="CAROTIDEO">CAROTIDEO</ToggleButton>
@@ -393,6 +461,17 @@ const EvaluacionInicial = () => {
                                 onChange={(e, val) => {
                                 if (val !== null)
                                     setEvaluacion({ ...evaluacion, calidad: val });
+                                }}
+                                sx={{mb: 1 , 
+                                    display: 'flex',
+                                    flexWrap: 'wrap',   
+                                    gap: 1,                     
+                                    justifyContent: 'center',   // opcional, para centrar el contenido
+                                    "& .MuiToggleButton-root": {
+                                    
+                                    flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
+                                    minWidth: 120,            // evita botones demasiado pequeños
+                                    }
                                 }}
                             >
                             <ToggleButton 
@@ -481,6 +560,17 @@ const EvaluacionInicial = () => {
                                 onChange={(e, val) => {
                                 if (val !== null)
                                     setEvaluacion({ ...evaluacion, piel: val });
+                                }}
+                                sx={{mb: 1 , 
+                                    display: 'flex',
+                                    flexWrap: 'wrap',   
+                                    gap: 1,                     
+                                    justifyContent: 'center',   // opcional, para centrar el contenido
+                                    "& .MuiToggleButton-root": {
+                                    
+                                    flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
+                                    minWidth: 120,            // evita botones demasiado pequeños
+                                    }
                                 }}
                             >
                             <ToggleButton 

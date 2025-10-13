@@ -78,7 +78,7 @@ const TratamientoUno = () => {
                 borderRadius: 2,
                 p: 2,
                 mb: 3,
-                width: isMobile ? "100%" : "850px",
+                width: isMobile ? "34%" : "850px",
                 }}
             >
 
@@ -100,6 +100,8 @@ const TratamientoUno = () => {
                         sx={{
                             display: "flex",
                             flexDirection: "row",
+                            flexWrap: 'wrap',                       
+                            justifyContent: 'center',   // opcional, para centrar el contenido
                             gap: 1.5,
                             mb: 2,
                             alignItems: "center",

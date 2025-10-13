@@ -38,7 +38,7 @@ const DatosPacienteSection = ({ value, onChange }: Props) => {
         <Icon icon="mdi:patient" style={{ fontSize: '1.5rem', marginLeft: '8px' }} />
       </Typography>
 
-      <Paper elevation={1} sx={{ width: isSmall ? "100%" : "850px", p: 2, mt: 1, mb: 2, border: '2px solid #203972', borderRadius: 2 }}>
+      <Paper elevation={1} sx={{ width: isSmall ? "125%" : "850px", p: 2, mt: 1, mb: 2, border: '2px solid #203972', borderRadius: 2 }}>
         <Box
           sx={{
             display: "flex",

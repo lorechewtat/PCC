@@ -31,7 +31,7 @@ const DatosTraslado = () => {
         </Box>
         
 
-        <Box width={"850px"}>
+        <Box sx={{ width: '100%', maxWidth: { xs: 310, sm: 500, md: 850 }, px: { xs: 1, sm: 2 } }}>
         <ToggleButtonGroup
           value={form.lugar}
           exclusive
@@ -40,10 +40,11 @@ const DatosTraslado = () => {
             lugar: v,
             otroLugar: v ? "" : prev.otroLugar, //si selecciona un lugar, se borra el campo "OTRO"
           }))}
-          sx={{ display: 'grid', gridTemplateColumns: "repeat(3, 1fr)" ,gap: 1, mb: 2, 
+          sx={{ display: 'grid', gridTemplateColumns: {xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)'},gap: 1, mb: 2, 
             "& .MuiToggleButton-root": {
                 borderRadius: 2,      // fuerza esquinas redondeadas
                 border: "1px solid #ccc !important", // evita que se fusionen
+                padding: '30px 10px'
             }
           }}
         >
@@ -165,10 +166,9 @@ const DatosTraslado = () => {
       <Box
         display="flex"
         flexDirection="column"
-        width={"850px"}
         gap={2}
         mb={2}
-        sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
+        sx={{ width: '100%', maxWidth: { xs: 310, sm: 500, md: 850 }, border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
       >
         <TextField
           label="NÚMERO DE AMBULANCIA"

@@ -44,7 +44,7 @@ const OpcionesAccidente = () => {
         </Box>
         
 
-        <Box sx={{ width: '100%', maxWidth: { xs: 360, sm: 500, md: 850 }, px: { xs: 1, sm: 2 } }}>
+        <Box sx={{ width: '100%', maxWidth: { xs: 320, sm: 500, md: 850 }, px: { xs: 1, sm: 2 } }}>
         <ToggleButtonGroup
           value={form.causa}
           exclusive
@@ -101,7 +101,7 @@ const OpcionesAccidente = () => {
         </Box>
         
       <Box display="flex" flexDirection="column" width='100%' gap={2} mb={2}
-        sx={{ maxWidth: { xs: 360, sm: 500, md: 850 }, border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
+        sx={{ maxWidth: { xs: 320, sm: 500, md: 850 }, border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
       >
         <ToggleButtonGroup
           value={form.objetosChoque}

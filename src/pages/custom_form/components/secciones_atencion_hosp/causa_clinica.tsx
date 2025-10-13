@@ -103,7 +103,7 @@ const FormsCausaClinica = ({ value = {}, onChange }: CausaClinicaProps) => {
         borderRadius: 2,
         p: 2,
         mb: 3,
-        width: isSmall ? "100%" : "850px",
+        width: isSmall ? "34%" : "850px",
       }}
     >
       {/* Sección para el origen probable */}
