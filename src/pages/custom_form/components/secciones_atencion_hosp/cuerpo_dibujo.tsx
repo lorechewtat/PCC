@@ -1,9 +1,31 @@
-import React, { useState, useRef } from 'react';
-import logoHosp from './body.jpg'; // Ajusta la ruta si es necesario
+import React, { useRef } from 'react';
+import logoHosp from './body.jpg';
+
+interface Mark {
+  x: number;
+  y: number;
+  radius: number;
+  color: string;
+  label: string;
+}
+
+export type CuerpoDibujo = {
+  marks: Mark[];
+  history: Mark[];
+  historyIndex: number;
+  selectedLabel: string;
+};
+
+type Props = {
+  value: CuerpoDibujo;
+  onChange: (patch: Partial<CuerpoDibujo>) => void;
+  width?: number;
+  height?: number;
+};
 
 const labelsInfo = [
   "DEFORMIDADES",
-  "CONTUSIONES",
+  "CONTUSIONES", 
   "ABRASIONES",
   "PENETRACIONES",
   "MOVIMIENTO PARADÓJICO",
@@ -19,23 +41,9 @@ const labelsInfo = [
   "DOLOR"
 ];
 
-const HeatmapBody = () => {
-  interface Mark {
-    x: number;
-    y: number;
-    radius: number;
-    color: string;
-    label: string;
-  }
+const HeatmapBody = ({ value, onChange, width = 600, height = 800 }: Props) => {
 
   const isMobile = window.innerWidth <= 768;
-
-  const [marks, setMarks] = useState<Mark[]>([]);
-  const [history, setHistory] = useState<Mark[]>([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [selectedLabel, setSelectedLabel] = useState<string>('1');
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Agrega una marca en la posición del mouse
@@ -44,49 +52,64 @@ const HeatmapBody = () => {
     const rect = containerRef.current.getBoundingClientRect();
     const x = clientX - rect.left;
     const y = clientY - rect.top;
-    const newMark: Mark = { x, y, radius: 20, color: 'rgba(255,0,0,0.5)', label: selectedLabel };
-    const newMarks: Mark[] = marks.slice(0, historyIndex + 1).concat(newMark);
-    setMarks(newMarks);
-    setHistory(newMarks);
-    setHistoryIndex(historyIndex + 1);
+    const newMark: Mark = { 
+      x, 
+      y, 
+      radius: 20, 
+      color: 'rgba(255,0,0,0.5)', 
+      label: value.selectedLabel 
+    };
+    const newMarks: Mark[] = value.marks.slice(0, value.historyIndex + 1).concat(newMark);
+    
+    onChange({
+      marks: newMarks,
+      history: newMarks,
+      historyIndex: value.historyIndex + 1
+    });
   };
 
   // Mouse/touch events
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsDrawing(true);
     addMarkAt(e.clientX, e.clientY);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDrawing) return;
-    addMarkAt(e.clientX, e.clientY);
-  };
-
-  const handleMouseUp = () => {
-    setIsDrawing(false);
+    // Only add marks on click, not drag for better UX
+    // If you want drag functionality, you'd need to track isDrawing state
   };
 
   // Deshacer
   const undo = () => {
-    if (historyIndex >= 0) {
-      setHistoryIndex(historyIndex - 1);
-      setMarks(history.slice(0, historyIndex));
+    if (value.historyIndex >= 0) {
+      onChange({
+        historyIndex: value.historyIndex - 1,
+        marks: value.history.slice(0, value.historyIndex)
+      });
     }
   };
 
   // Rehacer
   const redo = () => {
-    if (historyIndex < history.length - 1) {
-      setHistoryIndex(historyIndex + 1);
-      setMarks(history.slice(0, historyIndex + 2));
+    if (value.historyIndex < value.history.length - 1) {
+      onChange({
+        historyIndex: value.historyIndex + 1,
+        marks: value.history.slice(0, value.historyIndex + 2)
+      });
     }
   };
 
   // Limpiar todas las marcas
   const clearAll = () => {
-    setMarks([]);
-    setHistory([]);
-    setHistoryIndex(-1);
+    onChange({
+      marks: [],
+      history: [],
+      historyIndex: -1
+    });
+  };
+
+  // Handle label selection
+  const handleLabelSelect = (label: string) => {
+    onChange({ selectedLabel: label });
   };
 
   return (
@@ -103,34 +126,37 @@ const HeatmapBody = () => {
         {labelsInfo.map((info, i) => (
           <div key={i + 1} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
             <button
-              onClick={() => setSelectedLabel(String(i + 1))}
+              onClick={() => handleLabelSelect(String(i + 1))}
               style={{
                 padding: '8px 12px',
-                backgroundColor: selectedLabel === String(i + 1) ? '#007bff' : '#eee',
-                color: selectedLabel === String(i + 1) ? 'white' : '#333',
+                backgroundColor: value.selectedLabel === String(i + 1) ? '#007bff' : '#eee',
+                color: value.selectedLabel === String(i + 1) ? 'white' : '#333',
                 border: '1px solid #ccc',
                 borderRadius: '4px',
                 cursor: 'pointer',
-                fontWeight: selectedLabel === String(i + 1) ? 'bold' : 'normal',
+                fontWeight: value.selectedLabel === String(i + 1) ? 'bold' : 'normal',
                 minWidth: '36px'
               }}
             >
               {i + 1}
             </button>
-            <span style={{ fontSize: '15px', color: '#203972', fontWeight: selectedLabel === String(i + 1) ? 'bold' : 'normal', textAlign: 'right' }}>
+            <span style={{ 
+              fontSize: '15px', 
+              color: '#203972', 
+              fontWeight: value.selectedLabel === String(i + 1) ? 'bold' : 'normal', 
+              textAlign: 'right' 
+            }}>
               {info}
             </span>
           </div>
         ))}
       </div>
+
       {/* Imagen y marcas */}
       <div style={{ flex: 1 }}>
         <div
           ref={containerRef}
           onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
           style={{
             position: 'relative',
             width: isMobile ? `90vw` : `50vw`,
@@ -149,7 +175,7 @@ const HeatmapBody = () => {
           }}
         >
           {/* Dibujar los círculos y el número en el centro */}
-          {marks.map((mark, i) => (
+          {value.marks.map((mark, i) => (
             <div
               key={i}
               style={{
@@ -175,6 +201,7 @@ const HeatmapBody = () => {
             </div>
           ))}
         </div>
+
         {/* Botones de deshacer/rehacer/limpiar y leyenda */}
         <div style={{ 
           marginTop: '20px', 
@@ -185,14 +212,14 @@ const HeatmapBody = () => {
         }}>
           <button 
             onClick={undo} 
-            disabled={historyIndex < 0}
+            disabled={value.historyIndex < 0}
             style={{
               padding: '10px 20px',
-              backgroundColor: historyIndex < 0 ? '#ccc' : '#007bff',
+              backgroundColor: value.historyIndex < 0 ? '#ccc' : '#007bff',
               color: 'white',
               border: 'none',
               borderRadius: '5px',
-              cursor: historyIndex < 0 ? 'not-allowed' : 'pointer',
+              cursor: value.historyIndex < 0 ? 'not-allowed' : 'pointer',
               fontSize: '14px'
             }}
           >
@@ -201,14 +228,14 @@ const HeatmapBody = () => {
           
           <button 
             onClick={redo} 
-            disabled={historyIndex >= history.length - 1}
+            disabled={value.historyIndex >= value.history.length - 1}
             style={{
               padding: '10px 20px',
-              backgroundColor: historyIndex >= history.length - 1 ? '#ccc' : '#28a745',
+              backgroundColor: value.historyIndex >= value.history.length - 1 ? '#ccc' : '#28a745',
               color: 'white',
               border: 'none',
               borderRadius: '5px',
-              cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
+              cursor: value.historyIndex >= value.history.length - 1 ? 'not-allowed' : 'pointer',
               fontSize: '14px'
             }}
           >
@@ -217,28 +244,29 @@ const HeatmapBody = () => {
           
           <button 
             onClick={clearAll}
-            disabled={marks.length === 0}
+            disabled={value.marks.length === 0}
             style={{
               padding: '10px 20px',
-              backgroundColor: marks.length === 0 ? '#ccc' : '#dc3545',
+              backgroundColor: value.marks.length === 0 ? '#ccc' : '#dc3545',
               color: 'white',
               border: 'none',
               borderRadius: '5px',
-              cursor: marks.length === 0 ? 'not-allowed' : 'pointer',
+              cursor: value.marks.length === 0 ? 'not-allowed' : 'pointer',
               fontSize: '14px'
             }}
           >
             🗑️ Limpiar Todo
           </button>
         </div>
+
         <div style={{ 
           marginTop: '15px', 
           textAlign: 'center', 
           color: '#666',
           fontSize: '14px'
         }}>
-          <p>Haz clic o arrastra en la imagen para marcar áreas. Usa los botones para deshacer/rehacer.</p>
-          <p>Marcas realizadas: {marks.length}</p>
+          <p>Haz clic en la imagen para marcar áreas. Usa los botones para deshacer/rehacer.</p>
+          <p>Marcas realizadas: {value.marks.length}</p>
         </div>
       </div>
     </div>

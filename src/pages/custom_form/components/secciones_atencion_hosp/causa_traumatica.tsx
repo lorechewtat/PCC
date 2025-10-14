@@ -1,11 +1,28 @@
 import { Box, TextField, Typography, ToggleButton, ToggleButtonGroup, Divider, Stack } from '@mui/material';
-import {useState } from 'react';
-import { useNotify } from "react-admin";
+import React from 'react';
 import PlaceIcon from '@mui/icons-material/PlaceOutlined';
 import DirectionsBusFilledOutlinedIcon from '@mui/icons-material/DirectionsBusFilledOutlined';
 
-const OpcionesAccidente = () => {
-    //const notify = useNotify();
+export type CausaTraumatica = {
+  causa: string;
+  objetosChoque: string[];
+  impactos: string[];
+  especifique: string;
+  cms: string;
+  parabrisas: string;
+  volante: string;
+  bolsa: string;
+  cinturon: string;
+  dentro: string;
+  atropellado: string;
+};
+
+type Props = {
+  value: CausaTraumatica;
+  onChange: (patch: Partial<CausaTraumatica>) => void;
+};
+
+const OpcionesAccidente = ({ value, onChange }: Props) => {
     const commonBtnSx = {
         backgroundColor: '#8E8E8E',
         color: '#f3f3f3ff',
@@ -13,30 +30,28 @@ const OpcionesAccidente = () => {
         '&:hover': { backgroundColor: '#8E8E8E', color: 'white', borderColor: '#8E8E8E', cursor: 'pointer' },
     };
 
-    const [form, setForm] = useState({
-        causa: null as string | null,
-        objetosChoque: [] as string[],   // multi
-        impactos: [] as string[],         // multi
-        especifique: "",
-        cms: "",
-        parabrisas: null as string | null,
-        volante: null as string | null,
-        bolsa: null as string | null,
-        cinturon: null as string | null,
-        dentro: null as string | null,
-        atropellado: null as string | null
-    });
+    const handleFieldChange = (field: keyof CausaTraumatica) =>
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            onChange({ [field]: e.target.value } as Partial<CausaTraumatica>);
+        };
 
-    // setter genérico
-    const setField = <K extends keyof typeof form>(key: K) =>
-    (value: typeof form[K]) => setForm(prev => ({ ...prev, [key]: value }));
+    const handleSingleSelectChange = (field: keyof CausaTraumatica) =>
+        (newValue: string | null) => {
+            if (newValue !== null) {
+                onChange({ [field]: newValue } as Partial<CausaTraumatica>);
+            }
+        };
+
+    const handleMultiSelectChange = (field: keyof CausaTraumatica) =>
+        (newValue: string[]) => {
+            onChange({ [field]: newValue } as Partial<CausaTraumatica>);
+        };
 
     return (
     <Box>
         <Divider sx={{ my: 5}}/>
 
         <Box display="flex" alignItems="center" mb={2}>
-            {/* Sección de selección de lugar */}
             <Typography variant="h6" color="primary">
             AGENTE CAUSAL
             </Typography>
@@ -46,20 +61,20 @@ const OpcionesAccidente = () => {
 
         <Box sx={{ width: '100%', maxWidth: { xs: 320, sm: 500, md: 850 }, px: { xs: 1, sm: 2 } }}>
         <ToggleButtonGroup
-          value={form.causa}
+          value={value.causa}
           exclusive
-          onChange={(_, v) => setField('causa')(v)}
+          onChange={(_, v) => handleSingleSelectChange('causa')(v)}
           sx={{ display: 'grid', 
             gridTemplateColumns: {
-                xs: 'repeat(2, 1fr)',     // teléfonos
-                sm: 'repeat(3, 1fr)',     // tablets
-                md: 'repeat(4, 1fr)',     // laptops
-                lg: 'repeat(5, 1fr)',     // desktop grande (tu valor actual)
+                xs: 'repeat(2, 1fr)',
+                sm: 'repeat(3, 1fr)',
+                md: 'repeat(4, 1fr)',
+                lg: 'repeat(5, 1fr)',
             }
             ,gap: 1, mb: 2, 
             "& .MuiToggleButton-root": {
-                borderRadius: 2,      // fuerza esquinas redondeadas
-                border: "1px solid #ccc !important", // evita que se fusionen
+                borderRadius: 2,
+                border: "1px solid #ccc !important",
                 padding: '30px 10px'
             }
           }}
@@ -85,15 +100,14 @@ const OpcionesAccidente = () => {
           variant="standard"
           fullWidth
           required
-          value={form.especifique}
-          onChange={e => setField('especifique')(e.target.value)}
+          value={value.especifique}
+          onChange={handleFieldChange('especifique')}
         />
         </Box>
 
         <Divider sx={{ my: 5}}/>
 
         <Box display="flex" alignItems="center" mb={2}>
-            {/* Sección de datos de traslado */}
             <Typography variant="h6" color="primary">
                 ACCIDENTE AUTOMOVILISTCICO
             </Typography>
@@ -104,15 +118,14 @@ const OpcionesAccidente = () => {
         sx={{ maxWidth: { xs: 320, sm: 500, md: 850 }, border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
       >
         <ToggleButtonGroup
-          value={form.objetosChoque}
-          //exclusive
-          onChange={(_, v: string[]) => setField('objetosChoque')(v)}
+          value={value.objetosChoque}
+          onChange={(_, v: string[]) => handleMultiSelectChange('objetosChoque')(v)}
           sx={{ display: 'grid', 
             gridTemplateColumns: {
-                xs: 'repeat(2, 1fr)',     // teléfonos
-                sm: 'repeat(3, 1fr)',     // tablets
-                md: 'repeat(3, 1fr)',     // laptops
-                lg: 'repeat(4, 1fr)',     // desktop grande (tu valor actual)
+                xs: 'repeat(2, 1fr)',
+                sm: 'repeat(3, 1fr)',
+                md: 'repeat(3, 1fr)',
+                lg: 'repeat(4, 1fr)',
             },
             gap: 1, mb: 2, 
             "& .MuiToggleButton-root": {
@@ -136,18 +149,16 @@ const OpcionesAccidente = () => {
         </Typography>
 
         <ToggleButtonGroup
-          value={form.impactos}
-          exclusive
-          onChange={(_, v: string[]) => setField('impactos')(v)}
+          value={value.impactos}
+          onChange={(_, v: string[]) => handleMultiSelectChange('impactos')(v)}
           sx={{mb: 1 , 
             display: 'flex',
             flexWrap: 'wrap',   
             gap: 1,                     
-            justifyContent: 'center',   // opcional, para centrar el contenido
+            justifyContent: 'center',
             "& .MuiToggleButton-root": {
-            
             flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
-            minWidth: 120,            // evita botones demasiado pequeños
+            minWidth: 120,
             }
         }}
         >
@@ -167,8 +178,8 @@ const OpcionesAccidente = () => {
                 label="CMS"
                 variant="standard"
                 required
-                value={form.cms}
-                onChange={e => setField('cms')(e.target.value)}
+                value={value.cms}
+                onChange={handleFieldChange('cms')}
             />
           </Stack>
 
@@ -177,10 +188,9 @@ const OpcionesAccidente = () => {
                 PARABRISAS
             </Typography>
             <ToggleButtonGroup
-            value={form.parabrisas}
+            value={value.parabrisas}
             exclusive
-            onChange={(_, v) => setField('parabrisas')(v)}
-            sx={{ }}
+            onChange={(_, v) => handleSingleSelectChange('parabrisas')(v)}
             >
             <ToggleButton sx={commonBtnSx} value="Integro">Integro</ToggleButton>
             <ToggleButton sx={commonBtnSx} value="Estrellado">Estrellado</ToggleButton>
@@ -192,10 +202,9 @@ const OpcionesAccidente = () => {
                 VOLANTE
             </Typography>
             <ToggleButtonGroup
-            value={form.volante}
+            value={value.volante}
             exclusive
-            onChange={(_, v) => setField('volante')(v)}
-            sx={{ }}
+            onChange={(_, v) => handleSingleSelectChange('volante')(v)}
             >
             <ToggleButton sx={commonBtnSx} value="Integro">Integro</ToggleButton>
             <ToggleButton sx={commonBtnSx} value="Doblado">Doblado</ToggleButton>
@@ -209,10 +218,9 @@ const OpcionesAccidente = () => {
                 BOLSA DE AIRE
             </Typography>
             <ToggleButtonGroup
-            value={form.bolsa}
+            value={value.bolsa}
             exclusive
-            onChange={(_, v) => setField('bolsa')(v)}
-            sx={{ }}
+            onChange={(_, v) => handleSingleSelectChange('bolsa')(v)}
             >
             <ToggleButton sx={commonBtnSx} value="SI">SI</ToggleButton>
             <ToggleButton sx={commonBtnSx} value="NO">NO</ToggleButton>
@@ -223,10 +231,9 @@ const OpcionesAccidente = () => {
                 CINTURON DE SEGURIDAD
             </Typography>
             <ToggleButtonGroup
-            value={form.cinturon}
+            value={value.cinturon}
             exclusive
-            onChange={(_, v) => setField('cinturon')(v)}
-            sx={{ }}
+            onChange={(_, v) => handleSingleSelectChange('cinturon')(v)}
             >
             <ToggleButton sx={commonBtnSx} value="Colocado">Colocado</ToggleButton>
             <ToggleButton sx={commonBtnSx} value="No colocado">No colocado</ToggleButton>
@@ -238,10 +245,9 @@ const OpcionesAccidente = () => {
                 DENTRO DEL VEHICULO
             </Typography>
             <ToggleButtonGroup
-            value={form.dentro}
+            value={value.dentro}
             exclusive
-            onChange={(_, v) => setField('dentro')(v)}
-            sx={{ }}
+            onChange={(_, v) => handleSingleSelectChange('dentro')(v)}
             >
             <ToggleButton sx={commonBtnSx} value="si">si</ToggleButton>
             <ToggleButton sx={commonBtnSx} value="no">no</ToggleButton>
@@ -255,18 +261,17 @@ const OpcionesAccidente = () => {
         </Typography>
 
         <ToggleButtonGroup
-          value={form.atropellado}
+          value={value.atropellado}
           exclusive
-          onChange={(_, v) => setField('atropellado')(v)}
+          onChange={(_, v) => handleSingleSelectChange('atropellado')(v)}
           sx={{mb: 1 , 
             display: 'flex',
             flexWrap: 'wrap',   
             gap: 1,                     
-            justifyContent: 'center',   // opcional, para centrar el contenido
+            justifyContent: 'center',
             "& .MuiToggleButton-root": {
-            
             flex: { xs: '1 1 45%', sm: '1 1 30%', md: '1 1 18%' }, 
-            minWidth: 120,            // evita botones demasiado pequeños
+            minWidth: 120,
             }
           }}
         >
@@ -280,9 +285,7 @@ const OpcionesAccidente = () => {
 
       <Divider sx={{ my: 5}}/>
     </Box>
-
   );
-
 };
 
 export default OpcionesAccidente;

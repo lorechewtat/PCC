@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   TextField,
@@ -37,7 +36,7 @@ interface ApgarState {
 }
 
 // Información que recopila el formulario
-export interface FormsMadreData {
+export interface DatosMadre {
   semanas_gestacion: string;
   inicio_contracciones: string;
   frecuencia_contracciones: string;
@@ -54,35 +53,38 @@ export interface FormsMadreData {
 type MinutoKey = keyof ApgarState;
 type SignoKey = keyof ApgarMinuto;
 
-interface FormsMadreProps {
-  value?: Partial<FormsMadreData>;
-  onChange?: (data: Partial<FormsMadreData>) => void;
+interface Props {
+  value: DatosMadre;
+  onChange: (patch: Partial<DatosMadre>) => void;
 }
 
-const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
+const FormsMadre = ({ value, onChange }: Props) => {
   const isSmall = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
-  // Estado inicial con valores por defecto
-  const [formData, setFormData] = useState<FormsMadreData>({
-    semanas_gestacion: "",
-    inicio_contracciones: "",
-    frecuencia_contracciones: "",
-    duracion_contracciones: "",
-    hora_nacimiento: "",
-    placenta_expulsada: "",
-    lugar_nacimiento: "",
-    estado_producto: "",
-    sexo_producto: "",
-    edad_gestacional: "",
-    apgar: {
-      minuto1: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-      minuto5: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-      minuto10: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-      minuto15: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-      minuto20: { color: "", fc: "", reflejos: "", tono: "", respiracion: "" },
-    },
-    ...value,
-  });
+  // Handler para cambios en campos simples
+  const handleMadreChange = 
+    (field: keyof DatosMadre) => 
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const fieldValue = e.target.value;
+        onChange({ [field]: fieldValue } as Partial<DatosMadre>);
+      };
+
+  // Handler para campos numéricos
+  const handleNumberInput = (field: keyof DatosMadre) => 
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const fieldValue = e.target.value;
+      if (fieldValue === "" || (!isNaN(Number(fieldValue)) && Number(fieldValue) >= 0)) {
+        onChange({ [field]: fieldValue } as Partial<DatosMadre>);
+      }
+    };
+
+  // Handler para ToggleButtons
+  const handleToggleChange = (field: keyof DatosMadre) => 
+    (e: React.MouseEvent<HTMLElement>, newValue: string | null) => {
+      if (newValue !== null) {
+        onChange({ [field]: newValue } as Partial<DatosMadre>);
+      }
+    };
 
   // Actualizar Apgar
   const handleApgarChange = (
@@ -91,62 +93,18 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
     valor: string,
   ) => {
     const newApgar = {
-      ...formData.apgar,
-      [minuto]: { ...formData.apgar[minuto], [signo]: valor },
+      ...value.apgar,
+      [minuto]: { ...value.apgar[minuto], [signo]: valor },
     };
 
-    const newData = {
-      ...formData,
-      apgar: newApgar,
-    };
-
-    setFormData(newData);
-    onChange?.(newData);
+    onChange({ apgar: newApgar });
   };
 
   // Calcular puntaje por minuto
   const calcularPuntaje = (minuto: MinutoKey) => {
-    return Object.values(formData.apgar[minuto])
+    return Object.values(value.apgar[minuto])
       .map((v) => (v === "" ? 0 : Number(v)))
       .reduce((a, b) => a + b, 0);
-  };
-
-  // Manejar cambios en el formulario
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const newData = {
-      ...formData,
-      [name]: value,
-    };
-
-    setFormData(newData);
-    onChange?.(newData);
-  };
-
-  // Manejar cambios en ToggleButtons
-  const handleToggleChange = (field: string, value: string) => {
-    const newData = {
-      ...formData,
-      [field]: value,
-    };
-
-    setFormData(newData);
-    onChange?.(newData);
-  };
-
-  // Permitir solo números positivos o vacío
-  const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    if (value === "" || (!isNaN(Number(value)) && Number(value) >= 0)) {
-      const newData = {
-        ...formData,
-        [name]: value,
-      };
-
-      setFormData(newData);
-      onChange?.(newData);
-    }
   };
 
   // Arrays tipados para el mapeo
@@ -230,8 +188,8 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
             name="semanas_gestacion"
             label="Semanas de gestación"
             type="number"
-            value={formData.semanas_gestacion}
-            onChange={handleNumberInput}
+            value={value.semanas_gestacion}
+            onChange={handleNumberInput('semanas_gestacion')}
             fullWidth
             margin="normal"
             required
@@ -242,8 +200,8 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
             name="inicio_contracciones"
             label="Inicio de contracciones"
             type="datetime-local"
-            value={formData.inicio_contracciones}
-            onChange={handleChange}
+            value={value.inicio_contracciones}
+            onChange={handleMadreChange('inicio_contracciones')}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
@@ -263,8 +221,8 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
             name="frecuencia_contracciones"
             label="Frecuencia contracciones (min)"
             type="number"
-            value={formData.frecuencia_contracciones}
-            onChange={handleNumberInput}
+            value={value.frecuencia_contracciones}
+            onChange={handleNumberInput('frecuencia_contracciones')}
             fullWidth
             margin="normal"
             inputProps={{ min: "0", step: "0.5" }}
@@ -276,8 +234,8 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
             name="duracion_contracciones"
             label="Duración contracciones (seg)"
             type="number"
-            value={formData.duracion_contracciones}
-            onChange={handleNumberInput}
+            value={value.duracion_contracciones}
+            onChange={handleNumberInput('duracion_contracciones')}
             fullWidth
             margin="normal"
             inputProps={{ min: "0", max: "120" }}
@@ -308,8 +266,8 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
             name="hora_nacimiento"
             label="Hora de nacimiento"
             type="datetime-local"
-            value={formData.hora_nacimiento}
-            onChange={handleChange}
+            value={value.hora_nacimiento}
+            onChange={handleMadreChange('hora_nacimiento')}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
@@ -320,8 +278,8 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
             name="placenta_expulsada"
             label="Hora expulsión placenta"
             type="datetime-local"
-            value={formData.placenta_expulsada}
-            onChange={handleChange}
+            value={value.placenta_expulsada}
+            onChange={handleMadreChange('placenta_expulsada')}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
@@ -333,8 +291,8 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
           <TextField
             name="lugar_nacimiento"
             label="Lugar de nacimiento"
-            value={formData.lugar_nacimiento}
-            onChange={handleChange}
+            value={value.lugar_nacimiento}
+            onChange={handleMadreChange('lugar_nacimiento')}
             fullWidth
             margin="normal"
             variant="standard"
@@ -355,13 +313,9 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
               Producto:
             </Typography>
             <ToggleButtonGroup
-              value={formData.estado_producto}
+              value={value.estado_producto}
               exclusive
-              onChange={(e, value) => {
-                if (value !== null) {
-                  handleToggleChange("estado_producto", value);
-                }
-              }}
+              onChange={handleToggleChange('estado_producto')}
             >
               <ToggleButton
                 value="0"
@@ -407,13 +361,9 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
               Sexo:
             </Typography>
             <ToggleButtonGroup
-              value={formData.sexo_producto}
+              value={value.sexo_producto}
               exclusive
-              onChange={(e, value) => {
-                if (value !== null) {
-                  handleToggleChange("sexo_producto", value);
-                }
-              }}
+              onChange={handleToggleChange('sexo_producto')}
             >
               <ToggleButton
                 value="0"
@@ -458,8 +408,8 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
             name="edad_gestacional"
             label="Edad gestacional"
             type="number"
-            value={formData.edad_gestacional}
-            onChange={handleNumberInput}
+            value={value.edad_gestacional}
+            onChange={handleNumberInput('edad_gestacional')}
             margin="normal"
             variant="standard"
             sx={{ minWidth: 150 }}
@@ -522,7 +472,7 @@ const FormsMadre = ({ value = {}, onChange }: FormsMadreProps) => {
                       <TextField
                         select
                         size="small"
-                        value={formData.apgar[minuto][signo.key]}
+                        value={value.apgar[minuto][signo.key]}
                         onChange={(e) =>
                           handleApgarChange(minuto, signo.key, e.target.value)
                         }

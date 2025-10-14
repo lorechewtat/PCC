@@ -4,27 +4,52 @@ import logo from './logo_alcaldia.png'; // Ajusta la ruta de tu logo
 import logoHosp from './hosp.png'; // Ajusta la ruta de tu logo
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
-const HeaderAtencionPrehospitalaria = () => {
+export type Cronometria = {
+  fecha: string;
+  id: string;
+  horaLlamada: string;
+  horaSalida: string;
+  horaLlegada: string;
+  horaTraslado: string;
+  horaHospital: string;
+  horaSalidaHospital: string;
+  horaBase: string;
+}
+
+type Props = {
+  value: Cronometria;
+  onChange: (patch: Partial<Cronometria>) => void;
+}
+
+const HeaderAtencionPrehospitalaria = ({ value, onChange }: Props) => {
+  const handleCronometriaChange = 
+    (field: keyof Cronometria) => 
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      onChange({ [field]: value });
+    };
+  
+  
   const isMobile = window.innerWidth <= 768;
   const hoy = new Date().toISOString().split('T')[0];
   return (
     <Box
-    
+
       display="flex"
       flexDirection="column"
       alignItems="start"
       justifyContent="space-between"
     >
-          <Box
+      <Box
         component="img"
-        src={logo} 
+        src={logo}
         alt="Logo"
-       sx={{
-         width: '100',  
-         height: 'auto',   
-         maxWidth: '30vw', 
-         paddingBottom: 5
-         }}
+        sx={{
+          width: '100',
+          height: 'auto',
+          maxWidth: '30vw',
+          paddingBottom: 5
+        }}
       />
 <Box
   display="flex"
@@ -48,108 +73,118 @@ const HeaderAtencionPrehospitalaria = () => {
       >Atención Prehospitalaria
       </Typography>
 
-      {/* Imagen a la derecha */}
-      <Box
-        component="img"
-        src={logoHosp} // o usa una URL local o externa
-        alt="Logo"
-        sx={{ width: '70px',  
-         height: 'auto',   
+        {/* Imagen a la derecha */}
+        <Box
+          component="img"
+          src={logoHosp} // o usa una URL local o externa
+          alt="Logo"
+          sx={{
+            width: '70px',
+            height: 'auto',
           }}
-      />
-    </Box>
-     
-     <Box 
-      width="100%"
-     display="flex"
-      flexDirection="column"
-      alignItems="flex-start" 
-      justifyContent="space-between">
+        />
+      </Box>
 
-           <Typography
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-start"
+        justifyContent="space-between">
 
-        variant="h5"
-        gutterBottom
-        sx={{ 
-          
-          paddingBottom:3,
-         fontWeight:"regular",
-          fontSize : 14,
-          color: 'primary.main' }}
-      >Rellena tu información con cuidado
-      </Typography>
-     </Box>
-        <Box display="flex" 
-        justifyContent={isMobile ? "space-between" : "flex-start"} 
-        flexDirection="row" gap={2} width="100%">
-   
-     <TextField
-        label="FECHA"
-        type="date"
-        
-        defaultValue={hoy}
-        variant="standard"  
-                 
-        sx={
-          {
-            paddingRight:"20px",
-            color: 'primary.main' 
-          }
-        }
-        InputLabelProps={{ shrink: true }}
-      />
+        <Typography
 
-    <TextField
-  color="primary"
-  label="FOLIO ####"
-  type="number"
-  variant="standard"
-  placeholder="N° DE FOLIO"
-  sx={{
-    width: "130px",
-    // Texto dentro del input
-    '& .MuiInput-input': {
-      color: 'primary.main',
-    },
-    // Label
-    '& .MuiInput-label': {
-      color: 'primary.main',
-    },
-    // Línea inferior
-    '& .MuiInput-underline:before': {
-      borderBottomColor: 'primary.main',
-    },
-    '& .MuiInput-underline:hover:before': {
-      borderBottomColor: 'primary.main',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'primary.main',
-    },
-    // Placeholder
-    '& input::placeholder': {
-      color: 'primary.main',
-      opacity: 1,
-    },
-    // Quitar flechas de número
-    '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
-      WebkitAppearance: 'none',
-      margin: 0,
-    },
-    '& input[type=number]': {
-      MozAppearance: 'textfield',
-    },
-  }}
-/>
-    </Box>
- <Box>
+          variant="h5"
+          gutterBottom
+          sx={{
 
-      <Box display="flex" alignItems="center" mb={2} paddingTop={2}>
-       
-        <Typography variant="h6" color="primary">
-          CRONOMETRÍA
+            paddingBottom: 3,
+            fontWeight: "regular",
+            fontSize: 14,
+            color: 'primary.main'
+          }}
+        >Rellena tu información con cuidado
         </Typography>
-         <AccessTimeIcon sx={{ mr: 1, color: 'primary.main' }} />
-      </Box >
+      </Box>
+      <Box display="flex"
+        justifyContent={isMobile ? "space-between" : "flex-start"}
+        flexDirection="row" gap={2} width="100%">
+
+        <TextField
+          label="FECHA"
+          type="date"
+          name='fecha'
+          value={value.fecha}
+          onChange={handleCronometriaChange('fecha')}
+
+          defaultValue={hoy}
+          variant="standard"
+
+          sx={
+            {
+              paddingRight: "20px",
+              color: 'primary.main'
+            }
+          }
+          InputLabelProps={{ shrink: true }}
+        />
+
+        <TextField
+          color="primary"
+          label="FOLIO ####"
+          type="number"
+          variant="standard"
+          placeholder="N° DE FOLIO"
+          name='id'
+          value={value.id}
+          onChange={handleCronometriaChange('id')}
+          InputLabelProps={{ shrink: true }}
+          inputProps={{ min: 0 }}
+          sx={{
+            width: "130px",
+            // Texto dentro del input
+            '& .MuiInput-input': {
+              color: 'primary.main',
+            },
+            // Label
+            '& .MuiInput-label': {
+              color: 'primary.main',
+            },
+            // Línea inferior
+            '& .MuiInput-underline:before': {
+              borderBottomColor: 'primary.main',
+            },
+            '& .MuiInput-underline:hover:before': {
+              borderBottomColor: 'primary.main',
+            },
+            '& .MuiInput-underline:after': {
+              borderBottomColor: 'primary.main',
+            },
+            // Placeholder
+            '& input::placeholder': {
+              color: 'primary.main',
+              opacity: 1,
+            },
+            // Quitar flechas de número
+            '& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button': {
+              WebkitAppearance: 'none',
+              margin: 0,
+            },
+            '& input[type=number]': {
+              MozAppearance: 'textfield',
+            },
+          }}
+        />
+      </Box>
+      <Box>
+
+        <Box display="flex" alignItems="center" mb={2} paddingTop={2}>
+
+          <Typography variant="h6" color="primary">
+            CRONOMETRÍA
+          </Typography>
+          <AccessTimeIcon sx={{ mr: 1, color: 'primary.main' }} />
+        </Box >
 
       {/* CAMPOS DE HORA FUERA DEL CONTAINER */}
       <Box sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2, width:{xs: "20rem", sm: "40rem"} }}>
@@ -159,13 +194,16 @@ const HeaderAtencionPrehospitalaria = () => {
       sm: 'repeat(2, 1fr)',
     },
     display: 'grid',
-  }}>
+  }}>  
   {/* Columna 1 */}
   <Grid  sx={{ flex: 1, minWidth: 150 }}>
     <TextField
+      name='horaLlamada'
       label="HORA DE LLAMADA"
       type="time"
       variant="standard"
+      value={value.horaLlamada}
+      onChange={handleCronometriaChange('horaLlamada')}
       InputLabelProps={{ shrink: true }}
       inputProps={{ step: 300 }}
       fullWidth
@@ -175,6 +213,9 @@ const HeaderAtencionPrehospitalaria = () => {
       label="HORA DE SALIDA"
       type="time"
       variant="standard"
+      name='horaSalida'
+      value={value.horaSalida}
+      onChange={handleCronometriaChange('horaSalida')}
       InputLabelProps={{ shrink: true }}
       inputProps={{ step: 300 }}
       fullWidth
@@ -184,6 +225,9 @@ const HeaderAtencionPrehospitalaria = () => {
       label="HORA DE LLEGADA"
       type="time"
       variant="standard"
+      name='horaLlegada'
+      value={value.horaLlegada}
+      onChange={handleCronometriaChange('horaLlegada')}
       InputLabelProps={{ shrink: true }}
       inputProps={{ step: 300 }}
       fullWidth
@@ -193,47 +237,59 @@ const HeaderAtencionPrehospitalaria = () => {
       label="HORA DE TRASLADO"
       type="time"
       variant="standard"
+      name='horaTraslado'
+      value={value.horaTraslado}
+      onChange={handleCronometriaChange('horaTraslado')}
       InputLabelProps={{ shrink: true }}
       inputProps={{ step: 300 }}
       fullWidth
     />
   </Grid>
 
-  {/* Columna 2 */}
-  <Grid  sx={{ flex: 1, minWidth: 150 }}>
-    <TextField
-      label="HORA HOSPITAL"
-      type="time"
-      variant="standard"
-      InputLabelProps={{ shrink: true }}
-      inputProps={{ step: 300 }}
-      fullWidth
-      sx={{ mb: 2 }}
-    />
-    <TextField
-      label="SALIDA HOSPITAL"
-      type="time"
-      variant="standard"
-      InputLabelProps={{ shrink: true }}
-      inputProps={{ step: 300 }}
-      fullWidth
-      sx={{ mb: 2 }}
-    />
-    <TextField
-      label="HORA BASE"
-      type="time"
-      variant="standard"
-      InputLabelProps={{ shrink: true }}
-      inputProps={{ step: 300 }}
-      fullWidth
-    />
-  </Grid>
-</Grid>
-</Box>
+            {/* Columna 2 */}
+            <Grid sx={{ flex: 1, minWidth: 150 }}>
+              <TextField
+                label="HORA HOSPITAL"
+                type="time"
+                variant="standard"
+                name='horaHospital'
+                value={value.horaHospital}
+                onChange={handleCronometriaChange('horaHospital')}
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ step: 300 }}
+                fullWidth
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                label="SALIDA HOSPITAL"
+                type="time"
+                variant="standard"
+                name='horaSalidaHospital'
+                value={value.horaSalidaHospital}
+                onChange={handleCronometriaChange('horaSalidaHospital')}
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ step: 300 }}
+                fullWidth
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                label="HORA BASE"
+                type="time"
+                variant="standard"
+                name='horaBase'
+                value={value.horaBase}
+                onChange={handleCronometriaChange('horaBase')}
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ step: 300 }}
+                fullWidth
+              />
+            </Grid>
+          </Grid>
+        </Box>
 
 
-     
-    </Box>
+
+      </Box>
     </Box>
 
 
