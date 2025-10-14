@@ -1,17 +1,7 @@
 import { Box, TextField, Typography, ToggleButton, ToggleButtonGroup, Divider, Stack, Table, TableHead, TableBody, TableRow, TableCell, TableContainer, Paper} from '@mui/material';
-import {useState } from 'react';
-import { useNotify } from "react-admin";
+import React from 'react';
 
-const TratamientoP2 = () => {
-    const commonBtnSx = {
-        backgroundColor: '#8E8E8E',
-        color: '#f3f3f3ff',
-        '&.Mui-selected': { backgroundColor: 'primary.main', color: 'white', borderColor: 'primary.main' },
-        '&:hover': { backgroundColor: '#8E8E8E', color: 'white', borderColor: '#8E8E8E', cursor: 'pointer' },
-    }
-
-    //const notify = useNotify();
-    type FormState = {
+export interface TratamientoP2 {
   hora1: string;
   hora2: string;
   medicamento1: string;
@@ -21,39 +11,62 @@ const TratamientoP2 = () => {
   via_admin1: string;
   via_admin2: string;
   dr: string;
-  controlHemo: string | null;
-  viasYSolucion: string | null;
+  controlHemo: string;
+  viasYSolucion: string;
   atencion: string[];
-  pertenecias: string;
+  pertenencias: string;
+}
+
+type Props = {
+  value: TratamientoP2;
+  onChange: (patch: Partial<TratamientoP2>) => void;
 };
 
-const [form, setForm] = useState<FormState>({
-  hora1: "",
-  hora2: "",
-  medicamento1: "",
-  medicamento2: "",
-  dosis1: "",
-  dosis2: "",
-  via_admin1: "",
-  via_admin2: "",
-  dr: "",
-  controlHemo: null,
-  viasYSolucion: null,
-  atencion: [],
-  pertenecias: ""
-});
+const TratamientoP2Section = ({ value, onChange }: Props) => {
+    const commonBtnSx = {
+        backgroundColor: '#8E8E8E',
+        color: '#f3f3f3ff',
+        '&.Mui-selected': { backgroundColor: 'primary.main', color: 'white', borderColor: 'primary.main' },
+        '&:hover': { backgroundColor: '#8E8E8E', color: 'white', borderColor: '#8E8E8E', cursor: 'pointer' },
+    };
 
-const filas = [
-  { id: "fila1", hora: "hora1", medicamento: "medicamento1", dosis: "dosis1", via: "via_admin1" },
-  { id: "fila2", hora: "hora2", medicamento: "medicamento2", dosis: "dosis2", via: "via_admin2" },
-] as const;
+    const filas = [
+      { id: "fila1", hora: "hora1", medicamento: "medicamento1", dosis: "dosis1", via: "via_admin1" },
+      { id: "fila2", hora: "hora2", medicamento: "medicamento2", dosis: "dosis2", via: "via_admin2" },
+    ] as const;
 
-    // setter genérico
-    const setField = <K extends keyof FormState>(key: K) =>
-  (value: FormState[K]) => setForm(prev => ({ ...prev, [key]: value }));
+    // Handler functions
+    const handleFieldChange = (field: keyof TratamientoP2) => 
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange({ [field]: e.target.value });
+      };
+
+    const handleControlHemoChange = (newValue: string | null) => {
+      if (newValue !== null) {
+        onChange({ controlHemo: newValue });
+      }
+    };
+
+    const handleViasYSolucionChange = (newValue: string | null) => {
+      if (newValue !== null) {
+        onChange({ viasYSolucion: newValue });
+      }
+    };
+
+    const handleAtencionChange = (newValues: string[]) => {
+      onChange({ atencion: newValues });
+    };
 
     return (
     <Box>
+      <Divider sx={{ my: 5}} />
+      
+      {/* TITULO SECCION*/}
+      <Box display="flex" alignItems="center" mb={2}>
+        <Typography variant="h6" color="primary">
+          TRATAMIENTO - PARTE 2
+        </Typography>
+      </Box>
 
       <Box
         display="flex"
@@ -72,8 +85,8 @@ const filas = [
             }}
         >
         <Table size="small" stickyHeader sx={{ mb: 2,
-            minWidth: 640,            // fuerza “ancho mínimo” para que aparezca scroll si no cabe
-            tableLayout: 'fixed',     // columnas más predecibles (evita “bailes”)
+            minWidth: 640,            // fuerza "ancho mínimo" para que aparezca scroll si no cabe
+            tableLayout: 'fixed',     // columnas más predecibles (evita "bailes")
             '& th, & td': {
                 whiteSpace: 'nowrap',   //evita que brinque a otra línea
                 overflow: 'hidden',
@@ -98,8 +111,8 @@ const filas = [
                     type="time"
                     size="small"
                     variant="standard"
-                    value={form[fila.hora]}
-                    onChange={(e) => setField(fila.hora)(e.target.value)}
+                    value={value[fila.hora]}
+                    onChange={handleFieldChange(fila.hora)}
                     InputLabelProps={{ shrink: true }}
                     />
                 </TableCell>
@@ -108,8 +121,8 @@ const filas = [
                     <TextField
                     size="small"
                     variant="standard"
-                    value={form[fila.medicamento]}
-                    onChange={(e) => setField(fila.medicamento)(e.target.value)}
+                    value={value[fila.medicamento]}
+                    onChange={handleFieldChange(fila.medicamento)}
                     />
                 </TableCell>
 
@@ -117,8 +130,8 @@ const filas = [
                     <TextField
                     size="small"
                     variant="standard"
-                    value={form[fila.dosis]}
-                    onChange={(e) => setField(fila.dosis)(e.target.value)}
+                    value={value[fila.dosis]}
+                    onChange={handleFieldChange(fila.dosis)}
                     />
                 </TableCell>
 
@@ -126,8 +139,8 @@ const filas = [
                     <TextField
                     size="small"
                     variant="standard"
-                    value={form[fila.via]}
-                    onChange={(e) => setField(fila.via)(e.target.value)}
+                    value={value[fila.via]}
+                    onChange={handleFieldChange(fila.via)}
                     />
                 </TableCell>
             </TableRow>
@@ -141,8 +154,8 @@ const filas = [
           variant="standard"
           fullWidth
           required
-          value={form.dr}
-          onChange={e => setField('dr')(e.target.value)}
+          value={value.dr}
+          onChange={handleFieldChange('dr')}
         />
     </Box>
         
@@ -151,9 +164,9 @@ const filas = [
         </Typography>
 
         <ToggleButtonGroup
-          value={form.controlHemo}
+          value={value.controlHemo}
           exclusive
-          onChange={(_, v) => setField('controlHemo')(v)}
+          onChange={(_, v) => handleControlHemoChange(v)}
           sx={{ display: 'grid', gridTemplateColumns: "repeat(3, 1fr)" ,gap: 1, mb: 2, 
             "& .MuiToggleButton-root": {
                 borderRadius: 2,      // fuerza esquinas redondeadas
@@ -168,7 +181,6 @@ const filas = [
           <ToggleButton sx={commonBtnSx} value="Vendaje Compresivo">Vendaje Compresivo</ToggleButton>
           <ToggleButton sx={commonBtnSx} value="Crioterapia">Crioterapia</ToggleButton>
           <ToggleButton sx={commonBtnSx} value="Mast">Mast</ToggleButton>
-          
         </ToggleButtonGroup>
 
         <Typography variant="body1" sx={{color: "gray" }}>
@@ -176,9 +188,9 @@ const filas = [
         </Typography>
 
         <ToggleButtonGroup
-          value={form.viasYSolucion}
+          value={value.viasYSolucion}
           exclusive
-          onChange={(_, v) => setField('viasYSolucion')(v)}
+          onChange={(_, v) => handleViasYSolucionChange(v)}
           sx={{mb: 1,
             display: 'flex',
             flexWrap: 'wrap',   
@@ -203,8 +215,8 @@ const filas = [
         </Typography>
 
         <ToggleButtonGroup
-          value={form.atencion}
-          onChange={(_, v: string[]) => setField('atencion')(v)}
+          value={value.atencion}
+          onChange={(_, v: string[]) => handleAtencionChange(v)}
           sx={{ display: 'grid', gridTemplateColumns: {
                 xs: 'repeat(2, 1fr)',     // teléfonos
                 sm: 'repeat(2, 1fr)',     // tablets
@@ -226,21 +238,17 @@ const filas = [
           <ToggleButton sx={commonBtnSx} value="Empaquetamiento">Empaquetamiento</ToggleButton>
           <ToggleButton sx={commonBtnSx} value="Vendaje">Vendaje</ToggleButton>
         </ToggleButtonGroup>
+        
         <TextField
                 label="PERTENENCIAS"
                 variant="standard"
                 required
-                value={form.pertenecias}
-                onChange={e => setField('pertenecias')(e.target.value)}
+                value={value.pertenencias}
+                onChange={handleFieldChange('pertenencias')}
         />
-
       </Box>
-
-      <Divider sx={{ my: 5}}/>
     </Box>
-
   );
-
 };
 
-export default TratamientoP2;
+export default TratamientoP2Section;

@@ -1,66 +1,61 @@
-import { useState } from 'react';
-import { Box,  TextField, Typography, ToggleButton, ToggleButtonGroup, Divider, Table, 
+import { Box, TextField, Typography, ToggleButton, ToggleButtonGroup, Divider, Table, 
     TableBody, TableCell, TableContainer, TableRow, Paper, Checkbox} from '@mui/material';
 import HealingIcon from '@mui/icons-material/HealingOutlined';
 
-interface TratamientoUnoInicialState {
-  viaAerea : string[]; 
-  controlCervical : string;
-  asVentilatoria : string[];
-  ltsXMin : string;
+export interface TratamientoUno {
+  viaAerea: string[]; 
+  controlCervical: string;
+  asVentilatoria: string[];
+  ltsXMin: string;
 }
 
-const initialState: TratamientoUnoInicialState = {
-  viaAerea : [],
-  controlCervical : '',
-  asVentilatoria : [],
-  ltsXMin : '',
+type Props = {
+  value: TratamientoUno;
+  onChange: (patch: Partial<TratamientoUno>) => void;
 };
 
 const toggleStyle = {
-        backgroundColor: '#8E8E8E',
-        color: '#f3f3f3',
-        width: "180px",
-        height: "50px",
-        maxWidth: "200px",
-        '&.Mui-selected': {
+    backgroundColor: '#8E8E8E',
+    color: '#f3f3f3',
+    width: "180px",
+    height: "50px",
+    maxWidth: "200px",
+    '&.Mui-selected': {
         backgroundColor: 'primary.main',
         color: 'white',
-        },
-        '&:hover': {
+    },
+    '&:hover': {
         backgroundColor: '#8E8E8E',
         color: 'white',
-        },
+    },
 };
 
-const TratamientoUno = () => {
+const TratamientoUnoSection = ({ value, onChange }: Props) => {
     const isMobile = window.innerWidth <= 768;
-    const [tratamiento_uno , setTratamientoUno] = useState<TratamientoUnoInicialState>(initialState);
 
+    const handleViaAereaChange = (newValues: string[]) => {
+        onChange({ viaAerea: newValues });
+    };
 
-    const toggleTratamientoUnoOption = (key: keyof TratamientoUnoInicialState, value: string) => {
-    setTratamientoUno((prev) => {
-        const current = prev[key] as string[];
+    const handleControlCervicalChange = (newValue: string) => {
+        onChange({ controlCervical: newValue });
+    };
 
-        if (Array.isArray(current)) {
-            const exists = current.includes(value);
-            return {
-                ...prev,
-                [key]: exists ? current.filter((v) => v !== value) : [...current, value],
-            };
-        }
+    const handleAsVentilatoriaChange = (option: string) => {
+        const current = value.asVentilatoria;
+        const exists = current.includes(option);
+        const newValues = exists 
+            ? current.filter((v) => v !== option) 
+            : [...current, option];
+        onChange({ asVentilatoria: newValues });
+    };
 
-        return {
-            ...prev,
-            [key]: value,
-        };
-
-        });
+    const handleLtsXMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange({ ltsXMin: e.target.value });
     };
 
     return(
         <Box>
-
             <Divider sx={{ my: 5 }} />
             {/* TITULO SECCION*/}
             <Box display="flex" alignItems="center" mb={2}>
@@ -109,11 +104,9 @@ const TratamientoUno = () => {
                     >
 
                         <ToggleButtonGroup
-                            value={tratamiento_uno.viaAerea}
-                            onChange={(e, newValues) =>
-                                setTratamientoUno({ ...tratamiento_uno, viaAerea: newValues })
-                            }
-                            orientation="vertical" // Cambia la orientación a vertical
+                            value={value.viaAerea}
+                            onChange={(e, newValues) => handleViaAereaChange(newValues)}
+                            orientation="vertical"
                             sx={{
                                 display: "flex",
                                 flexDirection: "column", 
@@ -128,11 +121,9 @@ const TratamientoUno = () => {
                         </ToggleButtonGroup>
 
                         <ToggleButtonGroup
-                            value={tratamiento_uno.viaAerea}
-                            onChange={(e, newValues) =>
-                                setTratamientoUno({ ...tratamiento_uno, viaAerea: newValues })
-                            }
-                            orientation="vertical" // Cambia la orientación a vertical
+                            value={value.viaAerea}
+                            onChange={(e, newValues) => handleViaAereaChange(newValues)}
+                            orientation="vertical"
                             sx={{
                                 display: "flex",
                                 flexDirection: "column", 
@@ -147,11 +138,9 @@ const TratamientoUno = () => {
                         </ToggleButtonGroup>
 
                         <ToggleButtonGroup
-                            value={tratamiento_uno.viaAerea}
-                            onChange={(e, newValues) =>
-                                setTratamientoUno({ ...tratamiento_uno, viaAerea: newValues })
-                            }
-                            orientation="vertical" // Cambia la orientación a vertical
+                            value={value.viaAerea}
+                            onChange={(e, newValues) => handleViaAereaChange(newValues)}
+                            orientation="vertical"
                             sx={{
                                 display: "flex",
                                 flexDirection: "column", 
@@ -166,11 +155,9 @@ const TratamientoUno = () => {
                         </ToggleButtonGroup>
 
                         <ToggleButtonGroup
-                            value={tratamiento_uno.viaAerea}
-                            onChange={(e, newValues) =>
-                                setTratamientoUno({ ...tratamiento_uno, viaAerea: newValues })
-                            }
-                            orientation="vertical" // Cambia la orientación a vertical
+                            value={value.viaAerea}
+                            onChange={(e, newValues) => handleViaAereaChange(newValues)}
+                            orientation="vertical"
                             sx={{
                                 display: "flex",
                                 flexDirection: "column", 
@@ -204,11 +191,10 @@ const TratamientoUno = () => {
 
                 {/* Botones */}
                 <ToggleButtonGroup
-                    value={tratamiento_uno.controlCervical}
+                    value={value.controlCervical}
                     exclusive
                     onChange={(e, val) => {
-                    if (val !== null)
-                        setTratamientoUno({ ...tratamiento_uno, controlCervical: val });
+                        if (val !== null) handleControlCervicalChange(val);
                     }}
                 
                     sx={{
@@ -264,8 +250,8 @@ const TratamientoUno = () => {
                             { left: "MASCARILLA SIMPLE", right: "MASCARILLA VENTURI" },
                             { left: "VENTILADOR AUTOMÁTICO", right: <TextField
                                                                     placeholder="LTS/MIN"
-                                                                    value={tratamiento_uno.ltsXMin}
-                                                                    onChange={(e) => setTratamientoUno({ ...tratamiento_uno, ltsXMin: e.target.value })}
+                                                                    value={value.ltsXMin}
+                                                                    onChange={handleLtsXMinChange}
                                                                     variant="standard"
                                                                     size="small"
                                                                     type="number"
@@ -278,10 +264,8 @@ const TratamientoUno = () => {
                                 <Checkbox
                                     size="small"
                                     color="primary"
-                                    checked={tratamiento_uno.asVentilatoria.includes(row.left)}
-                                    onChange={() =>
-                                    toggleTratamientoUnoOption("asVentilatoria", row.left)
-                                    }
+                                    checked={value.asVentilatoria.includes(row.left)}
+                                    onChange={() => handleAsVentilatoriaChange(row.left)}
                                 />
                                 </TableCell>
 
@@ -295,16 +279,18 @@ const TratamientoUno = () => {
                                 <Checkbox
                                     size="small"
                                     color="primary"
-                                    checked={tratamiento_uno.asVentilatoria.includes(row.right)}
-                                    onChange={() =>
-                                    toggleTratamientoUnoOption("asVentilatoria", row.right)
-                                    }
+                                    checked={value.asVentilatoria.includes(typeof row.right === 'string' ? row.right : 'LTS_MIN')}
+                                    onChange={() => handleAsVentilatoriaChange(typeof row.right === 'string' ? row.right : 'LTS_MIN')}
                                 />
                                 </TableCell>
 
                                 {/* Columna 4: Texto derecho */}
                                 <TableCell sx={{ width: "40%" }}>
-                                <Typography fontSize={14}>{row.right}</Typography>
+                                {typeof row.right === 'string' ? (
+                                    <Typography fontSize={14}>{row.right}</Typography>
+                                ) : (
+                                    row.right
+                                )}
                                 </TableCell>
                             </TableRow>
                             ))}
@@ -317,4 +303,4 @@ const TratamientoUno = () => {
     );
 };
 
-export default TratamientoUno;
+export default TratamientoUnoSection;

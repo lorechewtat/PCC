@@ -5,60 +5,83 @@ import ChildIcon from '@mui/icons-material/ChildCareOutlined';
 import SickIcon from '@mui/icons-material/SickOutlined';
 import TraumaIcon from '@mui/icons-material/LocalHospitalOutlined';
 
-const MotivoAtencionPrehospitalaria = () => {
+export type DatosMotivoAtencion = {
+  calle: string;
+  entreCalle1: string;
+  entreCalle2: string;
+  colonia: string;
+  alcaldia: string;
+};
+
+type Props = {
+  value: DatosMotivoAtencion;
+  onChange: (patch: Partial<DatosMotivoAtencion>) => void;
+}
+
+const MotivoAtencionPrehospitalaria = ({ value, onChange }: Props) => {
+  // Función para manejar cambios en los campos
+  const handleMotivoChange =
+    (field: keyof DatosMotivoAtencion) =>
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        onChange({ [field]: value } as Partial<DatosMotivoAtencion>);
+      };
+
   const isMobile = window.innerWidth <= 768;
   const [selected, setSelected] = React.useState(""); // Estado para el botón seleccionado
   const azulOscuro = "#203972";
   const grisClaro = "#8E8E8E";
   return (
     <Box
-    
+
       display="flex"
       flexDirection="column"
       alignItems="start"
       justifyContent="space-between"
     >
-    
-    <Box
+
+      <Box
         display="flex"
         width="100%"
         flexDirection="row"
         alignItems="center"
-        justifyContent="space-between" 
-        margin = "20px 0px 5px 5px"
-    >
-     
-      <Typography
-        variant="h6"
-        sx={{ 
-          width:"100%",
-          fontSize : 24,
-          color: 'primary.main' }}
-      > Motivo de la atención
-      </Typography>
-    </Box>
-     
-     <Box 
-      width="100%"
-     display="flex"
-      flexDirection="column"
-      alignItems="flex-start" 
-      justifyContent="space-between"
-      margin = "0px 0px 0px 5px">
+        justifyContent="space-between"
+        margin="20px 0px 5px 5px"
+      >
+
+        <Typography
+          variant="h6"
+          sx={{
+            width: "100%",
+            fontSize: 24,
+            color: 'primary.main'
+          }}
+        > Motivo de la atención
+        </Typography>
+      </Box>
+
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-start"
+        justifyContent="space-between"
+        margin="0px 0px 0px 5px">
 
         <Typography
 
-            variant="h5"
-            gutterBottom
-            sx={{ 
-          
-          paddingBottom:3,
-         fontWeight:"regular",
-          fontSize : 14,
-          color: 'primary.main' }}
-      >Presiona el motivo para desplegar los demás campos
-      </Typography>
-     </Box>
+          variant="h5"
+          gutterBottom
+          sx={{
+
+            paddingBottom: 3,
+            fontWeight: "regular",
+            fontSize: 14,
+            color: 'primary.main'
+          }}
+        >Presiona el motivo para desplegar los demás campos
+        </Typography>
+      </Box>
 
 {/* SECCIÓN DE BOTONES */}
 <Box display ="flex" 
@@ -68,29 +91,32 @@ const MotivoAtencionPrehospitalaria = () => {
   justifyContent={isMobile ? "space-between" : "center"}
   alignItems="flex-start">
 
-        <Button 
-        onClick = {() => setSelected("enfermedad")}
-        variant = "contained" 
-        sx={{ width: "29%", border: 2, borderColor:selected === "enfermedad" ? azulOscuro : grisClaro, 
-              borderRadius: 1.5, p: 2, 
-              backgroundColor: selected === "enfermedad" ? azulOscuro : grisClaro}}>
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <Typography
+        <Button
+          onClick={() => setSelected("enfermedad")}
+          variant="contained"
+          sx={{
+            width: "29%", border: 2, borderColor: selected === "enfermedad" ? azulOscuro : grisClaro,
+            borderRadius: 1.5, p: 2,
+            backgroundColor: selected === "enfermedad" ? azulOscuro : grisClaro
+          }}>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography
 
-            variant="h5"
-            gutterBottom
-            align="center"
-            sx={{ 
-          
-          fontSize : 12,
-          fontWeight: "bold",
-          color: 'primary.contrastText' }}
-      >ENFERMEDAD
-      </Typography>
+              variant="h5"
+              gutterBottom
+              align="center"
+              sx={{
 
-        <SickIcon sx={{ color: 'primary.contrastText'}} />
+                fontSize: 12,
+                fontWeight: "bold",
+                color: 'primary.contrastText'
+              }}
+            >ENFERMEDAD
+            </Typography>
 
-        </Box>
+            <SickIcon sx={{ color: 'primary.contrastText' }} />
+
+          </Box>
         </Button>
 
        <Button 
@@ -118,98 +144,117 @@ const MotivoAtencionPrehospitalaria = () => {
         
       </Button>
 
-        <Button 
-        onClick = {() => setSelected("trauma")}
-        variant = "contained" 
-        sx={{ width: "29%", border: 2, borderColor: selected === "trauma" ? azulOscuro : grisClaro, 
-              borderRadius: 1.5, p: 2, 
-              backgroundColor: selected === "trauma" ? azulOscuro : grisClaro}}>
+        <Button
+          onClick={() => setSelected("trauma")}
+          variant="contained"
+          sx={{
+            width: "29%", border: 2, borderColor: selected === "trauma" ? azulOscuro : grisClaro,
+            borderRadius: 1.5, p: 2,
+            backgroundColor: selected === "trauma" ? azulOscuro : grisClaro
+          }}>
 
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <Typography
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography
 
-            variant="h5"
-            gutterBottom
-            align="center"
-            sx={{ 
-      
-          fontSize : 12,
-          fontWeight: "bold",
-          color: 'primary.contrastText' }}
-        >TRAUMATISMO
-        </Typography>
-        <TraumaIcon sx={{ color: 'primary.contrastText' }} />
-        </Box>
-        
+              variant="h5"
+              gutterBottom
+              align="center"
+              sx={{
+
+                fontSize: 12,
+                fontWeight: "bold",
+                color: 'primary.contrastText'
+              }}
+            >TRAUMATISMO
+            </Typography>
+            <TraumaIcon sx={{ color: 'primary.contrastText' }} />
+          </Box>
+
 
         </Button>
-    </Box>
- 
- <Box>
+      </Box>
+
+      <Box>
 
 
-  {/* SECCIÓN DE UBICACIÓN DEL SERVICIO */}
-      <Box display="flex" alignItems="center" mb={1} paddingTop={4} marginLeft = {1}>
-       
-        <Typography variant="h6" color="primary">
-          UBICACIÓN DEL SERVICIO
-        </Typography>
-         <LocationIcon sx={{ mr: 1, color: 'primary.main', marginLeft: 1}} />
-      </Box >
+        {/* SECCIÓN DE UBICACIÓN DEL SERVICIO */}
+        <Box display="flex" alignItems="center" mb={1} paddingTop={4} marginLeft={1}>
 
-      {/* CAMPOS*/}
-      <Box width = {isMobile ? "100%" : "68%"}
-            sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}>
+          <Typography variant="h6" color="primary">
+            UBICACIÓN DEL SERVICIO
+          </Typography>
+          <LocationIcon sx={{ mr: 1, color: 'primary.main', marginLeft: 1 }} />
+        </Box >
+
+        {/* CAMPOS*/}
+        <Box width={isMobile ? "100%" : "68%"}
+          sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}>
 
 
-    <TextField
-      type="text"
-      variant="standard"
-      placeholder= "CALLE"
-      fullWidth
-      sx={{ mb: 1 }}
-    />
+          <TextField
+            type="text"
+            variant="standard"
+            placeholder="CALLE"
+            fullWidth
+            name='calle'
+            value={value.calle}
+            onChange={handleMotivoChange('calle')}
 
-    <Box display = "flex" flexDirection="row" alignItems="flex-start">
-      <Typography variant="subtitle1" color="primary.main" sx={{ mb: 1, mt: 1 }}>
-      ENTRE
-      </Typography>
-      
-      <TextField
-        type="text"
-        variant="standard"
-        fullWidth
-        sx={{ mb: 1, ml: 1, mr: 1 }}
-      />
-      <Typography variant="subtitle1" color="primary" sx={{ mb: 1, mt: 1 }}>
-      Y
-      </Typography>
+            sx={{ mb: 1 }}
+          />
 
-      <TextField
-        type="text"
-        variant="standard"
-        fullWidth
-        sx={{ mb: 1, ml: 1 }}
-      />
-    </Box>
-    
-    
-    <TextField
-      type="text"
-      variant="standard"
-      placeholder= "COLONIA O COMUNIDAD"
-      fullWidth
-      sx={{ mb: 2 }}
-    />
-    <TextField
-      type="text"
-      variant="standard"
-      placeholder= "ALCALDIA O MUNICIPIO"
-      fullWidth
-    />
+          <Box display="flex" flexDirection="row" alignItems="flex-start">
+            <Typography variant="subtitle1" color="primary.main" sx={{ mb: 1, mt: 1 }}>
+              ENTRE
+            </Typography>
 
-</Box> 
-    </Box>
+            <TextField
+              type="text"
+              variant="standard"
+              fullWidth
+              sx={{ mb: 1, ml: 1, mr: 1 }}
+              name='entreCalle1'
+              value={value.entreCalle1}
+              onChange={handleMotivoChange('entreCalle1')}
+            />
+            <Typography variant="subtitle1" color="primary" sx={{ mb: 1, mt: 1 }}>
+              Y
+            </Typography>
+
+            <TextField
+              type="text"
+              variant="standard"
+              fullWidth
+              sx={{ mb: 1, ml: 1 }}
+              name='entreCalle2'
+              value={value.entreCalle2}
+              onChange={handleMotivoChange('entreCalle2')}
+            />
+          </Box>
+
+
+          <TextField
+            type="text"
+            variant="standard"
+            placeholder="COLONIA O COMUNIDAD"
+            fullWidth
+            sx={{ mb: 2 }}
+            name='colonia'
+            value={value.colonia}
+            onChange={handleMotivoChange('colonia')}
+          />
+          <TextField
+            type="text"
+            variant="standard"
+            placeholder="ALCALDIA O MUNICIPIO"
+            fullWidth
+            name='alcaldia'
+            value={value.alcaldia}
+            onChange={handleMotivoChange('alcaldia')}
+          />
+
+        </Box>
+      </Box>
     </Box>
 
 

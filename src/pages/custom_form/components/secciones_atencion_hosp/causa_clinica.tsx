@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   TextField,
@@ -9,74 +8,31 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 
-// Información que recopila el formulario
-export interface CausaClinicaData {
+export type CausaClinica = {
   origen: string;
   especificacion: string;
   primeravez: string;
   subsecuente: string;
-}
+};
 
-interface CausaClinicaProps {
-  value?: Partial<CausaClinicaData>;
-  onChange?: (data: Partial<CausaClinicaData>) => void;
-}
+type Props = {
+  value: CausaClinica;
+  onChange: (patch: Partial<CausaClinica>) => void;
+};
 
-const FormsCausaClinica = ({ value = {}, onChange }: CausaClinicaProps) => {
+const FormsCausaClinica = ({ value, onChange }: Props) => {
   const isSmall = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
-  // Estado inicial con valores por defecto
-  const [formData, setFormData] = useState<CausaClinicaData>({
-    origen: "",
-    especificacion: "",
-    primeravez: "",
-    subsecuente: "",
-    ...value,
-  });
-
-  // Estado local para el ToggleButtonGroup
-  // FIX THIS
-  const [origen, setOrigen] = useState<string | null>(null);
-
-  // Estados de error
-  const [errors, setErrors] = useState({
-    origen: false,
-    especificacion: false,
-  });
-
-  // Manejar cambios en ToggleButtons
-  const handleToggleChange = (value: string | null) => {
-    setOrigen(value);
-    setErrors((prev) => ({ ...prev, origen: !value }));
-
-    const newData = {
-      ...formData,
-      origen: value || "",
-    };
-
-    setFormData(newData);
-    onChange?.(newData);
-  };
-
-  // Manejar cambios en todos los campos de texto
-  const handleInputChange =
-    (field: keyof CausaClinicaData) =>
+  const handleFieldChange = (field: keyof CausaClinica) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      const newData = {
-        ...formData,
-        [field]: value,
-      };
-
-      setFormData(newData);
-
-      // Especificación es obligatorio
-      if (field === "especificacion") {
-        setErrors((prev) => ({ ...prev, especificacion: !value }));
-      }
-
-      onChange?.(newData);
+      onChange({ [field]: e.target.value } as Partial<CausaClinica>);
     };
+
+  const handleOrigenChange = (newValue: string | null) => {
+    if (newValue !== null) {
+      onChange({ origen: newValue } as Partial<CausaClinica>);
+    }
+  };
 
   const toggleButtonStyle = {
     backgroundColor: "#8E8E8E",
@@ -106,8 +62,6 @@ const FormsCausaClinica = ({ value = {}, onChange }: CausaClinicaProps) => {
         width: isSmall ? "100%" : "850px",
       }}
     >
-      {/* Sección para el origen probable */}
-
       <Box display="flex" alignItems="center" mb={2}>
         <Typography variant="h6" color="primary">
           ORIGEN PROBABLE
@@ -116,9 +70,9 @@ const FormsCausaClinica = ({ value = {}, onChange }: CausaClinicaProps) => {
 
       <Box sx={{ width: "100%" }}>
         <ToggleButtonGroup
-          value={origen}
+          value={value.origen}
           exclusive
-          onChange={(_, value) => handleToggleChange(value)}
+          onChange={(_, v) => handleOrigenChange(v)}
           sx={{
             display: "grid",
             gridTemplateColumns: isSmall ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
@@ -175,9 +129,8 @@ const FormsCausaClinica = ({ value = {}, onChange }: CausaClinicaProps) => {
           variant="standard"
           fullWidth
           required
-          value={formData.especificacion}
-          onChange={handleInputChange("especificacion")}
-          error={errors.especificacion}
+          value={value.especificacion}
+          onChange={handleFieldChange('especificacion')}
           sx={{ mb: 2 }}
         />
 
@@ -193,8 +146,8 @@ const FormsCausaClinica = ({ value = {}, onChange }: CausaClinicaProps) => {
             label="PRIMERA VEZ"
             variant="standard"
             fullWidth
-            value={formData.primeravez}
-            onChange={handleInputChange("primeravez")}
+            value={value.primeravez}
+            onChange={handleFieldChange('primeravez')}
             sx={{ mb: 2 }}
           />
 
@@ -202,8 +155,8 @@ const FormsCausaClinica = ({ value = {}, onChange }: CausaClinicaProps) => {
             label="SUBSECUENTE"
             variant="standard"
             fullWidth
-            value={formData.subsecuente}
-            onChange={handleInputChange("subsecuente")}
+            value={value.subsecuente}
+            onChange={handleFieldChange('subsecuente')}
           />
         </Box>
       </Box>
