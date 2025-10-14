@@ -187,7 +187,7 @@ const MotivoAtencionPrehospitalaria = ({ value, onChange }: Props) => {
         </Box >
 
         {/* CAMPOS*/}
-        <Box width={isMobile ? "100%" : "68%"}
+        <Box width={isMobile ? "100%" : "180%"}
           sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}>
 
 

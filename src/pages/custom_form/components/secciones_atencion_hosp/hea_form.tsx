@@ -187,7 +187,7 @@ const HeaderAtencionPrehospitalaria = ({ value, onChange }: Props) => {
         </Box >
 
       {/* CAMPOS DE HORA FUERA DEL CONTAINER */}
-      <Box sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2, width:{xs: "20rem", sm: "40rem"} }}>
+      <Box sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2, width: isMobile ? '100%' : '85%' }}>
   <Grid container spacing={2} mb={4} wrap="nowrap" sx={{
     gridTemplateColumns: {
       xs: 'repeat(1, 1fr)',

@@ -14,6 +14,16 @@ const DatosTraslado = () => {
         helicoptero: ""
     });
 
+    const isMobile = window.innerWidth <= 768;
+
+    const commonBtnSx = {
+        backgroundColor: '#8E8E8E',
+        color: '#f3f3f3ff',
+        fontSize: isMobile ? '10px' : '13px',
+        '&.Mui-selected': { backgroundColor: 'primary.main', color: 'white', borderColor: 'primary.main' },
+        '&:hover': { backgroundColor: '#8E8E8E', color: 'white', borderColor: '#8E8E8E', cursor: 'pointer' },
+    };
+
     // setter genérico
     const setField = <K extends keyof typeof form>(key: K) =>
     (value: typeof form[K]) => setForm(prev => ({ ...prev, [key]: value }));
@@ -31,7 +41,7 @@ const DatosTraslado = () => {
         </Box>
         
 
-        <Box width={"850px"}>
+        <Box sx={{ width: isMobile ? '100%' : '68%', px: { xs: 1, sm: 2 } }}>
         <ToggleButtonGroup
           value={form.lugar}
           exclusive
@@ -40,91 +50,20 @@ const DatosTraslado = () => {
             lugar: v,
             otroLugar: v ? "" : prev.otroLugar, //si selecciona un lugar, se borra el campo "OTRO"
           }))}
-          sx={{ display: 'grid', gridTemplateColumns: "repeat(3, 1fr)" ,gap: 1, mb: 2, 
+          sx={{ display: 'grid', gridTemplateColumns: {xs: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)'},gap: 1, mb: 2, 
             "& .MuiToggleButton-root": {
                 borderRadius: 2,      // fuerza esquinas redondeadas
                 border: "1px solid #ccc !important", // evita que se fusionen
+                padding: '20px 10px'
             }
           }}
         >
-          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", padding: "30px 0",
-            "&.Mui-selected": {
-                backgroundColor: "primary.main",
-                color: "white",
-                borderColor: "primary.main",
-            },
-            "&:hover": {
-                backgroundColor: "#8E8E8E",
-                color: "white",
-                borderColor: "#8E8E8E",
-                cursor: "pointer"
-          }
-          }} value="Transporte Publico">Transporte Publico</ToggleButton>
-          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", 
-            "&.Mui-selected": {
-                backgroundColor: "primary.main",
-                color: "white",
-                borderColor: "primary.main",
-            },
-            "&:hover": {
-                backgroundColor: "#8E8E8E",
-                color: "white",
-                borderColor: "#8E8E8E",
-                cursor: "pointer"
-          }
-          }} value="Escuela">Escuela</ToggleButton>
-          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", 
-            "&.Mui-selected": {
-                backgroundColor: "primary.main",
-                color: "white",
-                borderColor: "primary.main",
-            },
-            "&:hover": {
-                backgroundColor: "#8E8E8E",
-                color: "white",
-                borderColor: "#8E8E8E",
-                cursor: "pointer"
-          }
-          }} value="Trabajo">Trabajo</ToggleButton>
-          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", padding: "30px 0",
-            "&.Mui-selected": {
-                backgroundColor: "primary.main",
-                color: "white",
-                borderColor: "primary.main",
-            },
-            "&:hover": {
-                backgroundColor: "#8E8E8E",
-                color: "white",
-                borderColor: "#8E8E8E",
-                cursor: "pointer"
-          }
-          }} value="Hogar">Hogar</ToggleButton>
-          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", 
-            "&.Mui-selected": {
-                backgroundColor: "primary.main",
-                color: "white",
-                borderColor: "primary.main",
-            },
-            "&:hover": {
-                backgroundColor: "#8E8E8E",
-                color: "white",
-                borderColor: "#8E8E8E",
-                cursor: "pointer"
-            }
-          }} value="Recreación y deporte">Recreación y deporte</ToggleButton>
-          <ToggleButton sx={{backgroundColor: "#8E8E8E", color: "#f3f3f3ff", 
-            "&.Mui-selected": {
-                backgroundColor: "primary.main",
-                color: "white",
-                borderColor: "primary.main",
-            },
-            "&:hover": {
-                backgroundColor: "#8E8E8E",
-                color: "white",
-                borderColor: "#8E8E8E",
-                cursor: "pointer"
-            }
-          }} value="Vía publica">Vía publica</ToggleButton>
+          <ToggleButton sx={commonBtnSx} value="Transporte Publico">Transporte Publico</ToggleButton>
+          <ToggleButton sx={commonBtnSx} value="Escuela">Escuela</ToggleButton>
+          <ToggleButton sx={commonBtnSx} value="Trabajo">Trabajo</ToggleButton>
+          <ToggleButton sx={commonBtnSx} value="Hogar">Hogar</ToggleButton>
+          <ToggleButton sx={commonBtnSx} value="Recreación y deporte">Recreación y deporte</ToggleButton>
+          <ToggleButton sx={commonBtnSx} value="Vía publica">Vía publica</ToggleButton>
         </ToggleButtonGroup>
         <Typography
             variant="h5"
@@ -165,10 +104,9 @@ const DatosTraslado = () => {
       <Box
         display="flex"
         flexDirection="column"
-        width={"850px"}
         gap={2}
         mb={2}
-        sx={{ border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
+        sx={{ width: isMobile ? '100%' : '68%', border: 2, borderColor: 'primary.main', borderRadius: 2, p: 2 }}
       >
         <TextField
           label="NÚMERO DE AMBULANCIA"
