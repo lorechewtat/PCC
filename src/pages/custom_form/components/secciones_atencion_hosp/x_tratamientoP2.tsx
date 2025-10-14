@@ -23,9 +23,12 @@ type Props = {
 };
 
 const TratamientoP2Section = ({ value, onChange }: Props) => {
+  const isMobile = window.innerWidth <= 768;
+
     const commonBtnSx = {
         backgroundColor: '#8E8E8E',
         color: '#f3f3f3ff',
+        fontSize: isMobile ? '10px' : '13px',
         '&.Mui-selected': { backgroundColor: 'primary.main', color: 'white', borderColor: 'primary.main' },
         '&:hover': { backgroundColor: '#8E8E8E', color: 'white', borderColor: '#8E8E8E', cursor: 'pointer' },
     };
@@ -171,7 +174,7 @@ const TratamientoP2Section = ({ value, onChange }: Props) => {
             "& .MuiToggleButton-root": {
                 borderRadius: 2,      // fuerza esquinas redondeadas
                 border: "1px solid #ccc !important", // evita que se fusionen
-                padding: "30px 0"
+                padding: "20px 0"
             }
           }}
         >
@@ -227,7 +230,7 @@ const TratamientoP2Section = ({ value, onChange }: Props) => {
             "& .MuiToggleButton-root": {
                 borderRadius: 2,      // fuerza esquinas redondeadas
                 border: "1px solid #ccc !important", // evita que se fusionen
-                padding: "30px 0"
+                padding: "20px 0"
             }
           }}
         >

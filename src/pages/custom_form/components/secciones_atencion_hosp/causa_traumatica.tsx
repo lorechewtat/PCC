@@ -75,7 +75,7 @@ const OpcionesAccidente = ({ value, onChange }: Props) => {
             "& .MuiToggleButton-root": {
                 borderRadius: 2,
                 border: "1px solid #ccc !important",
-                padding: '30px 10px'
+                padding: '20px 10px'
             }
           }}
         >
@@ -131,7 +131,7 @@ const OpcionesAccidente = ({ value, onChange }: Props) => {
             "& .MuiToggleButton-root": {
                 borderRadius: 2,      
                 border: "1px solid #ccc !important", 
-                padding: "30px 0"
+                padding: "20px 0"
             }
           }}
         >
