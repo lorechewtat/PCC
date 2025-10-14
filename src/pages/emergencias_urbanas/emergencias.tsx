@@ -1,10 +1,8 @@
 // MyCustomFormPage.tsx
-import { useNotify, useRedirect, Title } from "react-admin";
 import { Box, TextField, Typography, Stack } from "@mui/material";
 import logo from '../custom_form/components/secciones_atencion_hosp/logo_alcaldia.png'; // Ajusta la ruta de tu logo
 import logoHosp from '../custom_form/components/secciones_atencion_hosp/hosp.png'; // Ajusta la ruta de tu logo
 import { useEffect, useState } from "react";
-import { useGetIdentity, useLogout } from "react-admin";
 
 
 const EmergenciasPage = () => {

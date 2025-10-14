@@ -3,6 +3,8 @@ import { MyMenu } from "./myMenu";
 import { Layout as RALayout, CheckForApplicationUpdate } from "react-admin"; 
 
 export const Layout = ({ children }: { children: ReactNode }) => 
-  (<RALayout menu={MyMenu}> {children} 
+  (<RALayout> {children} 
     <CheckForApplicationUpdate /> 
   </RALayout>);
+
+//menu={MyMenu}>
