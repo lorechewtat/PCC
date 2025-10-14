@@ -113,15 +113,14 @@ const HeatmapBody = ({ value, onChange, width = 600, height = 800 }: Props) => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '90vw', overflow: 'auto', display: 'flex', flexDirection: isMobile ? 'column':'row' }}>
+    <div style={{ padding: '20px', maxWidth: '90vw', overflow: 'auto', display: 'flex', flexDirection: isMobile ? 'column':'row', gap: isMobile ? '20px':0}}>
       {/* Botones de selección y descripción al costado izquierdo */}
       <div style={{
         minWidth: '260px',
-        marginRight: '32px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-        alignItems: 'flex-end'
+        display: 'grid',
+        gridTemplateColumns: isMobile ? 'repeat(2, minmax(150px, 1fr))' : 'repeat(1, minmax(150px, 1fr))',
+        gap: '10px',
+        justifyItems: 'start',
       }}>
         {labelsInfo.map((info, i) => (
           <div key={i + 1} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
@@ -141,10 +140,10 @@ const HeatmapBody = ({ value, onChange, width = 600, height = 800 }: Props) => {
               {i + 1}
             </button>
             <span style={{ 
-              fontSize: '15px', 
+              fontSize: isMobile ? '10px':'15px', 
               color: '#203972', 
               fontWeight: value.selectedLabel === String(i + 1) ? 'bold' : 'normal', 
-              textAlign: 'right' 
+              textAlign: isMobile ? 'left':'right' 
             }}>
               {info}
             </span>
@@ -159,9 +158,9 @@ const HeatmapBody = ({ value, onChange, width = 600, height = 800 }: Props) => {
           onMouseDown={handleMouseDown}
           style={{
             position: 'relative',
-            width: isMobile ? `90vw` : `50vw`,
+            width: isMobile ? `80vw` : `50vw`,
        
-            aspectRatio: '16 / 9', 
+            aspectRatio: isMobile ? '16 / 16' :'16 / 13', 
             backgroundImage: `url(${logoHosp})`,
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
