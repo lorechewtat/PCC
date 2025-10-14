@@ -1,205 +1,77 @@
-import { 
-    Divider, 
-    Box, 
-    Table, 
-    TableHead, 
-    TableRow, 
-    TableCell, 
-    TableBody, 
-    Typography, 
-    useMediaQuery, 
-    Theme,
-    TextField,
-    RadioGroup,
-    FormControlLabel,
-    Radio,
-    FormControl,
-    FormLabel
-} from '@mui/material';
+import { Divider, Box, Table, TableHead, TableRow, TableCell, TableBody, Typography, useMediaQuery, Theme } from '@mui/material';
+import { TextInput, SimpleForm, NumberInput, RadioButtonGroupInput } from 'react-admin';
 import { Icon } from '@iconify/react';
 import DirectionsBusFilledOutlinedIcon from '@mui/icons-material/DirectionsBusFilledOutlined';
 
-// Define the nested structure for vital signs
-interface SignosVitales {
-    hora: string;
-    fr: string;
-    fc: string;
-    tas: string;
-    tad: string;
-    sao2: string;
-    temp: string;
-    gluc: string;
-    neurotest: string;
-}
-
-export type EvaluacionSecundaria = {
-    signosVitales: {
-        medicion1: SignosVitales;
-        medicion2: SignosVitales;
-        medicion3: SignosVitales;
-    };
-    glasgow_total: string;
-    alergias: string;
-    medicamentos: string;
-    padecimientos: string;
-    ultimac: string;
-    eventosp: string;
-    condicion_paciente1: string;
-    condicion_paciente2: string;
-    prioridad: string;
-    hospital: string;
-    doctor: string;
-    folio_cru: string;
-};
-
-type Props = {
-    value: EvaluacionSecundaria;
-    onChange: (patch: Partial<EvaluacionSecundaria>) => void;
-};
-
-// Update las filas de signos vitales
-const VitalSignsRow = ({ 
-    medicionKey, 
-    value, 
-    onChange 
-}: { 
-    medicionKey: 'medicion1' | 'medicion2' | 'medicion3';
-    value: EvaluacionSecundaria;
-    onChange: (patch: Partial<EvaluacionSecundaria>) => void;
-}) => {
-    const handleFieldChange = (field: keyof SignosVitales) =>
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            onChange({
-                signosVitales: {
-                    ...value.signosVitales,
-                    [medicionKey]: {
-                        ...value.signosVitales[medicionKey],
-                        [field]: e.target.value
-                    }
-                }
-            });
-        };
-
-    const medicion = value.signosVitales[medicionKey];
-
+// Reusable Row Component
+const VitalSignsRow = ({ rowIndex }: { rowIndex: number }) => {
     return (
-        <TableRow>
+        <TableRow >
             <TableCell>
-                <TextField
-                    type="time"
-                    variant="standard"
-                    fullWidth
-                    value={medicion.hora}
-                    onChange={handleFieldChange('hora')}
-                />
+                <TextInput source={`hora_${rowIndex}`} label="" type="time" variant="standard" fullWidth />
             </TableCell>
             <TableCell>
-                <TextField
-                    type="number"
-                    variant="standard"
-                    fullWidth
-                    value={medicion.fr}
-                    onChange={handleFieldChange('fr')}
-                />
+                <NumberInput source={`fr_${rowIndex}`} label="" variant="standard" fullWidth />
             </TableCell>
             <TableCell>
-                <TextField
-                    type="number"
-                    variant="standard"
-                    fullWidth
-                    value={medicion.fc}
-                    onChange={handleFieldChange('fc')}
-                />
+                <NumberInput source={`fc_${rowIndex}`} label="" variant="standard" fullWidth />
             </TableCell>
             <TableCell>
-                <TextField
-                    type="number"
-                    variant="standard"
-                    fullWidth
-                    value={medicion.tas}
-                    onChange={handleFieldChange('tas')}
-                />
+                <NumberInput source={`tas_${rowIndex}`} label="" variant="standard" fullWidth />
             </TableCell>
             <TableCell>
-                <TextField
-                    type="number"
-                    variant="standard"
-                    fullWidth
-                    value={medicion.tad}
-                    onChange={handleFieldChange('tad')}
-                />
+                <NumberInput source={`tad_${rowIndex}`} label="" variant="standard" fullWidth />
             </TableCell>
             <TableCell>
-                <TextField
-                    type="number"
-                    variant="standard"
-                    fullWidth
-                    value={medicion.sao2}
-                    onChange={handleFieldChange('sao2')}
-                />
+                <NumberInput source={`sao2_${rowIndex}`} label="" variant="standard" fullWidth />
             </TableCell>
             <TableCell>
-                <TextField
-                    type="number"
-                    variant="standard"
-                    fullWidth
-                    value={medicion.temp}
-                    onChange={handleFieldChange('temp')}
-                />
+                <NumberInput source={`temp_${rowIndex}`} label="" variant="standard" fullWidth />
             </TableCell>
             <TableCell>
-                <TextField
-                    type="number"
-                    variant="standard"
-                    fullWidth
-                    value={medicion.gluc}
-                    onChange={handleFieldChange('gluc')}
-                />
+                <NumberInput source={`gluc_${rowIndex}`} label="" variant="standard" fullWidth />
             </TableCell>
-            <TableCell>
-                <RadioGroup
+            <TableCell
+                sx={{
+                    // don't force column on the cell
+                    display: 'table-cell',
+                    // or: display: 'flex', justifyContent: 'center', alignItems: 'center'
+                }}
+            >
+                <RadioButtonGroupInput
+                    source={`neurotest_${rowIndex}`}
+                    label=""
+                    choices={[
+                        { id: 'A', name: 'A' },
+                        { id: 'V', name: 'V' },
+                        { id: 'D', name: 'D' },
+                        { id: 'I', name: 'I' },
+                    ]}
+                    variant="standard"
                     row
-                    value={medicion.neurotest}
-                    onChange={(e) => onChange({
-                        signosVitales: {
-                            ...value.signosVitales,
-                            [medicionKey]: {
-                                ...value.signosVitales[medicionKey],
-                                neurotest: e.target.value
-                            }
-                        }
-                    })}
                     sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
                         '& .MuiTypography-root': {
-                            fontSize: '0.75rem',
-                            lineHeight: 1,
+                            fontSize: '0.75rem', 
+                            lineHeight: 1,     
                         },
                         '& .MuiRadio-root': {
-                            padding: 0,
+                            padding: 0,       
                             transform: 'scale(0.75)',
                         },
                     }}
-                >
-                    <FormControlLabel value="A" control={<Radio />} label="A" />
-                    <FormControlLabel value="V" control={<Radio />} label="V" />
-                    <FormControlLabel value="D" control={<Radio />} label="D" />
-                    <FormControlLabel value="I" control={<Radio />} label="I" />
-                </RadioGroup>
+                />
             </TableCell>
         </TableRow>
     );
 };
 
-const EvaluacionSecTraslado = ({ value, onChange }: Props) => {
+const EvaluacionSecTraslado = () => {
     const isSmall = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
-    const handleFieldChange = (field: keyof EvaluacionSecundaria) =>
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            onChange({ [field]: e.target.value } as Partial<EvaluacionSecundaria>);
-        };
-
     return (
-        <Box>
+        <SimpleForm toolbar={false}>
             <Typography variant="h6" sx={{ mb: 2, mt: 4, ml: 1, color: '#203972' }}>
                 EVALUACIÓN SECUNDARIA
                 <Icon icon="streamline-ultimate:paper-write" style={{ fontSize: '1.5rem', marginLeft: '8px' }} />
@@ -220,7 +92,7 @@ const EvaluacionSecTraslado = ({ value, onChange }: Props) => {
                 </Box>
 
                 <Box>
-                    <Table size="small">
+                    <Table size="small" >
                         <TableHead>
                             <TableRow sx={{ color: 'grey' }}>
                                 <TableCell>HORA</TableCell>
@@ -235,9 +107,9 @@ const EvaluacionSecTraslado = ({ value, onChange }: Props) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <VitalSignsRow medicionKey="medicion1" value={value} onChange={onChange} />
-                            <VitalSignsRow medicionKey="medicion2" value={value} onChange={onChange} />
-                            <VitalSignsRow medicionKey="medicion3" value={value} onChange={onChange} />
+                            <VitalSignsRow rowIndex={1} />
+                            <VitalSignsRow rowIndex={2} />
+                            <VitalSignsRow rowIndex={3} />
                         </TableBody>
                     </Table>
                 </Box>
@@ -252,7 +124,7 @@ const EvaluacionSecTraslado = ({ value, onChange }: Props) => {
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
                     <Box mt={2} sx={{ display: 'flex', flexDirection: isSmall ? 'column' : 'row', gap: 2 }}>
-                        <Table size="small">
+                        <Table size="small" >
                             <TableHead>
                                 <TableRow sx={{ color: 'grey' }}>
                                     <TableCell>APERTURA OCULAR</TableCell>
@@ -264,127 +136,150 @@ const EvaluacionSecTraslado = ({ value, onChange }: Props) => {
                                 <TableRow>
                                     <TableCell>
                                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Espontánea</Typography>
-                                            <Typography variant="body2" color="textSecondary">4</Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Espontánea
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                4
+                                            </Typography>
                                         </Box>
                                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">A la voz</Typography>
-                                            <Typography variant="body2" color="textSecondary">3</Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                A la voz
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                3
+                                            </Typography>
                                         </Box>
                                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Al dolor</Typography>
-                                            <Typography variant="body2" color="textSecondary">2</Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Al dolor
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                2
+                                            </Typography>
                                         </Box>
                                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Ninguna</Typography>
-                                            <Typography variant="body2" color="textSecondary">1</Typography>
-                                        </Box>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Espontánea, normal</Typography>
-                                            <Typography variant="body2" color="textSecondary">6</Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Localiza al tacto</Typography>
-                                            <Typography variant="body2" color="textSecondary">5</Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Localiza al dolor</Typography>
-                                            <Typography variant="body2" color="textSecondary">4</Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Decorticación</Typography>
-                                            <Typography variant="body2" color="textSecondary">3</Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Descerebración</Typography>
-                                            <Typography variant="body2" color="textSecondary">2</Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Ninguna</Typography>
-                                            <Typography variant="body2" color="textSecondary">1</Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Ninguna
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                1
+                                            </Typography>
                                         </Box>
                                     </TableCell>
                                     <TableCell>
                                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Orientada</Typography>
-                                            <Typography variant="body2" color="textSecondary">5</Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Espontánea, normal
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                6
+                                            </Typography>
                                         </Box>
                                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Confusa</Typography>
-                                            <Typography variant="body2" color="textSecondary">4</Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Localiza al tacto
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                5
+                                            </Typography>
                                         </Box>
                                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Palabras inapropiadas</Typography>
-                                            <Typography variant="body2" color="textSecondary">3</Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Localiza al dolor
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                4
+                                            </Typography>
                                         </Box>
                                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Sonidos incomprensibles</Typography>
-                                            <Typography variant="body2" color="textSecondary">2</Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Decorticación
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                3
+                                            </Typography>
                                         </Box>
                                         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <Typography variant="body2" color="textSecondary">Ninguna</Typography>
-                                            <Typography variant="body2" color="textSecondary">1</Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Descerebración
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                2
+                                            </Typography>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Ninguna
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                1
+                                            </Typography>
+                                        </Box>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Orientada
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                5
+                                            </Typography>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Confusa
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                4
+                                            </Typography>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Palabras inapropiadas
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                3
+                                            </Typography>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Sonidos incomprensibles
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                2
+                                            </Typography>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <Typography variant="body2" color="textSecondary">
+                                                Ninguna
+                                            </Typography>
+                                            <Typography variant="body2" color="textSecondary">
+                                                1
+                                            </Typography>
                                         </Box>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
                     </Box>
-                    <TextField
-                        label="GLASGOW TOTAL"
-                        variant="standard"
-                        type="number"
-                        value={value.glasgow_total}
-                        onChange={handleFieldChange('glasgow_total')}
-                        sx={{ maxWidth: '150px', alignSelf: 'center', mt: 2 }}
-                    />
+                    <NumberInput source="glasgow_total" label="GLASGOW TOTAL" variant="standard" fullWidth sx={{ maxWidth: '150px', alignSelf: 'center' }} />
                 </Box>
 
                 {/* CAMPOS ABIERTOS */}
                 <Box mt={1} sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <TextField
-                        label="ALERGIAS"
-                        variant="standard"
-                        fullWidth
-                        value={value.alergias}
-                        onChange={handleFieldChange('alergias')}
-                    />
-                    <TextField
-                        label="MEDICAMENTOS QUE ESTA INGIRIENDO"
-                        variant="standard"
-                        fullWidth
-                        value={value.medicamentos}
-                        onChange={handleFieldChange('medicamentos')}
-                    />
-                    <TextField
-                        label="PADECIMIENTOS-CIRUGIAS"
-                        variant="standard"
-                        fullWidth
-                        value={value.padecimientos}
-                        onChange={handleFieldChange('padecimientos')}
-                    />
-                    <TextField
-                        label="LA ÚLTIMA COMIDA"
-                        variant="standard"
-                        fullWidth
-                        value={value.ultimac}
-                        onChange={handleFieldChange('ultimac')}
-                    />
-                    <TextField
-                        label="EVENTOS PREVIOS"
-                        variant="standard"
-                        fullWidth
-                        value={value.eventosp}
-                        onChange={handleFieldChange('eventosp')}
-                    />
+                    <TextInput source="alergias" label="ALERGIAS" variant="standard" fullWidth />
+                    <TextInput source="medicamentos" label="MEDICAMENTOS QUE ESTA INGIRIENDO" variant="standard" fullWidth />
+                    <TextInput source="padecimientos" label="PADECIMIENTOS-CIRUGIAS" variant="standard" fullWidth />
+                    <TextInput source="ultimac" label="LA ÚLTIMA COMIDA" variant="standard" fullWidth />
+                    <TextInput source="eventosp" label="EVENTOS PREVIOS" variant="standard" fullWidth />
                 </Box>
 
                 {/* CONDICIÓN Y PRIORIDAD */}
                 <Box mt={1} sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Box sx={{ display: 'flex', flexDirection: isSmall ? 'column' : 'row', gap: 2 }}>
-                        <Table size="small">
+                        <Table size="small" >
                             <TableHead>
                                 <TableRow sx={{ color: 'grey' }}>
                                     <TableCell>CONDICIÓN DEL PACIENTE</TableCell>
@@ -393,41 +288,38 @@ const EvaluacionSecTraslado = ({ value, onChange }: Props) => {
                             </TableHead>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell>
-                                        <FormControl component="fieldset">
-                                            <RadioGroup
-                                                value={value.condicion_paciente1}
-                                                onChange={(e) => onChange({ condicion_paciente1: e.target.value })}
-                                                sx={{ display: 'flex', flexDirection: 'column', marginBottom: -2 }}
-                                            >
-                                                <FormControlLabel value="critico" control={<Radio />} label="1 - Crítico" />
-                                                <FormControlLabel value="no_critico" control={<Radio />} label="2 - No Crítico" />
-                                            </RadioGroup>
-                                        </FormControl>
-                                        <FormControl component="fieldset">
-                                            <RadioGroup
-                                                value={value.condicion_paciente2}
-                                                onChange={(e) => onChange({ condicion_paciente2: e.target.value })}
-                                                sx={{ display: 'flex', flexDirection: 'column' }}
-                                            >
-                                                <FormControlLabel value="estable" control={<Radio />} label="1 - Estable" />
-                                                <FormControlLabel value="inestable" control={<Radio />} label="2 - Inestable" />
-                                            </RadioGroup>
-                                        </FormControl>
+                                    <TableCell >
+                                        <RadioButtonGroupInput
+                                            source="condicion_paciente1"
+                                            label=""
+                                            choices={[
+                                                { id: 'critico', name: '1 - Crítico' },
+                                                { id: 'no_critico', name: '2 - No Crítico' },
+                                            ]}
+                                            sx={{ display: 'flex', flexDirection: 'column', marginBottom: -2 }}
+                                        />
+                                        <RadioButtonGroupInput
+                                            source="condicion_paciente2"
+                                            label=""
+                                            choices={[
+                                                { id: 'estable', name: '1 - Estable' },
+                                                { id: 'inestable', name: '2 - Inestable' },
+                                            ]}
+                                            sx={{ display: 'flex', flexDirection: 'column' }}
+                                        />
                                     </TableCell>
-                                    <TableCell>
-                                        <FormControl component="fieldset">
-                                            <RadioGroup
-                                                value={value.prioridad}
-                                                onChange={(e) => onChange({ prioridad: e.target.value })}
-                                                sx={{ display: 'flex', flexDirection: 'column' }}
-                                            >
-                                                <FormControlLabel value="rojo" control={<Radio />} label="1 - Rojo" />
-                                                <FormControlLabel value="amarillo" control={<Radio />} label="2 - Amarillo" />
-                                                <FormControlLabel value="verde" control={<Radio />} label="3 - Verde" />
-                                                <FormControlLabel value="negro" control={<Radio />} label="4 - Negro" />
-                                            </RadioGroup>
-                                        </FormControl>
+                                    <TableCell >
+                                        <RadioButtonGroupInput
+                                            source="prioridad"
+                                            label=""
+                                            choices={[
+                                                { id: 'rojo', name: '1 - Rojo' },
+                                                { id: 'amarillo', name: '2 - Amarillo' },
+                                                { id: 'verde', name: '3 - Verde' },
+                                                { id: 'negro', name: '4 - Negro' }
+                                            ]}
+                                            sx={{ display: 'flex', flexDirection: 'column' }}
+                                        />
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
@@ -456,31 +348,13 @@ const EvaluacionSecTraslado = ({ value, onChange }: Props) => {
                         <Typography variant="h6" color="primary">
                             INSTITUCIÓN A LA QUE SE TRASLADA EL PACIENTE
                         </Typography>
-                        <TextField
-                            label="HOSPITAL"
-                            variant="standard"
-                            fullWidth
-                            value={value.hospital}
-                            onChange={handleFieldChange('hospital')}
-                        />
-                        <TextField
-                            label="DOCTOR"
-                            variant="standard"
-                            fullWidth
-                            value={value.doctor}
-                            onChange={handleFieldChange('doctor')}
-                        />
-                        <TextField
-                            label="FOLIO CRU"
-                            variant="standard"
-                            fullWidth
-                            value={value.folio_cru}
-                            onChange={handleFieldChange('folio_cru')}
-                        />
+                        <TextInput source="hospital" label="HOSPITAL" variant="standard" fullWidth />
+                        <TextInput source="doctor" label="DOCTOR" variant="standard" fullWidth />
+                        <TextInput source="folio_cru" label="FOLIO CRU" variant="standard" fullWidth />
                     </Box>
                 </Box>
             </Box>
-        </Box>
+        </SimpleForm>
     );
 };
 

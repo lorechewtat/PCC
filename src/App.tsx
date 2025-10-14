@@ -21,12 +21,10 @@ import MyLoginPage from "./pages/login/login_screen";
 import myTheme from "./consts/theme";
 import MyCustomFormPage from "./pages/custom_form/custom_form";
 
-import EmergenciasPage from "./pages/emergencias_urbanas/emergencias";
-import { MyAppBar } from "./pages/bar/bar";
-
 import { PersonAdd, Search } from '@mui/icons-material'; // Ícono para "nuevo usuario"
 import PaginaNuevosUsuarios from "./pages/new_users/nuevo_ususairo";
 import BuscarReportes from "./pages/buscar_frap/buscar_frap";
+
 
 export const App = () => (
   <Admin
@@ -72,7 +70,6 @@ export const App = () => (
     {/* ✅ Ruta personalizada */}
     <CustomRoutes>
       <Route path="/custom-form" element={<MyCustomFormPage />} />
-      <Route path="/emergencias" element={<EmergenciasPage />} />
     </CustomRoutes>
   </Admin>
 );
