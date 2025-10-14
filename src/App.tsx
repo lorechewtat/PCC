@@ -23,6 +23,8 @@ import MyCustomFormPage from "./pages/custom_form/custom_form";
 
 import { PersonAdd, Search } from '@mui/icons-material'; // Ícono para "nuevo usuario"
 import PaginaNuevosUsuarios from "./pages/new_users/nuevo_ususairo";
+import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
+import EmergenciasPage from "./pages/emergencias_urbanas/emergencias";
 import BuscarReportes from "./pages/buscar_frap/buscar_frap";
 
 
@@ -47,8 +49,14 @@ export const App = () => (
       icon={PostIcon}
     />
 
-
-
+    <Resource
+      name="Emergencias_urbanas"
+      list={EmergenciasPage}
+      show={EmergenciasPage}
+      edit={EmergenciasPage}
+      create={EmergenciasPage}
+      icon={LocalPoliceIcon}
+    />
 
    <Resource
      name="nuevo_usuario"
