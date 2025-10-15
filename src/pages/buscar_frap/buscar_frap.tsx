@@ -1,8 +1,9 @@
-import { Box, TextField, Typography, Card, CardContent, List, ListItem, ListItemText, Button, Alert, CircularProgress, Chip } from "@mui/material";
+import { Box, TextField, Typography, Card, CardContent, List, ListItem, ListItemText, Button, Alert, CircularProgress, Chip,IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNotify } from "react-admin";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import UpdateIcon from '@mui/icons-material/Update';
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 // Define the Report type
@@ -121,6 +122,23 @@ const BuscarReportes = () => {
       setLoading(false);
     }
   };
+
+
+    //TODO: AQUI SE DEBERÌA DE NAVEGAR AL FRAP PARA PODER ACTUALIZARLO
+   const handleUpdate = (id: string | number | undefined) => {
+
+};
+
+   const handleDelete = (id: string | number | undefined) => {
+  if (!id) {
+    notify('No se puede eliminar: ID no válido', { type: 'error' });
+    return;
+  }
+  
+  // Filtrar por _id o id dependiendo de cuál exista
+  setReports(reports.filter(r => r._id !== id && r.id !== id));
+  notify('Reporte eliminado (solo local - falta implementar DELETE en backend)', { type: 'info' });
+};
 
   const handleSearchBySocorrista = async () => {
     if (!search.socorrista.trim()) {
@@ -377,20 +395,37 @@ const BuscarReportes = () => {
             </Typography>
           ) : (
             <List>
-              {reports.map((r) => (
-                <ListItem key={r._id || r.id} sx={{ flexDirection: "column", alignItems: "flex-start" }}>
-                  <ListItemText
-                    primary={`Paciente: ${r.datosPaciente?.nombre || 'N/A'} | Socorrista: ${r.datosLugarControl?.socorrista || 'N/A'}`}
+               {reports.map((r) => (
+                              <Box key={r.id} display="flex" alignItems="center">
+                                <ListItem sx={{ flex: 1 }}>
+                                  <ListItemText
+                                    primary={`Paciente: ${r.datosPaciente?.nombre || 'N/A'} | Socorrista: ${r.datosLugarControl?.socorrista || 'N/A'}`}
                     secondary={`Fecha: ${r.datosCronometria?.fecha || 'N/A'} | Ambulancia: ${r.numAmbulancia || 'N/A'} | ID: ${r.id || 'N/A'}`}
-                  />
-                </ListItem>
-              ))}
+               
+                                  />
+                                </ListItem>
+                                <IconButton 
+                                  color="error" 
+                                   onClick={() => handleDelete(r.id)}
+                                  
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                                 <IconButton 
+                                  color="success" 
+                                   onClick={() => handleUpdate(r.id)}
+                                  
+                                >
+                                  <UpdateIcon />
+                                </IconButton>
+                              </Box>
+                            ))}
+          
             </List>
           )}
         </CardContent>
       </Card>
 
-      {/* Charts remain the same */}
       {reports.length > 0 && (
         <>
           {ageDistribution.length > 0 && (
