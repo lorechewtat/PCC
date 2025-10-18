@@ -100,7 +100,7 @@ export const spanishMedicalMessages: TranslationMessages = {
             invalid_form: 'El formulario no es válido. Por favor verifique los errores',
             loading: 'Cargando...',
             no: 'No',
-            not_found: 'No econtrado',
+            not_found: 'No encontrado',
             select_all_limit_reached: 'Hay demasiados elementos para seleccionarlos todos. Solo se seleccionaron los primeros %{max} elementos',
             unsaved_changes: 'Algunos de sus cambios no fueron guardados. ¿Está seguro de que desea ignorarlos?',
             yes: 'Sí',

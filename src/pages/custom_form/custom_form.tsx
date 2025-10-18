@@ -19,34 +19,15 @@ import { TratamientoP2 } from "./components/secciones_atencion_hosp/x_tratamient
 import { DatosLegales } from "./components/secciones_atencion_hosp/datos_legales";
 import React from "react";
 
-
-
 const MyCustomFormPage = () => {
-  //USO DE GETIDENTITY() DARIO
   const { data, isPending, error } = useGetIdentity();
-  const isMobile = window.innerWidth <= 768;
-
   const logout = useLogout();
-
-  if (isPending) return <p>Cargando...</p>;
-  if (error) return <p>Error al cargar el usuario</p>;
-  if (!data) return null;
-
-  const [inputValue, setInputValue] = useState("");
-  const { id, fullName, avatar } = data;
-  useEffect(() => {
-    if (fullName && inputValue === "") {
-      setInputValue(fullName);
-    }
-  }, [fullName, inputValue]);
-  //USO DE GETIDENTITY() DARIO
-
   const notify = useNotify();
   const redirect = useRedirect();
-  // Estado local del contenedor para la sección
 
+  const [inputValue, setInputValue] = useState("");
+  const isMobile = window.innerWidth <= 768;
 
-  // Uso de los estados para los datos del formulario
   // Cronometria
   const [datosCronometria, setDatosCronometria] = useState<Cronometria>({
     fecha: "",
@@ -59,24 +40,33 @@ const MyCustomFormPage = () => {
     horaSalidaHospital: "",
     horaBase: "",
   });
+
+  //USO DE GETIDENTITY() DARIO
+  // Estado local del contenedor para la sección
+
+  // Uso de los estados para los datos del formulario
+
   // Motivo Atencion
-  const [datosMotivoAtencion, setDatosMotivoAtencion] = useState<DatosMotivoAtencion>({
-    calle: "",
-    entreCalle1: "",
-    entreCalle2: "",
-    colonia: "",
-    alcaldia: "",
-  });
+  const [datosMotivoAtencion, setDatosMotivoAtencion] =
+    useState<DatosMotivoAtencion>({
+      calle: "",
+      entreCalle1: "",
+      entreCalle2: "",
+      colonia: "",
+      alcaldia: "",
+    });
   // Datos Lugar y Control
-  const [datosLugarControl, setDatosLugarControl] = useState<DatosLugarControl>({
-    lugar: null,
-    otroLugar: "",
-    numAmbulancia: "",
-    operador: "",
-    tum: "",
-    socorrista: "",
-    helicoptero: "",
-  });
+  const [datosLugarControl, setDatosLugarControl] = useState<DatosLugarControl>(
+    {
+      lugar: null,
+      otroLugar: "",
+      numAmbulancia: "",
+      operador: "",
+      tum: "",
+      socorrista: "",
+      helicoptero: "",
+    },
+  );
   // Datos Paciente
   const [datosPaciente, setDatosPaciente] = useState<DatosPaciente>({
     nombre: "",
@@ -111,19 +101,20 @@ const MyCustomFormPage = () => {
     },
   });
   // Causa Traumatica
-  const [datosCausaTraumatica, setDatosCausaTraumatica] = useState<CausaTraumatica>({
-    causa: "",
-    objetosChoque: [],
-    impactos: [],
-    especifique: "",
-    cms: "",
-    parabrisas: "",
-    volante: "",
-    bolsa: "",
-    cinturon: "",
-    dentro: "",
-    atropellado: "",
-  });
+  const [datosCausaTraumatica, setDatosCausaTraumatica] =
+    useState<CausaTraumatica>({
+      causa: "",
+      objetosChoque: [],
+      impactos: [],
+      especifique: "",
+      cms: "",
+      parabrisas: "",
+      volante: "",
+      bolsa: "",
+      cinturon: "",
+      dentro: "",
+      atropellado: "",
+    });
   // Causa Clinica
   const [datosCausaClinica, setDatosCausaClinica] = useState<CausaClinica>({
     origen: "",
@@ -132,26 +123,27 @@ const MyCustomFormPage = () => {
     subsecuente: "",
   });
   // Evaluación Inicial
-  const [datosEvaluacionInicial, setDatosEvaluacionInicial] = useState<EvaluacionInicial>({
-    consciencia: "",
-    deglucion: "",
-    viaAerea: "",
-    ventilacion: "",
-    auscultacion: "",
-    hemitorax: "",
-    sitio: "",
-    presenciaPulsos: "",
-    calidad: "",
-    piel: "",
-    caracteristicas: "",
-    observaciones: "",
-  });
+  const [datosEvaluacionInicial, setDatosEvaluacionInicial] =
+    useState<EvaluacionInicial>({
+      consciencia: "",
+      deglucion: "",
+      viaAerea: "",
+      ventilacion: "",
+      auscultacion: "",
+      hemitorax: "",
+      sitio: "",
+      presenciaPulsos: "",
+      calidad: "",
+      piel: "",
+      caracteristicas: "",
+      observaciones: "",
+    });
   // Diagrama Cuerpo
   const [datosCuerpoDibujo, setDatosCuerpoDibujo] = useState<CuerpoDibujo>({
     marks: [],
     history: [],
     historyIndex: -1,
-    selectedLabel: '1'
+    selectedLabel: "1",
   });
   // // Evaluación Secundaria y Traslado
   // const [datosEvaluacionSecundaria, setDatosEvaluacionSecundaria] = useState<EvaluacionSecundaria>({
@@ -204,12 +196,13 @@ const MyCustomFormPage = () => {
   //   folio_cru: "",
   // });
   // Tratamiento
-  const [datosTratamientoUno, setDatosTratamientoUno] = useState<TratamientoUno>({
-    viaAerea: [],
-    controlCervical: "",
-    asVentilatoria: [],
-    ltsXMin: "",
-  });
+  const [datosTratamientoUno, setDatosTratamientoUno] =
+    useState<TratamientoUno>({
+      viaAerea: [],
+      controlCervical: "",
+      asVentilatoria: [],
+      ltsXMin: "",
+    });
   // Tratamiento P2
   const [datosTratamientoP2, setDatosTratamientoP2] = useState<TratamientoP2>({
     hora1: "",
@@ -238,30 +231,50 @@ const MyCustomFormPage = () => {
     ],
   });
 
+  useEffect(() => {
+    if (data?.fullName && inputValue === "") {
+      setInputValue(data.fullName);
+    }
+  }, [data?.fullName, inputValue]);
 
+  if (isPending) return <p>Cargando...</p>;
+  if (error) return <p>Error al cargar el usuario</p>;
+  if (!data) return null;
 
+  const { id, fullName, avatar } = data;
 
   // Handlers para actualizar los datos
-  const handlePacientePatch = (patch: Partial<DatosPaciente>) => setDatosPaciente((prev) => ({ ...prev, ...patch }));
-  const handleMotivoAtencionPatch = (patch: Partial<DatosMotivoAtencion>) => setDatosMotivoAtencion((prev) => ({ ...prev, ...patch }));
-  const handleLugarControlPatch = (patch: Partial<DatosLugarControl>) => setDatosLugarControl((prev) => ({ ...prev, ...patch }));
-  const handleCronometriaPatch = (patch: Partial<Cronometria>) => setDatosCronometria((prev) => ({ ...prev, ...patch }));
-  const handleMadrePatch = (patch: Partial<DatosMadre>) => setDatosMadre((prev) => ({ ...prev, ...patch }));
-  const handleCausaTraumaticaPatch = (patch: Partial<CausaTraumatica>) => setDatosCausaTraumatica((prev) => ({ ...prev, ...patch }));
-  const handleCausaClinicaPatch = (patch: Partial<CausaClinica>) => setDatosCausaClinica((prev) => ({ ...prev, ...patch }));
-  const handleEvaluacionInicialPatch = (patch: Partial<EvaluacionInicial>) => setDatosEvaluacionInicial((prev) => ({ ...prev, ...patch }));
-  const handleCuerpoDibujoPatch = (patch: Partial<CuerpoDibujo>) => setDatosCuerpoDibujo((prev) => ({ ...prev, ...patch }));
+  const handlePacientePatch = (patch: Partial<DatosPaciente>) =>
+    setDatosPaciente((prev) => ({ ...prev, ...patch }));
+  const handleMotivoAtencionPatch = (patch: Partial<DatosMotivoAtencion>) =>
+    setDatosMotivoAtencion((prev) => ({ ...prev, ...patch }));
+  const handleLugarControlPatch = (patch: Partial<DatosLugarControl>) =>
+    setDatosLugarControl((prev) => ({ ...prev, ...patch }));
+  const handleCronometriaPatch = (patch: Partial<Cronometria>) =>
+    setDatosCronometria((prev) => ({ ...prev, ...patch }));
+  const handleMadrePatch = (patch: Partial<DatosMadre>) =>
+    setDatosMadre((prev) => ({ ...prev, ...patch }));
+  const handleCausaTraumaticaPatch = (patch: Partial<CausaTraumatica>) =>
+    setDatosCausaTraumatica((prev) => ({ ...prev, ...patch }));
+  const handleCausaClinicaPatch = (patch: Partial<CausaClinica>) =>
+    setDatosCausaClinica((prev) => ({ ...prev, ...patch }));
+  const handleEvaluacionInicialPatch = (patch: Partial<EvaluacionInicial>) =>
+    setDatosEvaluacionInicial((prev) => ({ ...prev, ...patch }));
+  const handleCuerpoDibujoPatch = (patch: Partial<CuerpoDibujo>) =>
+    setDatosCuerpoDibujo((prev) => ({ ...prev, ...patch }));
   // const handleEvaluacionSecundariaPatch = (patch: Partial<EvaluacionSecundaria>) => setDatosEvaluacionSecundaria((prev) => ({ ...prev, ...patch }));
-  const handleTratamientoUnoPatch = (patch: Partial<TratamientoUno>) => setDatosTratamientoUno((prev) => ({ ...prev, ...patch }));
-  const handleTratamientoP2Patch = (patch: Partial<TratamientoP2>) => setDatosTratamientoP2((prev) => ({ ...prev, ...patch }));
-  const handleDatosLegalesPatch = (patch: Partial<DatosLegales>) => setDatosLegales((prev) => ({ ...prev, ...patch }));
+  const handleTratamientoUnoPatch = (patch: Partial<TratamientoUno>) =>
+    setDatosTratamientoUno((prev) => ({ ...prev, ...patch }));
+  const handleTratamientoP2Patch = (patch: Partial<TratamientoP2>) =>
+    setDatosTratamientoP2((prev) => ({ ...prev, ...patch }));
+  const handleDatosLegalesPatch = (patch: Partial<DatosLegales>) =>
+    setDatosLegales((prev) => ({ ...prev, ...patch }));
 
   // Función para enviar datos al backend
   const handleSendData = async () => {
     console.log("🔍 Current datosPaciente:", datosPaciente); // Debug log
 
     const dataToSend = {
-
       id: Number(datosCronometria.id) || 0, //Ensure id is a number
       numAmbulancia: Number(datosLugarControl.numAmbulancia) || 0,
       edadAnios: Number(datosPaciente.edadAnios) || 0,
@@ -279,7 +292,7 @@ const MyCustomFormPage = () => {
       // datosEvaluacionSecundariaTraslado: { ...datosEvaluacionSecundaria },
       datosTratamientoUno: { ...datosTratamientoUno },
       datosTratamientoP2: { ...datosTratamientoP2 },
-      datosLegales: { ...datosLegales },  
+      datosLegales: { ...datosLegales },
 
       usuario: fullName, // Add user info
       timestamp: new Date().toISOString(), // Add timestamp
@@ -288,10 +301,11 @@ const MyCustomFormPage = () => {
     console.log("📤 Data being sent:", dataToSend); // Debug log
 
     try {
-      const response = await fetch("http://localhost:3000/reportes", { // Use localhost instead of IP
+      const response = await fetch("http://localhost:3000/reportes", {
+        // Use localhost instead of IP
         method: "POST",
         body: JSON.stringify(dataToSend),
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
 
       console.log("📡 Response status:", response.status); // Debug log
@@ -311,34 +325,70 @@ const MyCustomFormPage = () => {
     }
   };
 
-
   return (
-    <Box p={3} maxWidth={isMobile ? '100vw' : '100%'}>
+    <Box p={3} maxWidth={isMobile ? "100vw" : "100%"}>
       <Title title="Formulario Personalizado " />
-      <SeccionesAtencionHosp.HeaderAtencionPrehospitalaria value={datosCronometria} onChange={handleCronometriaPatch} />
-      <SeccionesAtencionHosp.MotivoAtencionPrehospitalaria value={datosMotivoAtencion} onChange={handleMotivoAtencionPatch} />
-      <SeccionesAtencionHosp.DatosTraslado value={datosLugarControl} onChange={handleLugarControlPatch} />
-      <SeccionesAtencionHosp.DatosPacienteSection value={datosPaciente} onChange={handlePacientePatch} />
-      <SeccionesAtencionHosp.FormsMadre value={datosMadre} onChange={handleMadrePatch} />
-      <SeccionesAtencionHosp.OpcionesAccidente value={datosCausaTraumatica} onChange={handleCausaTraumaticaPatch} />
-      <SeccionesAtencionHosp.FormsCausaClinica value={datosCausaClinica} onChange={handleCausaClinicaPatch} />
-      <SeccionesAtencionHosp.EvaluacionInicial value={datosEvaluacionInicial} onChange={handleEvaluacionInicialPatch} />
-      <SeccionesAtencionHosp.HeatmapBody value={datosCuerpoDibujo} onChange={handleCuerpoDibujoPatch} />
+      <SeccionesAtencionHosp.HeaderAtencionPrehospitalaria
+        value={datosCronometria}
+        onChange={handleCronometriaPatch}
+      />
+      <SeccionesAtencionHosp.MotivoAtencionPrehospitalaria
+        value={datosMotivoAtencion}
+        onChange={handleMotivoAtencionPatch}
+      />
+      <SeccionesAtencionHosp.DatosTraslado
+        value={datosLugarControl}
+        onChange={handleLugarControlPatch}
+      />
+      <SeccionesAtencionHosp.DatosPacienteSection
+        value={datosPaciente}
+        onChange={handlePacientePatch}
+      />
+      <SeccionesAtencionHosp.FormsMadre
+        value={datosMadre}
+        onChange={handleMadrePatch}
+      />
+      <SeccionesAtencionHosp.OpcionesAccidente
+        value={datosCausaTraumatica}
+        onChange={handleCausaTraumaticaPatch}
+      />
+      <SeccionesAtencionHosp.FormsCausaClinica
+        value={datosCausaClinica}
+        onChange={handleCausaClinicaPatch}
+      />
+      <SeccionesAtencionHosp.EvaluacionInicial
+        value={datosEvaluacionInicial}
+        onChange={handleEvaluacionInicialPatch}
+      />
+      <SeccionesAtencionHosp.HeatmapBody
+        value={datosCuerpoDibujo}
+        onChange={handleCuerpoDibujoPatch}
+      />
       {/* <SeccionesAtencionHosp.EvaluacionSecTraslado value={datosEvaluacionSecundaria} onChange={handleEvaluacionSecundariaPatch} /> */}
-      <SeccionesAtencionHosp.TratamientoUno value={datosTratamientoUno} onChange={handleTratamientoUnoPatch} />
-      <SeccionesAtencionHosp.TratamientoP2 value={datosTratamientoP2} onChange={handleTratamientoP2Patch} />
-      <SeccionesAtencionHosp.FormsDatosLegales value={datosLegales} onChange={handleDatosLegalesPatch} />
+      <SeccionesAtencionHosp.TratamientoUno
+        value={datosTratamientoUno}
+        onChange={handleTratamientoUnoPatch}
+      />
+      <SeccionesAtencionHosp.TratamientoP2
+        value={datosTratamientoP2}
+        onChange={handleTratamientoP2Patch}
+      />
+      <SeccionesAtencionHosp.FormsDatosLegales
+        value={datosLegales}
+        onChange={handleDatosLegalesPatch}
+      />
 
       {/* Mandar info */}
-      <Button variant="contained" color="primary" onClick={handleSendData} sx={{ mt: 3 }}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSendData}
+        sx={{ mt: 3 }}
+      >
         Enviar Datos
       </Button>
-
     </Box>
   );
 };
 
 export default MyCustomFormPage;
-
-
-
