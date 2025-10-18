@@ -1,5 +1,5 @@
-// src/pages/dashboard/Dashboard.tsx
 import { Box, Typography, Card, CardContent } from "@mui/material";
+import logo from "../custom_form/components/secciones_atencion_hosp/logo_alcaldia.png";
 
 export const Dashboard = () => {
   const userRole = localStorage.getItem("role") || "";
@@ -22,7 +22,7 @@ export const Dashboard = () => {
   const getAllowedResources = () => {
     switch (userRole) {
       case "admin":
-        return ["Gestión de Usuarios", "Reportes y Gráficas"];
+        return ["Gestión de Usuarios", "Gráficas y reportes"];
       case "jefe_turno":
         return ["Reportes"];
       case "paramedico":
@@ -36,13 +36,24 @@ export const Dashboard = () => {
 
   return (
     <Box p={3}>
-      <Typography variant="h4" gutterBottom>
+      <Box
+        component="img"
+        src={logo}
+        alt="Logo"
+        sx={{
+          width: "100",
+          height: "auto",
+          maxWidth: "30vw",
+          paddingBottom: 5,
+        }}
+      />
+      <Typography variant="h4" color="primary">
         {getWelcomeMessage()}
       </Typography>
 
       <Card sx={{ maxWidth: 600, mt: 3 }}>
         <CardContent>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6">
             Recursos disponibles para tu rol:
           </Typography>
           <ul>
