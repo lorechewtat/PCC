@@ -57,7 +57,7 @@ app.get("/reportes", async (req, res) => {
       sorter[sortBy] = sortOrder;
 
       let data = await db
-        .collection("reportes")
+        .collection("FRAP")
         .find({})
         .sort(sorter)
         .project({ _id: 0 })
@@ -74,7 +74,7 @@ app.get("/reportes", async (req, res) => {
       const ids = Array.isArray(req.query.id) ? req.query.id : [req.query.id];
       for (let index = 0; index < ids.length; index++) {
         let dataParcial = await db
-          .collection("reportes")
+          .collection("FRAP")
           .find({ id: Number(ids[index]) })
           .project({ _id: 0 })
           .toArray();
@@ -83,7 +83,7 @@ app.get("/reportes", async (req, res) => {
       res.json(data);
     } else {
       let data = await db
-        .collection("reportes")
+        .collection("FRAP")
         .find(req.query)
         .project({ _id: 0 })
         .toArray();
@@ -100,7 +100,7 @@ app.get("/reportes", async (req, res) => {
 app.get("/reportes/:nombre", async (req,res)=>{
   try {
     const nombre = decodeURIComponent(req.params.nombre);
-    let data = await db.collection("reportes").find({
+    let data = await db.collection("FRAP").find({
       "datosPaciente.nombre": nombre
     }).project({_id:0}).toArray();
     res.json(data[0]);
@@ -114,7 +114,7 @@ app.get("/reportes/:nombre", async (req,res)=>{
 app.get("/reportes/socorrista/:socorrista", async (req, res) => {
   try {
     const socorrista = decodeURIComponent(req.params.socorrista);
-    let data = await db.collection("reportes").find({
+    let data = await db.collection("FRAP").find({
       "datosLugarControl.socorrista": socorrista
     }).project({ _id: 0 }).toArray();
     res.json(data);
@@ -128,7 +128,7 @@ app.get("/reportes/socorrista/:socorrista", async (req, res) => {
 app.get("/reportes/fecha/:fecha", async (req, res) => {
   try {
     const fecha = req.params.fecha;
-    let data = await db.collection("reportes").find({
+    let data = await db.collection("FRAP").find({
       "datosCronometria.fecha": fecha
     }).project({ _id: 0 }).toArray();
     res.json(data);
@@ -154,7 +154,7 @@ app.get("/reportes/search", async (req, res) => {
       query["datosCronometria.fecha"] = fecha;
     }
     
-    let data = await db.collection("reportes").find(query).project({ _id: 0 }).toArray();
+    let data = await db.collection("FRAP").find(query).project({ _id: 0 }).toArray();
     res.json(data);
   } catch (error) {
     console.error("Error in combined search:", error);
@@ -163,10 +163,10 @@ app.get("/reportes/search", async (req, res) => {
 });
 
 // Lista usuarios
-app.get("/usuarios", async (req, res) => {
+app.get("/Usuarios", async (req, res) => {
   try {
     
-    let data = await db.collection("usuarios").find({})
+    let data = await db.collection("Usuarios").find({})
       .project({ 
         _id: 0,          
         password: 0       
@@ -195,19 +195,19 @@ app.get("/usuarios", async (req, res) => {
 app.post("/reportes", async (req, res) => {
   let valores = req.body;
   // valores["id"]=Number(valores["id"])
-  let data = await db.collection("reportes").insertOne(valores);
+  let data = await db.collection("FRAP").insertOne(valores);
   res.json(data);
 });
 
 //createOne usuarios
-app.post("/usuarios", async (req, res) => {
+app.post("/Usuarios", async (req, res) => {
   let user = req.body.email;
   let pass = req.body.password;
   let nombre = req.body.name + " " + req.body.apellido;
   let tipo = req.body.role;
   let turno = req.body.turno;
   console.log("Received user data:", req.body);
-  let data = await db.collection("usuarios").findOne({ usuario: user });
+  let data = await db.collection("Usuarios").findOne({ usuario: user });
   console.log("User inserted:", data);
   // Verifica si el usuario ya existe
   if (data == null) {
@@ -225,7 +225,7 @@ app.post("/usuarios", async (req, res) => {
       tipo: tipo,
       turno: turno,
     };
-    data = await db.collection("usuarios").insertOne(usuarioAgregar);
+    data = await db.collection("Usuarios").insertOne(usuarioAgregar);
     res.json(data);
     // res.sendStatus(201);
     console.log("Usuario creado:", usuarioAgregar);
@@ -239,7 +239,7 @@ app.post("/usuarios", async (req, res) => {
 app.post("/login", async (req, res) => {
   let user = req.body.username;
   let pass = req.body.password;
-  let data = await db.collection("usuarios").findOne({ usuario: user });
+  let data = await db.collection("Usuarios").findOne({ usuario: user });
   // no existe el usuario
   if (data == null) {
     res.sendStatus(401);

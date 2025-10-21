@@ -31,13 +31,13 @@ interface Report {
 
 // API functions
 const fetchAllReports = async (): Promise<Report[]> => {
-  const response = await fetch('http://localhost:3000/reportes');
+  const response = await fetch('https://localhost:3000/reportes');
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   return await response.json();
 };
 
 const searchReportByName = async (nombre: string): Promise<Report | null> => {
-  const response = await fetch(`http://localhost:3000/reportes/${encodeURIComponent(nombre)}`);
+  const response = await fetch(`https://localhost:3000/reportes/${encodeURIComponent(nombre)}`);
   if (!response.ok) {
     if (response.status === 404) return null;
     throw new Error(`HTTP error! status: ${response.status}`);
@@ -46,13 +46,13 @@ const searchReportByName = async (nombre: string): Promise<Report | null> => {
 };
 
 const searchReportsBySocorrista = async (socorrista: string): Promise<Report[]> => {
-  const response = await fetch(`http://localhost:3000/reportes/socorrista/${encodeURIComponent(socorrista)}`);
+  const response = await fetch(`https://localhost:3000/reportes/socorrista/${encodeURIComponent(socorrista)}`);
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   return await response.json();
 };
 
 const searchReportsByFecha = async (fecha: string): Promise<Report[]> => {
-  const response = await fetch(`http://localhost:3000/reportes/fecha/${fecha}`);
+  const response = await fetch(`https://localhost:3000/reportes/fecha/${fecha}`);
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   return await response.json();
 };
@@ -63,7 +63,7 @@ const searchReportsCombined = async (params: { nombre?: string; socorrista?: str
   if (params.socorrista) searchParams.append('socorrista', params.socorrista);
   if (params.fecha) searchParams.append('fecha', params.fecha);
   
-  const response = await fetch(`http://localhost:3000/reportes/search?${searchParams.toString()}`);
+  const response = await fetch(`https://localhost:3000/reportes/search?${searchParams.toString()}`);
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   return await response.json();
 };

@@ -35,7 +35,7 @@ const turnos = ["1", "2", "3", "4", "5"];
 // Función para obtener usuarios de la base de datos
 const fetchUsers = async (): Promise<User[]> => {
   try {
-    const response = await fetch('http://localhost:3000/usuarios');
+    const response = await fetch('https://localhost:3000/Usuarios');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -94,7 +94,7 @@ const PaginaNuevosUsuarios = () => {
     console.log("Data being sent:", dataToSend);
 
     try {
-      const response = await fetch('http://localhost:3000/usuarios', {
+      const response = await fetch('https://localhost:3000/Usuarios', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dataToSend),
