@@ -129,16 +129,35 @@ const BuscarReportes = () => {
 
 };
 
-   const handleDelete = (id: string | number | undefined) => {
+   const handleDelete = async (id: string | number | undefined) => {
   if (!id) {
     notify('No se puede eliminar: ID no válido', { type: 'error' });
     return;
   }
   
-  // Filtrar por _id o id dependiendo de cuál exista
-  setReports(reports.filter(r => r._id !== id && r.id !== id));
-  notify('Reporte eliminado (solo local - falta implementar DELETE en backend)', { type: 'info' });
+  try {
+    const response = await fetch(`https://localhost:3000/reportes/${encodeURIComponent(id.toString())}`, {
+      method: 'DELETE',
+    });
+    
+    if (response.ok) {
+      const result = await response.json();
+      // Remove from local state after successful deletion
+      setReports(reports.filter(r => r._id !== id && r.id !== id));
+      notify('Reporte eliminado exitosamente', { type: 'success' });
+      console.log('Report deleted:', result);
+    } else if (response.status === 404) {
+      notify('Reporte no encontrado', { type: 'error' });
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Error desconocido');
+    }
+  } catch (error) {
+    console.error('Error deleting report:', error);
+    notify("Error al eliminar reporte");
+  }
 };
+  
 
   const handleSearchBySocorrista = async () => {
     if (!search.socorrista.trim()) {
@@ -398,24 +417,23 @@ const BuscarReportes = () => {
           ) : (
             <List>
                {reports.map((r) => (
-                              <Box key={r.id} display="flex" alignItems="center">
+                              <Box key={r.id || r._id} display="flex" alignItems="center">
                                 <ListItem sx={{ flex: 1 }}>
                                   <ListItemText
                                     primary={`Paciente: ${r.datosPaciente?.nombre || 'N/A'} | Socorrista: ${r.datosLugarControl?.socorrista || 'N/A'}`}
-                    secondary={`Fecha: ${r.datosCronometria?.fecha || 'N/A'} | Ambulancia: ${r.numAmbulancia || 'N/A'} | ID: ${r.id || 'N/A'}`}
+                    secondary={`Fecha: ${r.datosCronometria?.fecha || 'N/A'} | Ambulancia: ${r.numAmbulancia || 'N/A'} | ID: ${r.id || r._id || 'N/A'}`}
                
                                   />
                                 </ListItem>
                                 <IconButton 
                                   color="error" 
-                                   onClick={() => handleDelete(r.id)}
-                                  
+                                  onClick={() => handleDelete(r.id || r._id)}
                                 >
                                   <DeleteIcon />
                                 </IconButton>
                                  <IconButton 
                                   color="success" 
-                                   onClick={() => handleUpdate(r.id)}
+                                   onClick={() => handleUpdate(r.id || r._id)}
                                   
                                 >
                                   <UpdateIcon />
