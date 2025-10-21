@@ -287,7 +287,7 @@ app.delete("/reportes/:id", async (req, res) => {
       };
     }
     
-    let data = await db.collection("reportes").deleteOne(query);
+    let data = await db.collection("FRAP").deleteOne(query);
     
     if (data.deletedCount === 0) {
       return res.status(404).json({ error: "Reporte no encontrado" });
@@ -302,11 +302,11 @@ app.delete("/reportes/:id", async (req, res) => {
 });
 
 // deleteOne usuarios
-app.delete("/usuarios/:usuario", async (req, res) => {
+app.delete("/Usuarios/:usuario", async (req, res) => {
   try {
     const usuario = decodeURIComponent(req.params.usuario);
     
-    let data = await db.collection("usuarios").deleteOne({"usuario": usuario});
+    let data = await db.collection("Usuarios").deleteOne({"usuario": usuario});
     
     if (data.deletedCount === 0) {
       return res.status(404).json({ error: "Usuario no encontrado" });

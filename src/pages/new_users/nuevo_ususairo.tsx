@@ -134,7 +134,7 @@ const PaginaNuevosUsuarios = () => {
   const handleDelete = async (email: string) => {
     try {
       const encodedEmail = encodeURIComponent(email);
-      const response = await fetch(`http://localhost:3000/usuarios/${encodedEmail}`, {
+      const response = await fetch(`https://localhost:3000/Usuarios/${encodedEmail}`, {
         method: 'DELETE',
       });
       
