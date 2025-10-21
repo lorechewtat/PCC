@@ -5,14 +5,38 @@ import {
   Layout as RALayout,
   Menu,
   CheckForApplicationUpdate,
+  AppBar,
+  TitlePortal,
+  useGetIdentity,
 } from "react-admin";
+import { Box, Typography, Avatar } from "@mui/material";
 
 // Íconos
 import PostIcon from "@mui/icons-material/Book";
 import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import { PersonAdd, Search } from "@mui/icons-material";
 
-// Layout.tsx - Actualizar los roles del FRAP Médico
+
+const MyAppBar = () => {
+  useGetIdentity();
+
+  return (
+    <AppBar
+      sx={{
+        backgroundColor: '#20315D',
+        '& .RaAppBar-toolbar': {
+          paddingX: 2,
+        },
+      }}
+    >
+    
+      <TitlePortal />
+      <Box sx={{ flex: 1 }} />
+
+    
+    </AppBar>
+  );
+};
 export const Layout = ({ children }: { children: ReactNode }) => {
   const userRole = localStorage.getItem("role") || "";
 
@@ -62,10 +86,10 @@ export const Layout = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  return (
-    <RALayout menu={CustomMenu}>
-      {children}
-      <CheckForApplicationUpdate />
-    </RALayout>
-  );
+return (
+  <RALayout menu={CustomMenu} appBar={MyAppBar}>
+    {children}
+    <CheckForApplicationUpdate />
+  </RALayout>
+);
 };
