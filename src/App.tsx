@@ -22,6 +22,7 @@ import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import EmergenciasPage from "./pages/emergencias_urbanas/emergencias";
 import BuscarReportes from "./pages/buscar_frap/buscar_frap";
 import { Dashboard } from "./pages/dashboard/Dashboard";
+import LogsView from "./pages/albums/logs/logs";
 
 export const App = () => (
   <Admin
@@ -59,7 +60,14 @@ export const App = () => (
       icon={PersonAdd}
       options={{ label: "Nuevo Usuario" }}
     />
-
+  <Resource
+      name="historial_cambios"
+      list={LogsView}
+      show={LogsView}
+      create={LogsView}
+      icon={LogsView}
+      options={{ label: "Historial de cambios" }}
+    />
     <Resource
       name="Buscar_reportes"
       list={BuscarReportes}
