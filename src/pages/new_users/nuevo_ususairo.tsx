@@ -131,16 +131,32 @@ const PaginaNuevosUsuarios = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleDelete = (id: number) => {
-    // Por ahora solo eliminar del estado local
-    // TODO: Implementar DELETE endpoint en el backend
-    setUsers(users.filter(u => u.id !== id));
-    notify('Usuario eliminado (solo local - falta implementar DELETE en backend)', { type: 'info' });
+  const handleDelete = async (email: string) => {
+    try {
+      // Use email instead of id since that's what your backend expects
+      const encodedEmail = encodeURIComponent(email);
+      const response = await fetch(`http://localhost:3000/usuarios/${encodedEmail}`, {
+        method: 'DELETE',
+      });
+      
+      if (response.ok) {
+        notify("Usuario eliminado con éxito", { type: "success" });
+        // Reload the users list after successful deletion
+        await loadUsers();
+      } else if (response.status === 404) {
+        notify("Usuario no encontrado", { type: "error" });
+      } else {
+        notify("Error al eliminar usuario", { type: "error" });
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      notify("Error de red al eliminar usuario", { type: "error" });
+    }
   };
 
   return (
     <Box p={3} maxWidth="800px">
-      <Title title="Gestión de Usuarios - Base de Datos Real" />
+      <Title title="Crear nuevo usuario" />
 
       <Card sx={{ mb: 3 }}>
         <CardContent>
@@ -278,7 +294,7 @@ const PaginaNuevosUsuarios = () => {
                   </ListItem>
                   <IconButton 
                     color="error" 
-                    onClick={() => handleDelete(user.id)}
+                    onClick={() => handleDelete(user.email)}
                     disabled={loadingUsers}
                   >
                     <DeleteIcon />

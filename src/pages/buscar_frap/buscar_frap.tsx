@@ -1,6 +1,6 @@
 import { Box, TextField, Typography, Card, CardContent, List, ListItem, ListItemText, Button, Alert, CircularProgress, Chip,IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useNotify } from "react-admin";
+import { useNotify, Title } from "react-admin";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateIcon from '@mui/icons-material/Update';
@@ -261,7 +261,9 @@ const BuscarReportes = () => {
   };
 
   return (
+    
     <Box p={3} maxWidth="100vw" mx="auto">
+        <Title title="Buscar reportes" />
       <Typography variant="h5" gutterBottom>
         Buscar Reportes Médicos - Base de Datos
       </Typography>

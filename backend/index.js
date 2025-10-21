@@ -254,11 +254,43 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// //deleteOne
-// app.delete("/reportes/:id", async(req,res)=>{
-// 	let data=await db.collection("ejemplo402").deleteOne({"id": Number(req.params.id)});
-// 	res.json(data)
-// })
+//createOne emergencias
+app.post("/emergencias", async (req, res) => {
+  try {
+    let valores = req.body;
+    let data = await db.collection("emergencias").insertOne(valores);
+    res.json(data);
+  } catch (error) {
+    console.error("Error creating emergencia:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+//deleteOne reportes
+app.delete("/reportes/:id", async(req,res)=>{
+	let data=await db.collection("reportes").deleteOne({"id": Number(req.params.id)});
+	res.json(data)
+})
+
+// deleteOne usuarios
+app.delete("/usuarios/:usuario", async (req, res) => {
+  try {
+    const usuario = decodeURIComponent(req.params.usuario);
+    
+    let data = await db.collection("usuarios").deleteOne({"usuario": usuario});
+    
+    if (data.deletedCount === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+    
+    console.log("User deleted successfully:", data);
+    res.json({ message: "Usuario eliminado exitosamente", deletedCount: data.deletedCount });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
 
 // //updateOne
 // app.put("/reportes/:id", async(req,res)=>{

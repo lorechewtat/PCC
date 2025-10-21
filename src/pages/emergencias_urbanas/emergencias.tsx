@@ -1,11 +1,12 @@
-import { Box, TextField, Typography, Stack, ToggleButton, ToggleButtonGroup, Divider } from "@mui/material";
-import logo from '../custom_form/components/secciones_atencion_hosp/logo_alcaldia.png'; // Ajusta la ruta de tu logo
-import logoHosp from '../custom_form/components/secciones_atencion_hosp/hosp.png'; // Ajusta la ruta de tu logo
+import { Box, TextField, Typography, Stack, ToggleButton, ToggleButtonGroup, Divider, Button } from "@mui/material";
+import logo from '../custom_form/components/secciones_atencion_hosp/logo_alcaldia.png';
+import logoHosp from '../custom_form/components/secciones_atencion_hosp/hosp.png';
 import Addlocation from '@mui/icons-material/AddLocation';
 import Gravedad from '@mui/icons-material/GppMaybe';
 import Datos from '@mui/icons-material/TextSnippet';
 import Atencion from '@mui/icons-material/PriorityHighSharp';
 import {useState } from "react";
+import { useNotify } from "react-admin";
 
 export type EmergenciasUrbanas = {
         fecha: string,
@@ -36,6 +37,7 @@ type Props = {
 const EmergenciasPage = () => {
   const isMobile = window.innerWidth <= 768;
   const hoy = new Date().toISOString().split('T')[0];
+  const notify = useNotify();
 
   const commonBtnSx = {
         backgroundColor: '#8E8E8E',
@@ -89,6 +91,49 @@ const EmergenciasPage = () => {
 //             }
 //         };
 
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/emergencias', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Emergencia creada:', result);
+        notify("Emergencia creada con éxito", { type: "success" });
+        
+        // Reset form after successful submission
+        setForm({
+          fecha: "",
+          turno: "",
+          nombrePersonal: "",  
+          modoActivacion: "",
+          tipoServicio: "",
+          detallesUbicacion: "",
+          responsableEmergencia: "",
+          gravedad: "",
+          afectaciones: "",
+          conclusion: "",
+          fechaAtencion: "",
+          tiempoTraslado: "",
+          Km: "",
+          trabajos: "",
+          autoridades: "",
+          observaciones: "",
+        });
+      } else {
+        throw new Error('Error al guardar el reporte');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al guardar el reporte de emergencia');
+    }
+  };
 
   return (
 <Box
@@ -436,6 +481,22 @@ const EmergenciasPage = () => {
         }}
         />
     </Box>
+
+    {/* Add submit button at the end */}
+    <Box display="flex" justifyContent="center" width="100%" mt={4}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
+          sx={{
+            padding: '12px 48px',
+            fontSize: '16px',
+            fontWeight: 'bold'
+          }}
+        >
+          Guardar Reporte de Emergencia
+        </Button>
+      </Box>
 
 </Box>
   );
