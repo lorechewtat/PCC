@@ -33,7 +33,7 @@ const LogsView = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
-    fetch("http://localhost:3000/logs")
+    fetch("https://localhost:3000/logs")
       .then((res) => res.json())
       .then((data) => setLogs(data))
       .catch(() => setLogs([]))

@@ -22,7 +22,7 @@ import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import EmergenciasPage from "./pages/emergencias_urbanas/emergencias";
 import BuscarReportes from "./pages/buscar_frap/buscar_frap";
 import { Dashboard } from "./pages/dashboard/Dashboard";
-import LogsView from "./pages/albums/logs";
+import LogsView from "./pages/logs_screen/logs_screen";
 export const App = () => (
   <Admin
     loginPage={MyLoginPage}
