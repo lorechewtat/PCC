@@ -301,7 +301,7 @@ const MyCustomFormPage = () => {
     console.log("📤 Data being sent:", dataToSend); // Debug log
 
     try {
-      const response = await fetch("http://localhost:3000/reportes", {
+      const response = await fetch("https://localhost:3000/reportes", {
         // Use localhost instead of IP
         method: "POST",
         body: JSON.stringify(dataToSend),
