@@ -95,12 +95,16 @@ app.get("/reportes", async (req, res) => {
 });
 
 //getOne reportes
-app.get("/reportes/:nombre", async (req,res)=>{
+app.get("/reportes/:nombre", async (req, res) => {
   try {
     const nombre = decodeURIComponent(req.params.nombre);
-    let data = await db.collection("reportes").find({
-      "datosPaciente.nombre": nombre
-    }).project({_id:0}).toArray();
+    let data = await db
+      .collection("reportes")
+      .find({
+        "datosPaciente.nombre": nombre,
+      })
+      .project({ _id: 0 })
+      .toArray();
     res.json(data[0]);
   } catch (error) {
     console.error("Error searching by nombre:", error);
@@ -112,9 +116,13 @@ app.get("/reportes/:nombre", async (req,res)=>{
 app.get("/reportes/socorrista/:socorrista", async (req, res) => {
   try {
     const socorrista = decodeURIComponent(req.params.socorrista);
-    let data = await db.collection("reportes").find({
-      "datosLugarControl.socorrista": socorrista
-    }).project({ _id: 0 }).toArray();
+    let data = await db
+      .collection("reportes")
+      .find({
+        "datosLugarControl.socorrista": socorrista,
+      })
+      .project({ _id: 0 })
+      .toArray();
     res.json(data);
   } catch (error) {
     console.error("Error searching by socorrista:", error);
@@ -126,9 +134,13 @@ app.get("/reportes/socorrista/:socorrista", async (req, res) => {
 app.get("/reportes/fecha/:fecha", async (req, res) => {
   try {
     const fecha = req.params.fecha;
-    let data = await db.collection("reportes").find({
-      "datosCronometria.fecha": fecha
-    }).project({ _id: 0 }).toArray();
+    let data = await db
+      .collection("reportes")
+      .find({
+        "datosCronometria.fecha": fecha,
+      })
+      .project({ _id: 0 })
+      .toArray();
     res.json(data);
   } catch (error) {
     console.error("Error searching by fecha:", error);
@@ -141,18 +153,25 @@ app.get("/reportes/search", async (req, res) => {
   try {
     const { nombre, socorrista, fecha } = req.query;
     let query = {};
-    
+
     if (nombre) {
       query["datosPaciente.nombre"] = { $regex: nombre, $options: "i" };
     }
     if (socorrista) {
-      query["datosLugarControl.socorrista"] = { $regex: socorrista, $options: "i" };
+      query["datosLugarControl.socorrista"] = {
+        $regex: socorrista,
+        $options: "i",
+      };
     }
     if (fecha) {
       query["datosCronometria.fecha"] = fecha;
     }
-    
-    let data = await db.collection("reportes").find(query).project({ _id: 0 }).toArray();
+
+    let data = await db
+      .collection("reportes")
+      .find(query)
+      .project({ _id: 0 })
+      .toArray();
     res.json(data);
   } catch (error) {
     console.error("Error in combined search:", error);
@@ -163,25 +182,26 @@ app.get("/reportes/search", async (req, res) => {
 // Lista usuarios
 app.get("/usuarios", async (req, res) => {
   try {
-    
-    let data = await db.collection("usuarios").find({})
-      .project({ 
-        _id: 0,          
-        password: 0       
+    let data = await db
+      .collection("usuarios")
+      .find({})
+      .project({
+        _id: 0,
+        password: 0,
       })
       .toArray();
-    
+
     // Transformar los datos para que coincidan con el formato del frontend
     const transformedData = data.map((user, index) => ({
-      id: index + 1,  // Generar ID incremental
-      name: user.nombre ? user.nombre.split(' ')[0] : 'N/A',  
-      apellido: user.nombre ? user.nombre.split(' ').slice(1).join(' ') : 'N/A',  
+      id: index + 1, // Generar ID incremental
+      name: user.nombre ? user.nombre.split(" ")[0] : "N/A",
+      apellido: user.nombre ? user.nombre.split(" ").slice(1).join(" ") : "N/A",
       email: user.usuario,
-      role: user.tipo || 'N/A',
-      turno: user.turno || 'N/A',
-      password: '***'  // Ocultar contraseña por seguridad
+      role: user.tipo || "N/A",
+      turno: user.turno || "N/A",
+      password: "***", // Ocultar contraseña por seguridad
     }));
-    
+
     res.json(transformedData);
   } catch (error) {
     console.error("Error al obtener usuarios:", error);
@@ -264,12 +284,12 @@ app.post("/emergencias", async (req, res) => {
   }
 });
 
-//deleteOne reportes 
+//deleteOne reportes
 app.delete("/reportes/:id", async (req, res) => {
   try {
     const id = req.params.id;
     console.log("Attempting to delete report with id:", id);
-    
+
     let query = {};
 
     // If it's a numeric ID
@@ -277,22 +297,22 @@ app.delete("/reportes/:id", async (req, res) => {
       query = { id: Number(id) };
     } else {
       // If not numeric, try as string or ObjectId
-      query = { 
-        $or: [
-          { id: id },
-          { _id: id },
-        ]
+      query = {
+        $or: [{ id: id }, { _id: id }],
       };
     }
-    
+
     let data = await db.collection("reportes").deleteOne(query);
-    
+
     if (data.deletedCount === 0) {
       return res.status(404).json({ error: "Reporte no encontrado" });
     }
-    
+
     console.log("Report deleted successfully:", data);
-    res.json({ message: "Reporte eliminado exitosamente", deletedCount: data.deletedCount });
+    res.json({
+      message: "Reporte eliminado exitosamente",
+      deletedCount: data.deletedCount,
+    });
   } catch (error) {
     console.error("Error deleting report:", error);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -303,30 +323,83 @@ app.delete("/reportes/:id", async (req, res) => {
 app.delete("/usuarios/:usuario", async (req, res) => {
   try {
     const usuario = decodeURIComponent(req.params.usuario);
-    
-    let data = await db.collection("usuarios").deleteOne({"usuario": usuario});
-    
+
+    let data = await db.collection("usuarios").deleteOne({ usuario: usuario });
+
     if (data.deletedCount === 0) {
       return res.status(404).json({ error: "Usuario no encontrado" });
     }
-    
+
     console.log("User deleted successfully:", data);
-    res.json({ message: "Usuario eliminado exitosamente", deletedCount: data.deletedCount });
+    res.json({
+      message: "Usuario eliminado exitosamente",
+      deletedCount: data.deletedCount,
+    });
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
+//updateOne reportes - only for ID changes
+app.put("/reportes/:id", async (req, res) => {
+  try {
+    const currentId = req.params.id;
+    const { newId } = req.body;
 
-// //updateOne
-// app.put("/reportes/:id", async(req,res)=>{
-// 	let valores=req.body
-// 	valores["id"]=Number(valores["id"])
-// 	let data =await db.collection("ejemplo402").updateOne({"id":valores["id"]}, {"$set":valores})
-// 	data=await db.collection("ejemplo402").find({"id":valores["id"]}).project({_id:0}).toArray();
-// 	res.json(data[0]);
-// })
+    console.log(
+      "Attempting to update report ID from:",
+      currentId,
+      "to:",
+      newId,
+    );
+
+    if (!newId) {
+      return res.status(400).json({ error: "Nuevo ID es requerido" });
+    }
+
+    // Build query to find current report
+    let findQuery = {};
+    if (!isNaN(Number(currentId))) {
+      findQuery = { id: Number(currentId) };
+    } else {
+      findQuery = {
+        $or: [{ id: currentId }, { _id: currentId }],
+      };
+    }
+
+    // Check if new ID already exists
+    const existingReport = await db
+      .collection("reportes")
+      .findOne({ id: Number(newId) });
+    if (existingReport) {
+      return res.status(409).json({ error: "El nuevo ID ya existe" });
+    }
+
+    // Update the report with new ID
+    const updateResult = await db
+      .collection("reportes")
+      .updateOne(findQuery, { $set: { id: Number(newId) } });
+
+    if (updateResult.matchedCount === 0) {
+      return res.status(404).json({ error: "Reporte no encontrado" });
+    }
+
+    // Return updated report
+    const updatedReport = await db
+      .collection("reportes")
+      .findOne({ id: Number(newId) });
+
+    console.log("Report ID updated successfully");
+    res.json({
+      message: "ID del reporte actualizado exitosamente",
+      report: updatedReport,
+    });
+  } catch (error) {
+    console.error("Error updating report ID:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 
 async function connectToDB() {
   const uri =
