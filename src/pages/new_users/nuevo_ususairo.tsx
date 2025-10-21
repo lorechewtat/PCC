@@ -156,7 +156,7 @@ const PaginaNuevosUsuarios = () => {
 
   return (
     <Box p={3} maxWidth="800px">
-      <Title title="Gestión de Usuarios - Base de Datos Real" />
+      <Title title="Crear nuevo usuario" />
 
       <Card sx={{ mb: 3 }}>
         <CardContent>

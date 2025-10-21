@@ -1,22 +1,32 @@
-import * as React from "react";
-import { AppBar, TitlePortal } from "react-admin";
-import { Toolbar, Typography } from "@mui/material";
-import { MyUserMenu } from "../menu/menu";
 
-export const MyAppBar = (props: any) => (
-  <AppBar
-    {...props}
-    userMenu={<MyUserMenu />}    
-    elevation={0}
-    sx={{
-      background: "#0B57D0",   
-      color: "#fff",
-    }}
-  >
-    <Toolbar sx={{ minHeight: 64, px: 2 }}>
-      <Typography variant="h6" sx={{ fontWeight: 700 }}>
-        <TitlePortal />
-      </Typography>
-    </Toolbar>
-  </AppBar>
-);
+import { AppBar, TitlePortal, useGetIdentity } from 'react-admin';
+import { Box, Typography, Avatar } from '@mui/material';
+import logo from './logo_alcaldia.png'; // Ajusta la ruta
+
+export const MyAppBar = () => {
+    useGetIdentity();
+
+    return (
+        <AppBar
+            sx={{
+                backgroundColor: '#20315D',
+                '& .RaAppBar-toolbar': {
+                    paddingX: 2,
+                },
+            }}
+        >
+            {/* Logo */}
+        
+
+            {/* Título dinámico */}
+            <TitlePortal />
+
+            {/* Espaciador */}
+            <Box sx={{ flex: 1 }} />
+
+            {/* Usuario */}
+         
+            
+        </AppBar>
+    );
+};
