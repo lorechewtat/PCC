@@ -12,6 +12,8 @@ import {
 import { Box, Typography, Avatar } from "@mui/material";
 
 // Íconos
+import HistoryIcon from "@mui/icons-material/History";
+
 import PostIcon from "@mui/icons-material/Book";
 import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import { PersonAdd, Search } from "@mui/icons-material";
@@ -58,6 +60,12 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         name: "nuevo_usuario",
         label: "Nuevo Usuario",
         icon: PersonAdd,
+        roles: ["admin"],
+      },
+         {
+        name: "historial_cambios",
+        label: "Historial de cambios",
+        icon: HistoryIcon,
         roles: ["admin"],
       },
       {

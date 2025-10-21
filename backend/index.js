@@ -229,6 +229,7 @@ app.post("/Usuarios", async (req, res) => {
     res.json(data);
     // res.sendStatus(201);
     console.log("Usuario creado:", usuarioAgregar);
+    log( "/Usuarios", "Se creó un nuevo usuario ${user}");
     // Si el usuario ya existe, devuelve un error 403
   } else {
     res.sendStatus(403);
@@ -329,6 +330,28 @@ app.delete("/Usuarios/:usuario", async (req, res) => {
 // 	data=await db.collection("ejemplo402").find({"id":valores["id"]}).project({_id:0}).toArray();
 // 	res.json(data[0]);
 // })
+
+// Cambia la función log para aceptar req y guardar la IP
+async function log(req, objeto, accion) {
+  const toLog = {
+    timestamp: new Date(),
+    endpoint: objeto,
+    accion: accion,
+    ip: req.ip,
+  };
+  await db.collection("log402").insertOne(toLog);
+}
+
+//Obtener historial de usuarios
+app.get("/logs", async (req, res) => {
+  try {
+    const logs = await db.collection("log402").find({}).sort({ timestamp: -1 }).limit(200).toArray();
+    res.json(logs);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener logs" });
+  }
+});
+
 
 async function connectToDB(){
 	let client=new MongoClient(await process.env.DB);
