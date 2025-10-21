@@ -1,29 +1,53 @@
 import { AuthProvider } from "react-admin";
 import ppusuario from "./images/nj_copy.jpg";
 
-// Lista de usuarios con roles para prueba
-const users = {
-  admin: { password: "admin", role: "admin" },
-  jefe_turno: { password: "123", role: "jefe_turno" },
-  paramedico: { password: "123", role: "paramedico" },
-  e_urbanas: { password: "123", role: "emergencias_urbanas" },
-};
-
 export const authProvider: AuthProvider = {
   async login({ username, password }) {
-    const user = users[username as keyof typeof users];
+    const request = new Request(import.meta.env.VITE_BACKEND + "/login", {
+      method: "POST",
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+      headers: new Headers({ "Content-Type": "application/json" }),
+    });
 
-    if (user && user.password === password) {
-      localStorage.setItem("username", username);
-      localStorage.setItem("role", user.role);
+    try {
+      const response = await fetch(request);
+
+      if (!response.ok) {
+        throw new Error("Credenciales incorrectas");
+      }
+
+      const userData = await response.json();
+      console.log("Datos del usuario:", userData);
+
+      // Guardar en sessionStorage
+      sessionStorage.setItem("auth", "authenticated");
+      sessionStorage.setItem("token", userData.token);
+      sessionStorage.setItem("username", userData.email);
+      sessionStorage.setItem("role", userData.role);
+      sessionStorage.setItem(
+        "identity",
+        JSON.stringify({
+          id: userData.id,
+          fullName: userData.nombre,
+        }),
+      );
+
       return Promise.resolve();
-    } else {
-      return Promise.reject("Credenciales inválidas");
+    } catch (error: any) {
+      console.error("Error en login:", error);
+      throw new Error(error.message || "Error en usuario o password");
     }
   },
 
   async logout() {
-    localStorage.removeItem("username");
+    sessionStorage.removeItem("auth");
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("role");
+    sessionStorage.removeItem("identity");
+    sessionStorage.removeItem("userData");
     return Promise.resolve();
   },
 
@@ -36,28 +60,33 @@ export const authProvider: AuthProvider = {
   },
 
   async checkAuth() {
-    if (!localStorage.getItem("username")) {
-      throw new Error("No autenticado");
-    }
-    return Promise.resolve();
+    return sessionStorage.getItem("auth")
+      ? Promise.resolve()
+      : Promise.reject();
   },
 
   async getIdentity() {
-    const username = localStorage.getItem("username");
+    const identityStr = sessionStorage.getItem("identity");
 
-    if (!username) {
+    if (!identityStr) {
       return Promise.reject("No identity found");
     }
 
-    return Promise.resolve({
-      id: username,
-      fullName: "Soobin", //TODO: SACAR DE UN BACKEND LOS DATOS
-      avatar: ppusuario,
-    });
+    try {
+      const identity = JSON.parse(identityStr);
+
+      return Promise.resolve({
+        id: identity.id,
+        fullName: identity.fullName,
+        avatar: ppusuario,
+      });
+    } catch (error) {
+      return Promise.reject("Error al cargar datos del usuario");
+    }
   },
 
   async getPermissions() {
-    const role = localStorage.getItem("userRole");
+    const role = sessionStorage.getItem("role");
     return Promise.resolve(role ? [role] : []);
   },
 };
