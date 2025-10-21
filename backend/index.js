@@ -264,11 +264,40 @@ app.post("/emergencias", async (req, res) => {
   }
 });
 
-//deleteOne reportes
-app.delete("/reportes/:id", async(req,res)=>{
-	let data=await db.collection("reportes").deleteOne({"id": Number(req.params.id)});
-	res.json(data)
-})
+//deleteOne reportes 
+app.delete("/reportes/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log("Attempting to delete report with id:", id);
+    
+    let query = {};
+
+    // If it's a numeric ID
+    if (!isNaN(Number(id))) {
+      query = { id: Number(id) };
+    } else {
+      // If not numeric, try as string or ObjectId
+      query = { 
+        $or: [
+          { id: id },
+          { _id: id },
+        ]
+      };
+    }
+    
+    let data = await db.collection("reportes").deleteOne(query);
+    
+    if (data.deletedCount === 0) {
+      return res.status(404).json({ error: "Reporte no encontrado" });
+    }
+    
+    console.log("Report deleted successfully:", data);
+    res.json({ message: "Reporte eliminado exitosamente", deletedCount: data.deletedCount });
+  } catch (error) {
+    console.error("Error deleting report:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 
 // deleteOne usuarios
 app.delete("/usuarios/:usuario", async (req, res) => {
