@@ -417,8 +417,7 @@ const BuscarReportes = () => {
           ) : (
             <List>
                {reports.map((r) => (
-                              <Box key={r.id} display="flex" alignItems="center">
-				<Box key={r.id || r._id} display="flex" alignItems="center">	
+                              <Box key={r.id || r._id} display="flex" alignItems="center">
                                 <ListItem sx={{ flex: 1 }}>
                                   <ListItemText
                                     primary={`Paciente: ${r.datosPaciente?.nombre || 'N/A'} | Socorrista: ${r.datosLugarControl?.socorrista || 'N/A'}`}
@@ -428,8 +427,7 @@ const BuscarReportes = () => {
                                 </ListItem>
                                 <IconButton 
                                   color="error" 
-                                   onClick={() => handleDelete(r.id || r._id)}
-                                  
+                                  onClick={() => handleDelete(r.id || r._id)}
                                 >
                                   <DeleteIcon />
                                 </IconButton>
