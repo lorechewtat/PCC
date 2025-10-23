@@ -30,14 +30,12 @@ async function log(sujeto, objeto, accion) {
 
 app.get("/reportes", async (req, res) => {
   try {
-    //let token = req.get("Authentication");
-    //let verifiedToken = await jwt.verify(token, "TC2007BDabeca");
-    //let user = verifiedToken.usuario;
+
     if ("_sort" in req.query) {
       //getList
-      console.log("🔍 Query params:", req.query);
+      console.log("Query params:", req.query);
       console.log(
-        "📊 inicio:",
+        "inicio:",
         Number(req.query._start),
         "fin:",
         Number(req.query._end),
@@ -370,20 +368,3 @@ https.createServer(options, app).listen(3000, async () => {
 		connectToDB();
       	console.log('HTTPS Server running on port 3000');
 });
-
-/*
-async function connectToDB() {
-  const uri =
-    "mongodb+srv://a01028209_db_user:1kPxdjGMmjhvDriA@cluster0.npixfou.mongodb.net/";
-  const client = new MongoClient(uri);
-  await client.connect();
-  db = client.db("pcc");
-  console.log("✅ Conectado a MongoDB Atlas");
-}
-
-
-app.listen(PORT, () => {
-  connectToDB();
-  console.log("aplicacion corriendo en puerto 3000");
-});
-*/
