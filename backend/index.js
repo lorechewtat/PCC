@@ -238,20 +238,37 @@ app.post("/Usuarios", async (req, res) => {
 
 //login
 app.post("/login", async (req, res) => {
-  let user = req.body.username;
-  let pass = req.body.password;
-  let data = await db.collection("Usuarios").findOne({ usuario: user });
-  // no existe el usuario
-  if (data == null) {
-    res.sendStatus(401);
-    // existe el usuario, verifica password
-  } else if (await argon2.verify(data.password, pass)) {
-    let token = jwt.sign({ usuario: data.usuario }, "TC2007BDabeca", {
-      expiresIn: 900,
-    });
-    res.json({ token: token, id: data.usuario, nombre: data.nombre });
-  } else {
-    res.sendStatus(401);
+  try {
+    let user = req.body.username;
+    let pass = req.body.password;
+    let data = await db.collection("usuarios").findOne({ usuario: user });
+        
+    if (data == null) {
+      return res.status(401).json({ message: "Usuario no encontrado" });
+    }
+    
+    let passwordValid = await argon2.verify(data.password, pass);
+    
+    if (passwordValid) {
+      let token = jwt.sign({ usuario: data.usuario }, "TC2007BDabeca", {
+        expiresIn: 900,
+      });
+      
+      res.json({ 
+        token: token, 
+        id: data.usuario, 
+        nombre: data.nombre,
+        email: data.usuario,
+        role: data.tipo,
+        turno: data.turno
+      });
+    } else {
+      console.log("Credenciales incorrectas");
+      res.status(401).json({ message: "Credenciales incorrectas" });
+    }
+  } catch (error) {
+    console.error("Error en login:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 });
 
