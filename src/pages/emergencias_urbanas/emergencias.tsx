@@ -70,31 +70,11 @@ const EmergenciasPage = () => {
     (value: typeof form[K]) => setForm(prev => ({ ...prev, [key]: value }));
 
 //     const EMPTY: EmergenciasUrbanas = {
-//   fecha: "", turno: "", nombrePersonal: "", modoActivacion: "", tipoServicio: "",
-//   detallesUbicacion: "", responsableEmergencia: "", gravedad: "", afectaciones: "",
-//   conclusion: "", fechaAtencion: "", tiempoTraslado: "", Km: "", trabajos: "",
-//   autoridades: "", observaciones: "",
-// };
-
-// const v = value ?? EMPTY;
-//   const safeOnChange = onChange ?? (() => {});
-
-//     const handleFieldChange = (field: keyof EmergenciasUrbanas) =>
-//             (e: React.ChangeEvent<HTMLInputElement>) => {
-//                 safeOnChange ({ [field]: e.target.value } as Partial<EmergenciasUrbanas>);
-//             };
-    
-//     const handleSingleSelectChange = (field: keyof EmergenciasUrbanas) =>
-//         (newValue: string | null) => {
-//             if (newValue !== null) {
-//                 safeOnChange ({ [field]: newValue } as Partial<EmergenciasUrbanas>);
-//             }
-//         };
 
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:3000/emergencias', {
+      const response = await fetch('https://localhost:3000/emergencias', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
